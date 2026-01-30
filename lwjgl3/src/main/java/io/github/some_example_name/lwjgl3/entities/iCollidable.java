@@ -1,6 +1,6 @@
 package io.github.some_example_name.lwjgl3.entities;
 
-public class iCollidable {
+public interface iCollidable {
 	BoundingBox getBoundingbox();
 	
 	
