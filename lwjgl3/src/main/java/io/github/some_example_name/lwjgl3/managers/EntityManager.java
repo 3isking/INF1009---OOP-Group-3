@@ -1,8 +1,10 @@
 package io.github.some_example_name.lwjgl3.managers;
-import io.github.some_example_name.lwjgl3.entities.Entity;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
+import io.github.some_example_name.lwjgl3.entities.Entity;
 
 public class EntityManager {
     private List<Entity> entities;
@@ -40,10 +42,10 @@ public class EntityManager {
         }
     }
 
-    public void render() {
+    public void render(SpriteBatch batch) {
         for (Entity entity : entities) {
             if (entity.isVisible()) {
-                entity.render();
+                entity.render(batch);
             }
         }
     }

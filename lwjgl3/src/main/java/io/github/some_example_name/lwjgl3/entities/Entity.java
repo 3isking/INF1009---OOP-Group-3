@@ -1,6 +1,6 @@
 package io.github.some_example_name.lwjgl3.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
 
@@ -20,10 +20,15 @@ public abstract class Entity {
         this.visible = true;
         this.layer = 0;
         this.rotation = 0f;
+        this.id = "0";
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Vector2 getPosition() {
@@ -32,9 +37,6 @@ public abstract class Entity {
 
     public void setPosition(Vector2 position) {
         this.position = position;
-        if (sprite != null) {
-            sprite.setPosition(position.x, position.y);
-        }
     }
 
     public Sprite getSprite() {
@@ -43,13 +45,14 @@ public abstract class Entity {
 
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
-        if (sprite != null && position != null) {
-            sprite.setPosition(position.x, position.y);
-        }
     }
 
     public int getLayer() {
         return layer;
+    }
+
+    public void setLayer(int layer) {
+        this.layer = layer;
     }
 
     public float getRotation() {
@@ -58,9 +61,6 @@ public abstract class Entity {
 
     public void setRotation(float rotation) {
         this.rotation = rotation;
-        if (sprite != null) {
-            sprite.setRotation(rotation);
-        }
     }
 
     public boolean isVisible() {
@@ -73,5 +73,5 @@ public abstract class Entity {
 
     public abstract void update(float deltaTime);
 
-    public abstract void render();
+    public abstract void render(SpriteBatch batch);
 }
