@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 
-public class InputManager{
+public class InputManager extends InputAdapter{
     private final Map<String, Binding> bindings = new HashMap<>();
     private final Map<String, Boolean> lastState = new HashMap<>();
     private String waitingForBind = null;
@@ -35,11 +36,11 @@ public class InputManager{
     	}
     }
 
-	InputManager() {
-		bind("up", Device.KEYBOARD, Input.Keys.W);
-    	bind("down", Device.KEYBOARD, Input.Keys.S);
-    	bind("left", Device.KEYBOARD, Input.Keys.A);
-    	bind("right", Device.KEYBOARD, Input.Keys.D);
+	public InputManager() {
+		bind("up", Device.KEYBOARD, Input.Keys.UP);
+    	bind("down", Device.KEYBOARD, Input.Keys.DOWN);
+    	bind("left", Device.KEYBOARD, Input.Keys.LEFT);
+    	bind("right", Device.KEYBOARD, Input.Keys.RIGHT);
     	bind("jump", Device.KEYBOARD, Input.Keys.SPACE);
     	bind("action", Device.MOUSE, Input.Buttons.LEFT);
 	}
@@ -52,7 +53,7 @@ public class InputManager{
 
 
 	//get keypressed for keyboard and mouse
-	public boolean InputPressed(String action) {
+	public boolean inputPressed(String action) {
         Binding b = bindings.get(action);
         //This will get the Binding that is mapped to the string action
         // After the above code, b.device == Device.KEYBOARD
@@ -68,7 +69,7 @@ public class InputManager{
         return pressed && !wasPressed; //returns true if a key is pressed the first time
     }
 	
-	 public boolean InputHeld(String action) {
+	 public boolean inputHeld(String action) {
 		 Binding b = bindings.get(action);
 	     if (b == null) {
 	    	 return false;
@@ -82,14 +83,16 @@ public class InputManager{
 	 
 	 public void setKeyBind(String action) {
 		waitingForBind = action;
+		System.out.println("Press a key to bind for action: " + action);
 	}
 	
 	
 	//wait to set keybind for keyboard
-	 private boolean keyDown(int keycode) {
+	 public boolean keyDown(int keycode) {
         if (waitingForBind != null) {
         	bindings.put(waitingForBind, new Binding(Device.KEYBOARD, keycode));
             lastState.put(waitingForBind, false);
+            System.out.println("Bound " + waitingForBind + " to button " + keycode);
             waitingForBind = null;
             return true;
         }
@@ -97,13 +100,16 @@ public class InputManager{
     }
 
 	 //wait to set keybind for mouse
-	 private boolean touchDown(int x, int y, int pointer, int button) {
+	 public boolean touchDown(int x, int y, int pointer, int button) {
 		 if (waitingForBind != null) {
 			 bindings.put(waitingForBind, new Binding(Device.MOUSE, button));
              lastState.put(waitingForBind, false);
+             System.out.println("Bound " + waitingForBind + " to button " + button);
              waitingForBind = null;
              return true;
         }
         return false;
     } 
+	 
+	 
 }

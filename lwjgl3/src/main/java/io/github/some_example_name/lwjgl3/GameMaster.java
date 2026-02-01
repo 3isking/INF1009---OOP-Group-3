@@ -37,9 +37,11 @@ public class GameMaster extends ApplicationAdapter{
         // Setup Managers
         entityManager = new EntityManager();
         movementManager = new MovementManager();
+        inputManager = new InputManager();
+        Gdx.input.setInputProcessor(inputManager);
 
         // Setup Player
-        Player player = new Player();
+        Player player = new Player(inputManager);
         entityManager.addEntity(player);
     }
 
@@ -52,6 +54,13 @@ public class GameMaster extends ApplicationAdapter{
 
         movementManager.moveEntities(entityManager.getAllEntities());
         entityManager.render(batch);
+        
+        //Rebind to be determined from a menu for keyjustpressed and rebind action
+        String rebindAction = "right";
+        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSLASH)) {
+            inputManager.setKeyBind(rebindAction);
+        }
+
     }
 
     public void dispose(){
