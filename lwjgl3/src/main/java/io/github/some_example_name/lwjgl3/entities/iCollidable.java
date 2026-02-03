@@ -1,4 +1,5 @@
 package io.github.some_example_name.lwjgl3.entities;
+import com.badlogic.gdx.math.collision.BoundingBox;
 
 public interface iCollidable {
 	public BoundingBox getBoundingBox();

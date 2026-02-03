@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Player;
+import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.managers.CollisionManager;
 import io.github.some_example_name.lwjgl3.managers.EntityManager;
 import io.github.some_example_name.lwjgl3.managers.InputManager;
@@ -43,6 +44,10 @@ public class GameMaster extends ApplicationAdapter{
         // Setup Player
         Player player = new Player(inputManager);
         entityManager.addEntity(player);
+
+        // Setup Wall
+        Wall wall1 = new Wall();
+        entityManager.addEntity(wall1);
     }
 
     public void render(){

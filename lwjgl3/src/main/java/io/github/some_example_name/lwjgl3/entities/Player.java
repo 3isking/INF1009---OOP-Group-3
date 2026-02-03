@@ -1,7 +1,6 @@
 package io.github.some_example_name.lwjgl3.entities;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.some_example_name.lwjgl3.managers.InputManager;
 
 public final class Player extends Entity implements iMovable {
-    Texture temp = new Texture(Gdx.files.internal("player.png"));
+    
     private final InputManager inputManager;
     public Player(InputManager inputManager){
     	this.inputManager = inputManager;
