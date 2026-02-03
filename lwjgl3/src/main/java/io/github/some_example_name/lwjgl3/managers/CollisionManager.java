@@ -2,9 +2,10 @@ package io.github.some_example_name.lwjgl3.managers;
 
 import java.util.List;
 
-import io.github.some_example_name.lwjgl3.entities.iCollidable;
-import io.github.some_example_name.lwjgl3.entities.Entity;
 import com.badlogic.gdx.math.Rectangle;
+
+import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public class CollisionManager {
     // check collisions between all entities in the given list

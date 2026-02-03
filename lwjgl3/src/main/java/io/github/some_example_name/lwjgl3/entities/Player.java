@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.managers.InputManager;
-import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public final class Player extends Entity implements iMovable, iCollidable {
     
@@ -91,11 +90,39 @@ public final class Player extends Entity implements iMovable, iCollidable {
 
     @Override
     public void onCollision(iCollidable other) {
-        if (other instanceof Entity) {
-            Entity entity = (Entity) other;  // classic cast
-            System.out.println("Player collided with: " + entity.getId());
-        } else {
-            System.out.println("Player collided with an unknown object");
+
+        if (other instanceof Wall) {
+            Rectangle player = this.getCollisionBounds();
+            Rectangle wall = other.getCollisionBounds();
+
+            float overlapLeft = (player.x + player.width) - wall.x;
+            float overlapRight = (wall.x + wall.width) - player.x;
+            float overlapBottom = (player.y + player.height) - wall.y;
+            float overlapTop = (wall.y + wall.height) - player.y;
+
+            float minX = Math.min(overlapLeft, overlapRight);
+            float minY = Math.min(overlapBottom, overlapTop);
+
+            // Resolve along the smallest overlap axis
+            if (minX < minY) {
+                // Horizontal collision
+                if (overlapLeft < overlapRight) {
+                    // Player hit wall from left
+                    this.getPosition().x -= overlapLeft;
+                } else {
+                    // Player hit wall from right
+                    this.getPosition().x += overlapRight;
+                }
+            } else {
+                // Vertical collision
+                if (overlapBottom < overlapTop) {
+                    // Player hit wall from below
+                    this.getPosition().y -= overlapBottom;
+                } else {
+                    // Player hit wall from above
+                    this.getPosition().y += overlapTop;
+                }
+            }
         }
     }
 }
