@@ -40,6 +40,7 @@ public class GameMaster extends ApplicationAdapter{
         movementManager = new MovementManager();
         inputManager = new InputManager();
         Gdx.input.setInputProcessor(inputManager);
+        collisionManager = new CollisionManager();
 
         // Setup Player
         Player player = new Player(inputManager);
@@ -58,6 +59,7 @@ public class GameMaster extends ApplicationAdapter{
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
         movementManager.moveEntities(entityManager.getAllEntities());
+        collisionManager.checkCollisions(entityManager.getAllEntities());
         entityManager.render(batch);
         
         //Rebind to be determined from a menu for keyjustpressed and rebind action

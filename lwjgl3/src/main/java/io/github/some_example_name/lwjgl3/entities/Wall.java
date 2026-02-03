@@ -3,9 +3,10 @@ package io.github.some_example_name.lwjgl3.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class Wall extends Entity {
+public class Wall extends Entity implements iCollidable {
 
     public Wall(){
         this.setPosition(new Vector2(300, 0));
@@ -26,5 +27,20 @@ public class Wall extends Entity {
     @Override
     public void update(float deltaTime){
         
+    }
+
+    @Override
+    public Rectangle getCollisionBounds() {
+        return new Rectangle(
+            this.getPosition().x,
+            this.getPosition().y,
+            this.getSprite().getWidth(),
+            this.getSprite().getHeight()
+        );
+    }
+
+    @Override
+    public void onCollision(iCollidable other) {
+        System.out.println("Wall collided with something!");
     }
 }

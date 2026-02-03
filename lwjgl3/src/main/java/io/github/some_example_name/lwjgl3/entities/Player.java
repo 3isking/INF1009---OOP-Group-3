@@ -3,13 +3,16 @@ package io.github.some_example_name.lwjgl3.entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.managers.InputManager;
+import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
-public final class Player extends Entity implements iMovable {
+public final class Player extends Entity implements iMovable, iCollidable {
     
     private final InputManager inputManager;
+
     public Player(InputManager inputManager){
     	this.inputManager = inputManager;
     	 
@@ -74,5 +77,25 @@ public final class Player extends Entity implements iMovable {
     @Override
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
+    }
+
+    @Override
+    public Rectangle getCollisionBounds() {
+        return new Rectangle(
+            this.getPosition().x,
+            this.getPosition().y,
+            this.getSprite().getWidth(),
+            this.getSprite().getHeight()
+        );
+    }
+
+    @Override
+    public void onCollision(iCollidable other) {
+        if (other instanceof Entity) {
+            Entity entity = (Entity) other;  // classic cast
+            System.out.println("Player collided with: " + entity.getId());
+        } else {
+            System.out.println("Player collided with an unknown object");
+        }
     }
 }
