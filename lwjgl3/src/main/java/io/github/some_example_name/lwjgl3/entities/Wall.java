@@ -8,20 +8,29 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Wall extends Entity implements iCollidable {
 
-    public Wall(){
-        this.setPosition(new Vector2(300, 0));
+    // public Wall(){
+    //     this.setPosition(new Vector2(300, 0));
+    //     this.setVisible(true);
+    //     this.setLayer(1);
+    //     this.setRotation(0);
+    //     this.setId("0");
+    //     this.setSprite(new Sprite(new Texture(Gdx.files.internal("wall.png")), 100, 100));
+    // }
+//added by chavonne - accepts parameters for more flexible positioning
+    public Wall(float x, float y, float width, float height){
+        this.setPosition(new Vector2(x, y));
         this.setVisible(true);
         this.setLayer(1);
         this.setRotation(0);
         this.setId("0");
-        this.setSprite(new Sprite(new Texture(Gdx.files.internal("wall.png")), 100, 100));
+        this.setSprite(new Sprite(new Texture(Gdx.files.internal("wall.png")), width, height));
     }
 
     @Override
     public void render(SpriteBatch batch){
-        batch.begin();
+        // batch.begin();
         batch.draw(this.getSprite().getTexture(), this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
-        batch.end();
+        // batch.end();
     }
 
     @Override
@@ -41,6 +50,8 @@ public class Wall extends Entity implements iCollidable {
 
     @Override
     public void onCollision(iCollidable other) {
-        System.out.println("Wall collided with something!");
+        if (!(other instanceof Wall)) {
+            System.out.println("Wall collided with something!");
+        }
     }
 }

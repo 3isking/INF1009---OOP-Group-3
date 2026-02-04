@@ -26,9 +26,9 @@ public final class Player extends Entity implements iMovable, iCollidable {
 
     @Override
     public void render(SpriteBatch batch){
-        batch.begin();
+        // batch.begin();
         batch.draw(this.getSprite().getTexture(), this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
-        batch.end();
+        // batch.end();
     }
 
     @Override

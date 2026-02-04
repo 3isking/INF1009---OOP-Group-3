@@ -10,8 +10,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.entities.Player;
-import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.managers.CollisionManager;
 import io.github.some_example_name.lwjgl3.managers.EntityManager;
@@ -19,6 +17,7 @@ import io.github.some_example_name.lwjgl3.managers.InputManager;
 import io.github.some_example_name.lwjgl3.managers.MovementManager;
 import io.github.some_example_name.lwjgl3.managers.OutputManager;
 import io.github.some_example_name.lwjgl3.managers.SceneManager;
+import io.github.some_example_name.lwjgl3.scenes.Scene1;
 
 public class GameMaster extends ApplicationAdapter{
     private OrthographicCamera camera;
@@ -48,20 +47,26 @@ public class GameMaster extends ApplicationAdapter{
         inputManager = new InputManager();
         Gdx.input.setInputProcessor(inputManager);
         collisionManager = new CollisionManager();
+        sceneManager = new SceneManager();
 
         // Setup Player
-        Player player = new Player(inputManager);
-        entityManager.addEntity(player);
+        // Player player = new Player(inputManager);
+        // entityManager.addEntity(player);
 
-        // Setup Wall
-        Wall wall1 = new Wall();
-        entityManager.addEntity(wall1);
+        // // Setup Wall
+        // Wall wall1 = new Wall();
+        // entityManager.addEntity(wall1);
+        Scene1 scene1 = new Scene1(entityManager, inputManager);
+        sceneManager.addScene(scene1);
+        scene1.onLoad();
+        sceneManager.setCurrentScene(scene1);
 
         // Setup Debug
         debugMode = true;
     }
 
     public void render(){
+        float dt = Gdx.graphics.getDeltaTime();
         cameraControl();
         camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -69,9 +74,15 @@ public class GameMaster extends ApplicationAdapter{
         
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
+        sceneManager.update(dt);
+
         movementManager.moveEntities(entityManager.getAllEntities());
         collisionManager.checkCollisions(entityManager.getAllEntities());
+        
+        batch.begin();
+        sceneManager.render(batch);
         entityManager.render(batch);
+        batch.end();
         
         debugMode();
         //Rebind to be determined from a menu for keyjustpressed and rebind action
@@ -83,7 +94,12 @@ public class GameMaster extends ApplicationAdapter{
     }
 
     public void dispose(){
-
+        batch.dispose();
+        shape.dispose();
+        
+        // if (sceneManager.getCurrentScene() != null) {
+            sceneManager.getCurrentScene().onUnload();
+        // }
     }
 
     public void cameraControl(){
