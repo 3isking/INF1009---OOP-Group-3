@@ -11,6 +11,8 @@ import io.github.some_example_name.lwjgl3.managers.InputManager;
 public final class Player extends Entity implements iMovable, iCollidable {
     
     private final InputManager inputManager;
+    private boolean hasCollided = false;
+    private long lastCollisionTime = 0;
 
     public Player(InputManager inputManager){
     	this.inputManager = inputManager;
@@ -94,6 +96,14 @@ public final class Player extends Entity implements iMovable, iCollidable {
         if (other instanceof Wall) {
             Rectangle player = this.getCollisionBounds();
             Rectangle wall = other.getCollisionBounds();
+            
+            long currentTime = System.currentTimeMillis();
+            
+            // Only flag for sound if enough time has passed
+            if (currentTime - lastCollisionTime > 500) {
+                this.hasCollided = true;
+                this.lastCollisionTime = currentTime; // Reset timer
+            }
 
             float overlapLeft = (player.x + player.width) - wall.x;
             float overlapRight = (wall.x + wall.width) - player.x;
@@ -102,27 +112,39 @@ public final class Player extends Entity implements iMovable, iCollidable {
 
             float minX = Math.min(overlapLeft, overlapRight);
             float minY = Math.min(overlapBottom, overlapTop);
+            
+            float pushBuffer = 5.0f;
 
             // Resolve along the smallest overlap axis
             if (minX < minY) {
                 // Horizontal collision
                 if (overlapLeft < overlapRight) {
                     // Player hit wall from left
-                    this.getPosition().x -= overlapLeft;
+                    this.getPosition().x -= (overlapLeft + pushBuffer);
                 } else {
                     // Player hit wall from right
-                    this.getPosition().x += overlapRight;
+                    this.getPosition().x += (overlapRight + pushBuffer);
                 }
             } else {
                 // Vertical collision
                 if (overlapBottom < overlapTop) {
                     // Player hit wall from below
-                    this.getPosition().y -= overlapBottom;
+                    this.getPosition().y -= (overlapBottom + pushBuffer);
                 } else {
                     // Player hit wall from above
-                    this.getPosition().y += overlapTop;
+                    this.getPosition().y += (overlapTop + pushBuffer);
                 }
             }
         }
+    }
+    
+    
+    // Output Manager
+    public boolean wasHit() {
+        return hasCollided;
+    }
+
+    public void resetHitFlag() {
+        hasCollided = false;
     }
 }

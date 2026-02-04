@@ -1,9 +1,25 @@
 package io.github.some_example_name.lwjgl3.managers;
 
-import java.util.List;
-
-import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.outputs.AudioManager;
+import io.github.some_example_name.lwjgl3.outputs.HapticManager;
 
 public class OutputManager {
-    private List<Entity> entityList;
+    private final AudioManager audio = new AudioManager();
+    private final HapticManager haptics = new HapticManager();
+
+    public void loadAudio(String id, String path) {
+        audio.load(id, path);
+    }
+
+    public void playSound(String id) {
+        audio.play(id);
+    }
+
+    public void triggerVibration(int ms) {
+        haptics.vibrate(ms);
+    }
+
+    public void dispose() {
+        audio.dispose();
+    }
 }

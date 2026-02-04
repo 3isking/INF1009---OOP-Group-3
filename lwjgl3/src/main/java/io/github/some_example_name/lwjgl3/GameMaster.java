@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.Player;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.managers.CollisionManager;
 import io.github.some_example_name.lwjgl3.managers.EntityManager;
@@ -48,6 +49,7 @@ public class GameMaster extends ApplicationAdapter{
         Gdx.input.setInputProcessor(inputManager);
         collisionManager = new CollisionManager();
         sceneManager = new SceneManager();
+        outputManager = new OutputManager();
 
         // Setup Player
         // Player player = new Player(inputManager);
@@ -63,6 +65,9 @@ public class GameMaster extends ApplicationAdapter{
 
         // Setup Debug
         debugMode = true;
+        
+        // Setup audio
+        outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
     }
 
     public void render(){
@@ -89,6 +94,23 @@ public class GameMaster extends ApplicationAdapter{
         String rebindAction = "right";
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSLASH)) {
             inputManager.setKeyBind(rebindAction);
+        }
+        
+        
+        // Play collision.wav if hit
+        for (Entity e : entityManager.getAllEntities()) {
+            if (e instanceof Player) {
+                Player p = (Player) e;
+                
+                if (p.wasHit()) {
+                    outputManager.playSound("COLLISION_EVENT");
+                    outputManager.triggerVibration(100);
+                    System.out.println("Abstract Engine: Collision Output Triggered!");
+                    
+                    // Reset the flag so it plays only once per hit
+                    p.resetHitFlag();
+                }
+            }
         }
 
     }
