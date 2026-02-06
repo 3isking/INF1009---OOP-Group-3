@@ -8,22 +8,20 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.managers.InputManager;
 
-public final class Player extends Entity implements iMovable, iCollidable {
+public class PlayableEntity
+ extends Entity implements iMovable, iCollidable {
     
     private final InputManager inputManager;
     private boolean hasCollided = false;
     private long lastCollisionTime = 0;
 
-    public Player(InputManager inputManager){
+    public PlayableEntity
+    (InputManager inputManager){
+        super();
     	this.inputManager = inputManager;
-    	 
-        this.setPosition(new Vector2(0, 0));
-        this.setVelocity(new Vector2(3, 3));
-        this.setVisible(true);
-        this.setLayer(1);
-        this.setRotation(0);
-        this.setId("0");
-        this.setSprite(new Sprite(new Texture(Gdx.files.internal("player.png")), 50, 50));
+    	this.id = "player_1";
+        
+        this.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
     }
 
     @Override

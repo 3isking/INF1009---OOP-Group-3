@@ -3,21 +3,21 @@ package io.github.some_example_name.lwjgl3.collision;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.entities.Player;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
-public class CollisionResolver {
+public final class CollisionResolver {
     public void resolveCollisions(iCollidable entity1, iCollidable entity2)
     {
 
         // Collision Between Player & Wall
-        if (entity1 instanceof Player && entity2 instanceof Wall || entity2 instanceof Player && entity1 instanceof Wall)
+        if (entity1 instanceof PlayableEntity && entity2 instanceof Wall || entity2 instanceof PlayableEntity && entity1 instanceof Wall)
         {
             iCollidable playerEntity;
             iCollidable wallEntity;
 
-            if (entity1 instanceof Player){
+            if (entity1 instanceof PlayableEntity){
                 playerEntity = entity1;
                 wallEntity = entity2;
             } else {

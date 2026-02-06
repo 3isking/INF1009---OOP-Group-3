@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.entities.Player;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.managers.CollisionManager;
 import io.github.some_example_name.lwjgl3.managers.EntityManager;
@@ -52,9 +52,9 @@ public class GameMaster extends ApplicationAdapter{
         sceneManager = new SceneManager();
         outputManager = new OutputManager();
 
-        // Setup Player
-        // Player player = new Player(inputManager);
-        // entityManager.addEntity(player);
+        // Setup PlayableEntity
+        // PlayableEntity PlayableEntity = new PlayableEntity(inputManager);
+        // entityManager.addEntity(PlayableEntity);
 
         // // Setup Wall
         // Wall wall1 = new Wall();
@@ -84,7 +84,7 @@ public class GameMaster extends ApplicationAdapter{
         movementManager.moveEntities(entityManager.getAllEntities());
         collisionManager.checkCollisions(entityManager.getAllEntities());
         
-        cameraControl(entityManager.getEntity("0"));
+        cameraControl(entityManager.getEntity("player_1"));
         camera.update();
 
         batch.begin();
@@ -104,8 +104,8 @@ public class GameMaster extends ApplicationAdapter{
         
         // Play collision.wav if hit
         for (Entity e : entityManager.getAllEntities()) {
-            if (e instanceof Player) {
-                Player p = (Player) e;
+            if (e instanceof PlayableEntity) {
+                PlayableEntity p = (PlayableEntity) e;
                 
                 if (p.wasHit()) {
                     outputManager.playSound("COLLISION_EVENT");
@@ -129,10 +129,10 @@ public class GameMaster extends ApplicationAdapter{
         // }
     }
 
-    public void cameraControl(Entity player){
+    public void cameraControl(Entity PlayableEntity){
 		Vector3 target = new Vector3(
-            player.getPosition().x + player.getSprite().getWidth() / 2f,
-            player.getPosition().y + player.getSprite().getHeight() / 2f,
+            PlayableEntity.getPosition().x + PlayableEntity.getSprite().getWidth() / 2f,
+            PlayableEntity.getPosition().y + PlayableEntity.getSprite().getHeight() / 2f,
             0
         );
 
