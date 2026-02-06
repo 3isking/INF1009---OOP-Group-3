@@ -48,10 +48,4 @@ public class Wall extends Entity implements iCollidable {
         );
     }
 
-    @Override
-    public void onCollision(iCollidable other) {
-        if (!(other instanceof Wall)) {
-            System.out.println("Wall collided with something!");
-        }
-    }
 }

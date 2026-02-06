@@ -88,56 +88,7 @@ public final class Player extends Entity implements iMovable, iCollidable {
             this.getSprite().getWidth(),
             this.getSprite().getHeight()
         );
-    }
-
-    @Override
-    public void onCollision(iCollidable other) {
-
-        if (other instanceof Wall) {
-            Rectangle player = this.getCollisionBounds();
-            Rectangle wall = other.getCollisionBounds();
-            
-            long currentTime = System.currentTimeMillis();
-            
-            // Only flag for sound if enough time has passed
-            if (currentTime - lastCollisionTime > 500) {
-                this.hasCollided = true;
-                this.lastCollisionTime = currentTime; // Reset timer
-            }
-
-            float overlapLeft = (player.x + player.width) - wall.x;
-            float overlapRight = (wall.x + wall.width) - player.x;
-            float overlapBottom = (player.y + player.height) - wall.y;
-            float overlapTop = (wall.y + wall.height) - player.y;
-
-            float minX = Math.min(overlapLeft, overlapRight);
-            float minY = Math.min(overlapBottom, overlapTop);
-            
-            float pushBuffer = 5.0f;
-
-            // Resolve along the smallest overlap axis
-            if (minX < minY) {
-                // Horizontal collision
-                if (overlapLeft < overlapRight) {
-                    // Player hit wall from left
-                    this.getPosition().x -= (overlapLeft + pushBuffer);
-                } else {
-                    // Player hit wall from right
-                    this.getPosition().x += (overlapRight + pushBuffer);
-                }
-            } else {
-                // Vertical collision
-                if (overlapBottom < overlapTop) {
-                    // Player hit wall from below
-                    this.getPosition().y -= (overlapBottom + pushBuffer);
-                } else {
-                    // Player hit wall from above
-                    this.getPosition().y += (overlapTop + pushBuffer);
-                }
-            }
-        }
-    }
-    
+    }    
     
     // Output Manager
     public boolean wasHit() {

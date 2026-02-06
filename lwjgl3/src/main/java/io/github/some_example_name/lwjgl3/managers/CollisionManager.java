@@ -4,9 +4,9 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.collision.CollisionDetector;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
+import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public class CollisionManager {
@@ -40,11 +40,11 @@ public class CollisionManager {
 
                 // used for collision detector
                 // check if the collision bounds overlap
-                if (collisionDetector.checkCollisions(c2, c1)) {
+                if (collisionDetector.checkCollisions(c1, c2)) {
                     // used for collision resolver
                     // notify both entities of the collision
                     //  CollisionResolver.onCollision(c1, c2);
-                    collisionResolver.resolveCollisions(c2, c1);
+                    collisionResolver.resolveCollisions(c1, c2);
                 }
             }
         }

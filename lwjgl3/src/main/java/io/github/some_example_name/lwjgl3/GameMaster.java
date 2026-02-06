@@ -137,18 +137,6 @@ public class GameMaster extends ApplicationAdapter{
         );
 
         camera.position.lerp(target, 0.1f);
-        // if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-		// 	camera.translate(-3, 0, 0);
-		// }
-		// if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-		// 	camera.translate(3, 0, 0);
-		// }
-		// if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-		// 	camera.translate(0, -3, 0);
-		// }
-		// if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-		// 	camera.translate(0, 3, 0);
-		// }
     }
 
     public void debugMode(){
