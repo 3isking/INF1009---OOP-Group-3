@@ -30,7 +30,6 @@ public class Scene1 extends Scene{
         
         // add player entity in the center
         Player player = new Player(inputManager);
-        player.setId("player_scene1");
         player.setPosition(new Vector2(320, 240));
         
         // Add to scene entity list 

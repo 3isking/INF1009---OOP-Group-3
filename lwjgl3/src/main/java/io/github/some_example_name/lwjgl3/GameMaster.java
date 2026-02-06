@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -72,8 +73,7 @@ public class GameMaster extends ApplicationAdapter{
 
     public void render(){
         float dt = Gdx.graphics.getDeltaTime();
-        cameraControl();
-        camera.update();
+        
 		batch.setProjectionMatrix(camera.combined);
 		shape.setProjectionMatrix(camera.combined);
         
@@ -84,10 +84,15 @@ public class GameMaster extends ApplicationAdapter{
         movementManager.moveEntities(entityManager.getAllEntities());
         collisionManager.checkCollisions(entityManager.getAllEntities());
         
+        cameraControl(entityManager.getEntity("0"));
+        camera.update();
+
         batch.begin();
         sceneManager.render(batch);
         entityManager.render(batch);
         batch.end();
+
+        
         
         debugMode();
         //Rebind to be determined from a menu for keyjustpressed and rebind action
@@ -124,19 +129,26 @@ public class GameMaster extends ApplicationAdapter{
         // }
     }
 
-    public void cameraControl(){
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-			camera.translate(-3, 0, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-			camera.translate(3, 0, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-			camera.translate(0, -3, 0);
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-			camera.translate(0, 3, 0);
-		}
+    public void cameraControl(Entity player){
+		Vector3 target = new Vector3(
+            player.getPosition().x + player.getSprite().getWidth() / 2f,
+            player.getPosition().y + player.getSprite().getHeight() / 2f,
+            0
+        );
+
+        camera.position.lerp(target, 0.1f);
+        // if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+		// 	camera.translate(-3, 0, 0);
+		// }
+		// if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+		// 	camera.translate(3, 0, 0);
+		// }
+		// if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+		// 	camera.translate(0, -3, 0);
+		// }
+		// if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+		// 	camera.translate(0, 3, 0);
+		// }
     }
 
     public void debugMode(){
