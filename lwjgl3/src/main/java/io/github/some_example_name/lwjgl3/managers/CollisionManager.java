@@ -4,10 +4,20 @@ import java.util.List;
 
 import com.badlogic.gdx.math.Rectangle;
 
+import io.github.some_example_name.lwjgl3.collision.CollisionDetector;
+import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public class CollisionManager {
+    private CollisionDetector collisionDetector;
+    private CollisionResolver collisionResolver;
+
+    public CollisionManager() 
+    {
+        collisionDetector = new CollisionDetector();
+        collisionResolver = new CollisionResolver();
+    }
     // check collisions between all entities in the given list
     public void checkCollisions(List<Entity> entities) {
         for (int i = 0; i < entities.size(); i++) {
@@ -28,11 +38,13 @@ public class CollisionManager {
                 // if can collide, then store in e2
                 iCollidable c2 = (iCollidable) e2;
 
+                // used for collision detector
                 // check if the collision bounds overlap
-                if (c1.getCollisionBounds().overlaps(c2.getCollisionBounds())) {
+                if (collisionDetector.checkCollisions(c1, c2)) {
+                    // used for collision resolver
                     // notify both entities of the collision
-                    c1.onCollision(c2);
-                    c2.onCollision(c1);
+                    //  CollisionResolver.onCollision(c1, c2);
+                    collisionResolver.resolveCollisions(c1, c2);
                 }
             }
         }

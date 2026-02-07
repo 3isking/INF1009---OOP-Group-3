@@ -21,7 +21,6 @@ public class EntityManager {
 
     public Entity getEntity(String id) {
         for (Entity entity : entities) {
-            System.out.println(entity.getId());
             if (entity.getId() != null && entity.getId().equals(id)) {
                 return entity;
             }

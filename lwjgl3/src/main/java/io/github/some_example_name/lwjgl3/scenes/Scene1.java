@@ -3,7 +3,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.entities.Player;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.managers.EntityManager;
 import io.github.some_example_name.lwjgl3.managers.InputManager;
@@ -29,7 +29,7 @@ public class Scene1 extends Scene{
         System.out.println("[Scene1] Entering scene...");
         
         // add player entity in the center
-        Player player = new Player(inputManager);
+        PlayableEntity player = new PlayableEntity(inputManager);
         player.setPosition(new Vector2(320, 240));
         
         // Add to scene entity list 
