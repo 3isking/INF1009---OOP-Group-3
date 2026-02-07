@@ -7,6 +7,10 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 
 public class Camera {
     private OrthographicCamera camera;
+    
+    public Camera(OrthographicCamera camera) {
+        this.camera = camera;
+    }
 
     public void cameraControl(Entity player){
 		Vector3 target = new Vector3(

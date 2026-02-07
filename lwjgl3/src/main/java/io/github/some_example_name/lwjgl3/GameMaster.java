@@ -46,7 +46,7 @@ public class GameMaster extends ApplicationAdapter{
         // Setup Managers
         entityManager = new EntityManager();
         movementManager = new MovementManager();
-        inputManager = new InputManager();
+        inputManager = new InputManager(camera);
         Gdx.input.setInputProcessor(inputManager);
         collisionManager = new CollisionManager();
         sceneManager = new SceneManager();

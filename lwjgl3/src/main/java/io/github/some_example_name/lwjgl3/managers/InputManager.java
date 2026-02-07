@@ -5,10 +5,13 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.input.InputDevice;
-import io.github.some_example_name.lwjgl3.input.InputDevice.Device;
+import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.inputs.Camera;
+import io.github.some_example_name.lwjgl3.inputs.InputDevice;
+import io.github.some_example_name.lwjgl3.inputs.InputDevice.Device;
 
 public class InputManager extends InputAdapter{
     private final Map<String, Binding> bindings = new HashMap<>();
@@ -16,6 +19,7 @@ public class InputManager extends InputAdapter{
     private String waitingForBind = null;
     
     private final InputDevice inputDevice;
+    private final Camera camera;
     //private final CameraController cameraController;
     
     
@@ -30,10 +34,9 @@ public class InputManager extends InputAdapter{
     }
     
 	
-
-	public InputManager() {
+	public InputManager(OrthographicCamera cameraControl) {
 		inputDevice = new InputDevice(this);
-        //cameraController = new CameraController(this);
+        camera = new Camera(cameraControl);
 		bind("up", Device.KEYBOARD, Input.Keys.UP);
     	bind("down", Device.KEYBOARD, Input.Keys.DOWN);
     	bind("left", Device.KEYBOARD, Input.Keys.LEFT);
@@ -77,6 +80,7 @@ public class InputManager extends InputAdapter{
 		 return inputDevice.getMousePosition();
 	 }
 	 
+	 //For keybindings
 	 public void setKeyBind(String action) {
 		waitingForBind = action;
 		System.out.println("Press a key to bind for action: " + action);
@@ -99,6 +103,11 @@ public class InputManager extends InputAdapter{
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 	    return inputDevice.touchDown(x, y, pointer, button);
+	}
+	
+	//For camera
+	public void updateCamera(Entity player) {
+	    camera.cameraControl(player);
 	}
 	 
 }
