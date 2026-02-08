@@ -1,6 +1,8 @@
 package io.github.some_example_name.lwjgl3.inputs;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -8,8 +10,15 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 public class Camera {
     private OrthographicCamera camera;
     
-    public Camera(OrthographicCamera camera) {
-        this.camera = camera;
+    public Camera() {
+        this.camera = new OrthographicCamera(640, 480);
+        this.camera.position.set(320, 240, 0);
+        this.camera.update();
+    }
+
+    public void setCameraProjection (SpriteBatch batch, ShapeRenderer shape){
+        batch.setProjectionMatrix(camera.combined);
+		shape.setProjectionMatrix(camera.combined);
     }
 
     public void cameraControl(Entity player){
@@ -20,5 +29,6 @@ public class Camera {
         );
 
         camera.position.lerp(target, 0.1f);
+        camera.update();
     }
 }

@@ -4,10 +4,8 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -22,7 +20,6 @@ import io.github.some_example_name.lwjgl3.managers.SceneManager;
 import io.github.some_example_name.lwjgl3.scenes.Scene1;
 
 public class GameMaster extends ApplicationAdapter{
-    private OrthographicCamera camera;
     private SpriteBatch batch;
     private ShapeRenderer shape;
     private boolean debugMode;
@@ -35,10 +32,7 @@ public class GameMaster extends ApplicationAdapter{
 
     public void create(){
 
-        // Setup Camera
-		camera = new OrthographicCamera(640, 480);
-		camera.position.set(320, 240, 0);
-		camera.update();
+        // Setup Batch & Shape Renderer
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
 
@@ -46,7 +40,7 @@ public class GameMaster extends ApplicationAdapter{
         // Setup Managers
         entityManager = new EntityManager();
         movementManager = new MovementManager();
-        inputManager = new InputManager(camera);
+        inputManager = new InputManager();
         Gdx.input.setInputProcessor(inputManager);
         collisionManager = new CollisionManager();
         sceneManager = new SceneManager();
@@ -73,9 +67,7 @@ public class GameMaster extends ApplicationAdapter{
 
     public void render(){
         float dt = Gdx.graphics.getDeltaTime();
-        
-		batch.setProjectionMatrix(camera.combined);
-		shape.setProjectionMatrix(camera.combined);
+		inputManager.setCameraProjection(batch, shape);
         
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
@@ -84,16 +76,14 @@ public class GameMaster extends ApplicationAdapter{
         movementManager.moveEntities(entityManager.getAllEntities());
         collisionManager.checkCollisions(entityManager.getAllEntities());
         
-        cameraControl(entityManager.getEntity("player_1"));
-        camera.update();
+		inputManager.updateCamera(entityManager.getEntity("player_1"));
 
         batch.begin();
         sceneManager.render(batch);
         entityManager.render(batch);
         batch.end();
 
-        
-        
+
         debugMode();
         //Rebind to be determined from a menu for keyjustpressed and rebind action
         String rebindAction = "right";
@@ -127,16 +117,6 @@ public class GameMaster extends ApplicationAdapter{
         // if (sceneManager.getCurrentScene() != null) {
             sceneManager.getCurrentScene().onUnload();
         // }
-    }
-
-    public void cameraControl(Entity PlayableEntity){
-		Vector3 target = new Vector3(
-            PlayableEntity.getPosition().x + PlayableEntity.getSprite().getWidth() / 2f,
-            PlayableEntity.getPosition().y + PlayableEntity.getSprite().getHeight() / 2f,
-            0
-        );
-
-        camera.position.lerp(target, 0.1f);
     }
 
     public void debugMode(){

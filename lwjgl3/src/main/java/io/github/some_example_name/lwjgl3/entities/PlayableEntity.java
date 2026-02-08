@@ -50,19 +50,6 @@ public class PlayableEntity
     	if (inputManager.inputHeld("up")) {
     		this.setVelocity(new Vector2(0, 3));
     	}
-//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-//            this.setVelocity(new Vector2(-3, 0));
-//            System.out.println(this.getVelocity());
-//		}
-//		if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-//            this.setVelocity(new Vector2(3, 0));
-//		}
-//		if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-//            this.setVelocity(new Vector2(0, -3));			
-//		}
-//		if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-//            this.setVelocity(new Vector2(0, 3));				
-//		}
 
 		this.setPosition(this.getPosition().add(this.getVelocity()));
         this.setVelocity(new Vector2(0, 0));

@@ -2,10 +2,11 @@ package io.github.some_example_name.lwjgl3.managers;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.badlogic.gdx.Gdx;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -34,9 +35,9 @@ public class InputManager extends InputAdapter{
     }
     
 	
-	public InputManager(OrthographicCamera cameraControl) {
+	public InputManager() {
 		inputDevice = new InputDevice(this);
-        camera = new Camera(cameraControl);
+        camera = new Camera();
 		bind("up", Device.KEYBOARD, Input.Keys.UP);
     	bind("down", Device.KEYBOARD, Input.Keys.DOWN);
     	bind("left", Device.KEYBOARD, Input.Keys.LEFT);
@@ -108,6 +109,10 @@ public class InputManager extends InputAdapter{
 	//For camera
 	public void updateCamera(Entity player) {
 	    camera.cameraControl(player);
+	}
+
+	public void setCameraProjection(SpriteBatch batch, ShapeRenderer shape){
+		camera.setCameraProjection(batch, shape);
 	}
 	 
 }
