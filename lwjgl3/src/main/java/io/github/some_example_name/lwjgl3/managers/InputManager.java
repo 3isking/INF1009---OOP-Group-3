@@ -5,8 +5,6 @@ import java.util.Map;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -111,8 +109,8 @@ public class InputManager extends InputAdapter{
 	    camera.cameraControl(player);
 	}
 
-	public void setCameraProjection(SpriteBatch batch, ShapeRenderer shape){
-		camera.setCameraProjection(batch, shape);
+	public Camera getCamera(){
+		return camera;
 	}
 	 
 }

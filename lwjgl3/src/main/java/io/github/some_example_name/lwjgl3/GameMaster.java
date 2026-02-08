@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -67,7 +68,9 @@ public class GameMaster extends ApplicationAdapter{
 
     public void render(){
         float dt = Gdx.graphics.getDeltaTime();
-		inputManager.setCameraProjection(batch, shape);
+		Matrix4 camMatrix = inputManager.getCamera().getCombinedMatrix();
+        batch.setProjectionMatrix(camMatrix);
+        shape.setProjectionMatrix(camMatrix);
         
 		ScreenUtils.clear(0, 0, 0.2f, 1);
 
