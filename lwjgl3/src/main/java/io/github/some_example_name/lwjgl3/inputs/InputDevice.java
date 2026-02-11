@@ -1,10 +1,7 @@
 package io.github.some_example_name.lwjgl3.inputs;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
-
-import io.github.some_example_name.lwjgl3.managers.InputManager;
 
 
 public class InputDevice {

@@ -1,10 +1,8 @@
-package io.github.some_example_name.lwjgl3.managers;
+package io.github.some_example_name.lwjgl3.entities;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import io.github.some_example_name.lwjgl3.entities.Entity;
 
 public class EntityManager {
     private List<Entity> entities;

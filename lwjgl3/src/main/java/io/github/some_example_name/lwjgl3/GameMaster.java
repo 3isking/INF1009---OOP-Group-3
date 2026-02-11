@@ -9,16 +9,16 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
-import io.github.some_example_name.lwjgl3.managers.CollisionManager;
-import io.github.some_example_name.lwjgl3.managers.EntityManager;
-import io.github.some_example_name.lwjgl3.managers.InputManager;
-import io.github.some_example_name.lwjgl3.managers.MovementManager;
-import io.github.some_example_name.lwjgl3.managers.OutputManager;
-import io.github.some_example_name.lwjgl3.managers.SceneManager;
+import io.github.some_example_name.lwjgl3.inputs.InputManager;
+import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 import io.github.some_example_name.lwjgl3.scenes.Scene1;
+import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 
 public class GameMaster extends ApplicationAdapter{
     private SpriteBatch batch;
@@ -40,9 +40,9 @@ public class GameMaster extends ApplicationAdapter{
         
         // Setup Managers
         entityManager = new EntityManager();
-        movementManager = new MovementManager();
         inputManager = new InputManager();
         Gdx.input.setInputProcessor(inputManager);
+        movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
         sceneManager = new SceneManager();
         outputManager = new OutputManager();

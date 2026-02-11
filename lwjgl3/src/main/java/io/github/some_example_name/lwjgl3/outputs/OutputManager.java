@@ -1,7 +1,4 @@
-package io.github.some_example_name.lwjgl3.managers;
-
-import io.github.some_example_name.lwjgl3.outputs.AudioManager;
-import io.github.some_example_name.lwjgl3.outputs.HapticManager;
+package io.github.some_example_name.lwjgl3.outputs;
 
 public class OutputManager {
     private final AudioManager audio = new AudioManager();

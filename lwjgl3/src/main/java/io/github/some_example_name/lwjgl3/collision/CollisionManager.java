@@ -1,11 +1,9 @@
-package io.github.some_example_name.lwjgl3.managers;
+package io.github.some_example_name.lwjgl3.collision;
 
 import java.util.List;
 
 import com.badlogic.gdx.math.Rectangle;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionDetector;
-import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 

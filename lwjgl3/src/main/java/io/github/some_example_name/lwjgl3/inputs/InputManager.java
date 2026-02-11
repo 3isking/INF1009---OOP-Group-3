@@ -1,4 +1,4 @@
-package io.github.some_example_name.lwjgl3.managers;
+package io.github.some_example_name.lwjgl3.inputs;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +8,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.inputs.Camera;
-import io.github.some_example_name.lwjgl3.inputs.InputDevice;
 import io.github.some_example_name.lwjgl3.inputs.InputDevice.Device;
 
 public class InputManager extends InputAdapter{

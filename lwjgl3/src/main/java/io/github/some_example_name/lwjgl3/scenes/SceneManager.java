@@ -1,11 +1,9 @@
-package io.github.some_example_name.lwjgl3.managers;
+package io.github.some_example_name.lwjgl3.scenes;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-
-import io.github.some_example_name.lwjgl3.scenes.Scene;
 
 public class SceneManager {
     private Map<String, Scene> scenes;

@@ -6,19 +6,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.managers.InputManager;
-
 public class PlayableEntity
  extends Entity implements iMovable, iCollidable {
     
-    private final InputManager inputManager;
     private boolean hasCollided = false;
     private long lastCollisionTime = 0;
 
-    public PlayableEntity
-    (InputManager inputManager){
+    public PlayableEntity(){
         super();
-    	this.inputManager = inputManager;
     	this.id = "player_1";
         
         this.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
@@ -34,25 +29,6 @@ public class PlayableEntity
     @Override
     public void update(float deltaTime){
         
-    }
-    
-    @Override
-    public void move(){
-    	if (inputManager.inputHeld("left")) {
-    		this.setVelocity(new Vector2(-3, 0));
-    	}
-    	if (inputManager.inputHeld("right")) {
-    		this.setVelocity(new Vector2(3, 0));
-    	}
-    	if (inputManager.inputHeld("down")) {
-    		this.setVelocity(new Vector2(0, -3));
-    	}
-    	if (inputManager.inputHeld("up")) {
-    		this.setVelocity(new Vector2(0, 3));
-    	}
-
-		this.setPosition(this.getPosition().add(this.getVelocity()));
-        this.setVelocity(new Vector2(0, 0));
     }
 
     @Override
