@@ -8,7 +8,7 @@ public abstract class Entity {
     protected String id;
     protected Vector2 position;
     protected Vector2 velocity;
-    protected Sprite sprite;
+    protected Sprite sprite = null;
     protected int layer;
     protected float rotation;
     protected boolean visible;
@@ -73,5 +73,5 @@ public abstract class Entity {
 
     public abstract void update(float deltaTime);
 
-    public abstract void render(SpriteBatch batch);
+    public void render(SpriteBatch batch) {};
 }

@@ -6,16 +6,15 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-public class PlayableEntity
+public class AiEntity
  extends Entity implements iMovable, iCollidable {
     
     private boolean hasCollided = false;
     private long lastCollisionTime = 0;
 
-    public PlayableEntity(){
+    public AiEntity(){
         super();
-    	this.id = "player_1";
-        
+    	this.id = "ai_1";
         
     }
 

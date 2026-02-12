@@ -1,10 +1,14 @@
 package io.github.some_example_name.lwjgl3.scenes;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.Sprite;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
+import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 
@@ -30,13 +34,23 @@ public class Scene1 extends Scene{
         
         // add player entity in the center
         PlayableEntity player = new PlayableEntity();
+        player.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
+
+        // add AI entity
+        AiEntity ai = new AiEntity();
+        ai.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
+
+
+        ai.setPosition(new Vector2(320,340));
         player.setPosition(new Vector2(320, 240));
         
         // Add to scene entity list 
         addEntity(player);
+        addEntity(ai);
         
         // Add to global entity manager (for rendering and updates)
         entityManager.addEntity(player);
+        entityManager.addEntity(ai);
         
         // Top wall
         Wall topWall = new Wall(0, 460, 640, 20);
