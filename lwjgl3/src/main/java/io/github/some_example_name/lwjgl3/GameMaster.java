@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
@@ -14,7 +15,9 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
+import io.github.some_example_name.lwjgl3.inputs.Camera;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
+import io.github.some_example_name.lwjgl3.inputs.PlayerCamera;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 import io.github.some_example_name.lwjgl3.scenes.Scene1;
@@ -30,17 +33,21 @@ public class GameMaster extends ApplicationAdapter{
     private CollisionManager collisionManager;
     private InputManager inputManager;
     private OutputManager outputManager;
+    private Camera camera;
 
     public void create(){
 
         // Setup Batch & Shape Renderer
         batch = new SpriteBatch();
         shape = new ShapeRenderer();
-
+        
+        //Setup camera, default as player camera
+        OrthographicCamera orthoCam = new OrthographicCamera(640, 480);
+        camera = new PlayerCamera(orthoCam);
         
         // Setup Managers
         entityManager = new EntityManager();
-        inputManager = new InputManager();
+        inputManager = new InputManager(camera);
         Gdx.input.setInputProcessor(inputManager);
         movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
@@ -80,6 +87,11 @@ public class GameMaster extends ApplicationAdapter{
         collisionManager.checkCollisions(entityManager.getAllEntities());
         sceneManager.update(dt);
 		inputManager.updateCamera(entityManager.getEntity("player_1"));
+		
+        //To show that camera switching works
+        if (Gdx.input.isKeyJustPressed(Input.Keys.APOSTROPHE)) {
+        	inputManager.switchCamera();
+        }
 
         batch.begin();
         sceneManager.render(batch);

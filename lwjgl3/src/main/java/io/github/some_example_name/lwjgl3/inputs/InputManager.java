@@ -6,9 +6,9 @@ import java.util.Map;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
-
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.inputs.InputDevice.Device;
+
 
 public class InputManager extends InputAdapter{
     private final Map<String, Binding> bindings = new HashMap<>();
@@ -16,11 +16,9 @@ public class InputManager extends InputAdapter{
     private String waitingForBind = null;
     
     private final InputDevice inputDevice;
-    private final Camera camera;
-    //private final CameraController cameraController;
+    private Camera camera;
     
-    
-    public static class Binding {
+    protected static class Binding {
         public Device device;
         public int code;
 
@@ -31,15 +29,19 @@ public class InputManager extends InputAdapter{
     }
     
 	
-	public InputManager() {
+	public InputManager(Camera camera) {
 		inputDevice = new InputDevice(this);
-        camera = new Camera();
+		this.camera = camera;
 		bind("up", Device.KEYBOARD, Input.Keys.UP);
     	bind("down", Device.KEYBOARD, Input.Keys.DOWN);
     	bind("left", Device.KEYBOARD, Input.Keys.LEFT);
     	bind("right", Device.KEYBOARD, Input.Keys.RIGHT);
     	bind("jump", Device.KEYBOARD, Input.Keys.SPACE);
     	bind("action", Device.MOUSE, Input.Buttons.LEFT);
+    	bind("camUp", Device.KEYBOARD, Input.Keys.W);
+    	bind("camLeft", Device.KEYBOARD, Input.Keys.A);
+    	bind("camDown", Device.KEYBOARD, Input.Keys.S);
+    	bind("camRight", Device.KEYBOARD, Input.Keys.D);
 	}
 	
 	//add to the bindings and laststate hashmap
@@ -74,7 +76,7 @@ public class InputManager extends InputAdapter{
 	 }
 	 
 	 public Vector2 getMousePosition() {
-		 return inputDevice.getMousePosition();
+		 return inputDevice.mousePosition();
 	 }
 	 
 	 //For keybindings
@@ -84,31 +86,61 @@ public class InputManager extends InputAdapter{
 	}	 
 	
 
-	public String getWaitingForBind() {
+	private String getWaitingForBind() {
 	    return waitingForBind; 
 	    }
 	    
-	public void resetWaitingForBind() {
+	private void resetWaitingForBind() {
 	    waitingForBind = null;
 	    }
 	
+
+	//wait to set keybind for keyboard
 	@Override
 	public boolean keyDown(int keycode) {
-	    return inputDevice.keyDown(keycode);
-	}
+       if (getWaitingForBind() != null) {
+       	bind(getWaitingForBind(), Device.KEYBOARD, keycode);
+           System.out.println("Bound " + getWaitingForBind() + " to button " + keycode);
+           resetWaitingForBind();
+           return true;
+       }
+       return false;
+   }
 
+	//wait to set keybind for mouse
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
-	    return inputDevice.touchDown(x, y, pointer, button);
-	}
+		if (getWaitingForBind()!= null) {
+			 bind(getWaitingForBind(), Device.MOUSE, button);
+             System.out.println("Bound " + getWaitingForBind() + " to button " + button);
+             resetWaitingForBind();
+             return true;
+        }
+        return false;
+    } 
 	
 	//For camera
 	public void updateCamera(Entity player) {
-	    camera.cameraControl(player);
+		camera.control(player);
+	    camera.update();
 	}
 
-	public Camera getCamera(){
-		return camera;
-	}
+	public void setCamera(Camera newCamera) {
+        this.camera = newCamera;
+    }
+
+    public Camera getCamera() {
+        return camera;
+    }
+    
+    public void switchCamera() {
+    	Camera currentCam = getCamera();
+
+        if (currentCam instanceof PlayerCamera) {
+            setCamera(new FreeCamera(currentCam.getCamera(), this));
+        } else {
+            setCamera(new PlayerCamera(currentCam.getCamera()));
+        }
+    }
 	 
 }
