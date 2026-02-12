@@ -67,18 +67,18 @@ public class GameMaster extends ApplicationAdapter{
     }
 
     public void render(){
-        float dt = Gdx.graphics.getDeltaTime();
+        float dt = Math.min(Gdx.graphics.getDeltaTime(), 0.16f);
 		Matrix4 camMatrix = inputManager.getCamera().getCombinedMatrix();
         batch.setProjectionMatrix(camMatrix);
         shape.setProjectionMatrix(camMatrix);
         
 		ScreenUtils.clear(0, 0, 0.2f, 1);
-
-        sceneManager.update(dt);
+        
+        
 
         movementManager.moveEntities(entityManager.getAllEntities());
         collisionManager.checkCollisions(entityManager.getAllEntities());
-        
+        sceneManager.update(dt);
 		inputManager.updateCamera(entityManager.getEntity("player_1"));
 
         batch.begin();

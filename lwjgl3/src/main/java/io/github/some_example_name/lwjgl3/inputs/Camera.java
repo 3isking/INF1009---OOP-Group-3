@@ -26,7 +26,7 @@ public class Camera {
             0
         );
 
-        camera.position.lerp(target, 0.1f);
+        camera.position.set(target);  // Instant!
         camera.update();
     }
 }
