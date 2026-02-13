@@ -61,7 +61,7 @@ public class GameMaster extends ApplicationAdapter{
         // // Setup Wall
         // Wall wall1 = new Wall();
         // entityManager.addEntity(wall1);
-        Scene1 scene1 = new Scene1(entityManager, inputManager, movementManager);
+        Scene1 scene1 = new Scene1(entityManager, inputManager, movementManager, collisionManager);
         sceneManager.addScene(scene1);
         scene1.onLoad();
         sceneManager.setCurrentScene(scene1);
@@ -117,7 +117,6 @@ public class GameMaster extends ApplicationAdapter{
                 PlayableEntity p = (PlayableEntity) e;
                 if (p.wasHit()) {
                     outputManager.playSound("COLLISION_EVENT");
-                    outputManager.triggerVibration(100);
                     System.out.println("Abstract Engine: Collision Output Triggered!");
                     p.resetHitFlag();
                 }

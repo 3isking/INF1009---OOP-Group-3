@@ -7,12 +7,13 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
 
-public class PlayableEntity
- extends Entity implements iMovable, iCollidable {
+public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     private MovementStrategy movementStrategy;
-    private boolean hasCollided = false;
-    private long lastCollisionTime = 0;
+    
+    private boolean wasTouchingWallLastFrame = false;
+    private boolean isTouchingWallThisFrame = false;
+    private boolean playSoundSignal = false;
 
     public PlayableEntity(MovementManager movementManager){
         super();
@@ -30,7 +31,9 @@ public class PlayableEntity
 
     @Override
     public void update(float deltaTime){
+        wasTouchingWallLastFrame = isTouchingWallThisFrame;
         
+        isTouchingWallThisFrame = false;
     }
 
     @Override
@@ -56,14 +59,28 @@ public class PlayableEntity
             this.getSprite().getWidth(),
             this.getSprite().getHeight()
         );
-    }    
+    }  
+    
+    
+    public void resetCollisionState() {
+        // "Archive" the current state to history
+        wasTouchingWallLastFrame = isTouchingWallThisFrame;
+        
+        // Reset current state to false (innocent until proven guilty)
+        isTouchingWallThisFrame = false;
+        
+        // Reset sound signal
+        playSoundSignal = false; 
+    }
     
     // Output Manager
     public boolean wasHit() {
-        return hasCollided;
+        return playSoundSignal;
     }
 
     public void resetHitFlag() {
-        hasCollided = false;
+        playSoundSignal = false;
     }
+    
 }
+

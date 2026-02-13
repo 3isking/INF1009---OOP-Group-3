@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 import io.github.some_example_name.lwjgl3.entities.Wall;
+import io.github.some_example_name.lwjgl3.entities.iCollidable;
+import io.github.some_example_name.lwjgl3.entities.iMovable;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
@@ -17,12 +20,14 @@ public class Scene1 extends Scene{
     private EntityManager entityManager;
     private InputManager inputManager;
     private MovementManager movementManager;
+    private CollisionManager collisionManager;
 
-    public Scene1(EntityManager entityManager, InputManager inputManager, MovementManager movementManager){
+    public Scene1(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
         super("Scene1");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
         this.movementManager = movementManager;
+        this.collisionManager = collisionManager;
     }
 
     @Override
@@ -78,6 +83,16 @@ public class Scene1 extends Scene{
         rightWall.setId("wall_right");
         addEntity(rightWall);
         entityManager.addEntity(rightWall);
+
+        for (Entity entity : getEntityList()) {
+            if (entity instanceof iMovable) {
+                movementManager.addMovableEntity((iMovable) entity);
+            }
+
+            if (entity instanceof iCollidable) {
+                collisionManager.addCollidableEntity((iCollidable) entity);
+            }
+        }
         
         System.out.println("[Scene1] Scene setup complete. Entities created: " + getEntityList().size());
     }
