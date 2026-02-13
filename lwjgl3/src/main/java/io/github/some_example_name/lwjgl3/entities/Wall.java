@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
+
 public class Wall extends Entity implements iCollidable {
 
     // public Wall(){
@@ -46,6 +48,32 @@ public class Wall extends Entity implements iCollidable {
             this.getSprite().getWidth(),
             this.getSprite().getHeight()
         );
+    }
+
+    // Collision Manager
+    public void collide(iCollidable other)
+    {
+        other.collideWithWall(this);
+    }
+
+    @Override
+    public void collideWithWall(Wall wall)
+    {
+        
+    }
+
+    @Override
+    public void collideWithPlayer(PlayableEntity player)
+    {
+        CollisionResolver resolver = new CollisionResolver();
+        resolver.resolveCollisions(player, this);
+    }
+
+    @Override
+    public void collideWithAI(AiEntity ai) 
+    {
+        CollisionResolver resolver = new CollisionResolver();
+        resolver.resolveCollisions(ai, this);
     }
 
 }

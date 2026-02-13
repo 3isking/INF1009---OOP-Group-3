@@ -6,4 +6,8 @@ public interface iCollidable {
     Rectangle getCollisionBounds();
     Vector2 getPosition();
     void setPosition(Vector2 position);
+    void collide(iCollidable other);
+    void collideWithPlayer(PlayableEntity player);
+    void collideWithWall(Wall wall);
+    void collideWithAI(AiEntity ai);
 }

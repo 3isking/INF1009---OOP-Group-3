@@ -10,25 +10,25 @@ import io.github.some_example_name.lwjgl3.entities.iCollidable;
 public class CollisionManager {
     private CollisionDetector collisionDetector;
     private CollisionResolver collisionResolver;
-    private List<iCollidable> collidableEntitys;
+    private List<iCollidable> collidableEntities;
 
 
     public CollisionManager() 
     {
         this.collisionDetector = new CollisionDetector();
         this.collisionResolver = new CollisionResolver();
-        this.collidableEntitys = new ArrayList<>();
+        this.collidableEntities = new ArrayList<>();
     }
     // check collisions between all entities in the given list
     public void checkCollisions(List<Entity> entities) {
         // pick the first entity
-        for (iCollidable collidable : collidableEntitys) {
+        for (iCollidable collidable : collidableEntities) {
             if (collidable instanceof PlayableEntity) {
                 ((PlayableEntity) collidable).resetCollisionState();
             }
 
             // pick the first entity
-            for (iCollidable otherCollidable : collidableEntitys) {
+            for (iCollidable otherCollidable : collidableEntities) {
                 // used for collision detector
                 // check if the collision bounds overlap
                 if (collidable != otherCollidable) {
@@ -44,6 +44,6 @@ public class CollisionManager {
     }
 
     public void addCollidableEntity(iCollidable collidable){
-        collidableEntitys.add(collidable);
+        collidableEntities.add(collidable);
     }
 }
