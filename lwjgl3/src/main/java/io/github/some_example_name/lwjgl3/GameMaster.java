@@ -103,11 +103,11 @@ public class GameMaster extends ApplicationAdapter{
         debugMode();
         
         // Input handling stays after render
-        if (Gdx.input.isKeyJustPressed(Input.Keys.APOSTROPHE)) {
+        if (inputManager.inputPressed("changeCam")) {
             inputManager.switchCamera();
         }
         String rebindAction = "right";
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSLASH)) {
+        if (inputManager.inputPressed("rebind")) {
             inputManager.setKeyBind(rebindAction);
         }
         
