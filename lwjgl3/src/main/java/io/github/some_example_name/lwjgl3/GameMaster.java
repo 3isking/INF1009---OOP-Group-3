@@ -117,7 +117,6 @@ public class GameMaster extends ApplicationAdapter{
                 PlayableEntity p = (PlayableEntity) e;
                 if (p.wasHit()) {
                     outputManager.playSound("COLLISION_EVENT");
-                    outputManager.triggerVibration(100);
                     System.out.println("Abstract Engine: Collision Output Triggered!");
                     p.resetHitFlag();
                 }

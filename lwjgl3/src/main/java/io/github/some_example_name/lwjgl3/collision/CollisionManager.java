@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public class CollisionManager {
@@ -22,6 +23,10 @@ public class CollisionManager {
     public void checkCollisions(List<Entity> entities) {
         // pick the first entity
         for (iCollidable collidable : collidableEntitys) {
+            if (collidable instanceof PlayableEntity) {
+                ((PlayableEntity) collidable).resetCollisionState();
+            }
+
             // pick the first entity
             for (iCollidable otherCollidable : collidableEntitys) {
                 // used for collision detector
