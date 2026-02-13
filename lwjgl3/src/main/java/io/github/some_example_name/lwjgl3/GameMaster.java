@@ -75,55 +75,56 @@ public class GameMaster extends ApplicationAdapter{
 
     public void render(){
         float dt = Math.min(Gdx.graphics.getDeltaTime(), 0.16f);
-		Matrix4 camMatrix = inputManager.getCamera().getCombinedMatrix();
+        ScreenUtils.clear(0, 0, 0.2f, 1);
+        
+        // 1. MOVE FIRST
+        movementManager.moveEntities(entityManager.getAllEntities());
+        
+        // 2. CAMERA IMMEDIATELY AFTER MOVEMENT (before collision)
+        inputManager.updateCamera(entityManager.getEntity("player_1"));
+        
+        // 3. COLLISION (won't fight camera)
+        collisionManager.checkCollisions(entityManager.getAllEntities());
+        
+        // 4. UPDATE MATRICES with FINAL positions
+        Matrix4 camMatrix = inputManager.getCamera().getCombinedMatrix();
         batch.setProjectionMatrix(camMatrix);
         shape.setProjectionMatrix(camMatrix);
         
-		ScreenUtils.clear(0, 0, 0.2f, 1);
-        
-        
-
-        movementManager.moveEntities(entityManager.getAllEntities());
-        collisionManager.checkCollisions(entityManager.getAllEntities());
+        // 5. Scene logic
         sceneManager.update(dt);
-		inputManager.updateCamera(entityManager.getEntity("player_1"));
-		
-        //To show that camera switching works
-        if (Gdx.input.isKeyJustPressed(Input.Keys.APOSTROPHE)) {
-        	inputManager.switchCamera();
-        }
-
+        
+        // 6. RENDER
         batch.begin();
         sceneManager.render(batch);
         entityManager.render(batch);
         batch.end();
 
-
         debugMode();
-        //Rebind to be determined from a menu for keyjustpressed and rebind action
+        
+        // Input handling stays after render
+        if (Gdx.input.isKeyJustPressed(Input.Keys.APOSTROPHE)) {
+            inputManager.switchCamera();
+        }
         String rebindAction = "right";
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSLASH)) {
             inputManager.setKeyBind(rebindAction);
         }
         
-        
-        // Play collision.wav if hit
+        // Collision audio stays last
         for (Entity e : entityManager.getAllEntities()) {
             if (e instanceof PlayableEntity) {
                 PlayableEntity p = (PlayableEntity) e;
-                
                 if (p.wasHit()) {
                     outputManager.playSound("COLLISION_EVENT");
                     outputManager.triggerVibration(100);
                     System.out.println("Abstract Engine: Collision Output Triggered!");
-                    
-                    // Reset the flag so it plays only once per hit
                     p.resetHitFlag();
                 }
             }
         }
-
     }
+
 
     public void dispose(){
         batch.dispose();
