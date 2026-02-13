@@ -1,20 +1,21 @@
 package io.github.some_example_name.lwjgl3.entities;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.some_example_name.lwjgl3.movement.AIMovement;
+import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
+
 public class AiEntity
  extends Entity implements iMovable, iCollidable {
     
-    private boolean hasCollided = false;
-    private long lastCollisionTime = 0;
+    private MovementStrategy movementStrategy;
 
     public AiEntity(){
         super();
     	this.id = "ai_1";
+        this.movementStrategy = new AIMovement();
         
     }
 
@@ -41,6 +42,11 @@ public class AiEntity
     }
 
     @Override
+    public MovementStrategy getMovementStrategy() {
+        return this.movementStrategy;
+    }
+
+    @Override
     public Rectangle getCollisionBounds() {
         return new Rectangle(
             this.getPosition().x,
@@ -48,14 +54,5 @@ public class AiEntity
             this.getSprite().getWidth(),
             this.getSprite().getHeight()
         );
-    }    
-    
-    // Output Manager
-    public boolean wasHit() {
-        return hasCollided;
-    }
-
-    public void resetHitFlag() {
-        hasCollided = false;
     }
 }

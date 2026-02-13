@@ -16,7 +16,7 @@ public abstract class Entity {
 
     public Entity() {
         this.position = new Vector2();
-        this.velocity = new Vector2();
+        this.velocity = new Vector2(0, 0);
         this.visible = true;
         this.layer = 0;
         this.rotation = 0f;
