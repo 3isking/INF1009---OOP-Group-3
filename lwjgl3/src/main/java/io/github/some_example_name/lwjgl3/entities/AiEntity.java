@@ -60,7 +60,7 @@ public class AiEntity
     // Collision Manager
     @Override
     public void collide(iCollidable other) {
-        //other.collideWithAI(this); // second dispatch
+        other.collideWithAI(this); // second dispatch
     }
 
     @Override

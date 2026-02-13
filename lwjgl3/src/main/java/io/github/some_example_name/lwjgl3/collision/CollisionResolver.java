@@ -9,22 +9,26 @@ import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public final class CollisionResolver {
+    // Generic Collisions
+    public void resolveCollisions(iCollidable a, iCollidable b) {
+        a.collide(b); 
+    }
+
     // PLAYER vs WALL
-    public void resolveCollisions(iCollidable collidable, iCollidable otherCollidable) 
-    {
-        resolveEntityWall((Entity) collidable, (Wall) otherCollidable);
+    public void resolveCollisions(PlayableEntity player, Wall wall) {
+        resolveEntityWall(player, wall);
     }
 
     // AI vs WALL
-    /*public void resolveCollisions(AiEntity ai, Wall wall) {
+    public void resolveCollisions(AiEntity ai, Wall wall) {
         resolveEntityWall(ai, wall);
-    }*/
+    }
 
     // PLAYER vs AI
-    /*public void resolveCollisions(PlayableEntity player, AiEntity ai) {
+    public void resolveCollisions(PlayableEntity player, AiEntity ai) {
         System.out.println("Player collided with AI!");
 
-    }*/
+    }
 
     // Shared Entity-Wall Collision Logic
     public void resolveEntityWall(Entity entity, Wall wall) 

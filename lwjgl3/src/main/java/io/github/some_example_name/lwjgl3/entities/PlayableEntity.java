@@ -97,8 +97,7 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     }
 
     @Override
-    public void collideWithAI(AiEntity ai) 
-    {
+    public void collideWithAI(AiEntity ai) {
         CollisionResolver resolver = new CollisionResolver();
         resolver.resolveCollisions(this, ai);
     }
