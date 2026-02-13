@@ -47,10 +47,5 @@ public class Wall extends Entity implements iCollidable {
             this.getSprite().getHeight()
         );
     }
-    
-    @Override
-    public void onCollision(iCollidable other) {
-    	
-    }
 
 }

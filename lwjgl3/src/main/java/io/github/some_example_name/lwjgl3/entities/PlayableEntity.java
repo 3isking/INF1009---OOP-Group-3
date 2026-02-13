@@ -73,18 +73,6 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         playSoundSignal = false; 
     }
     
-    @Override	
-    public void onCollision(iCollidable other) {
-        // This gets called by CollisionManager if we are touching NOW.
-        isTouchingWallThisFrame = true;
-
-        // If we were NOT touching it last frame, but we ARE touching it now...
-        // That means this is the FIRST IMPACT.
-        if (!wasTouchingWallLastFrame) {
-            playSoundSignal = true;
-        }
-    }
-    
     // Output Manager
     public boolean wasHit() {
         return playSoundSignal;
