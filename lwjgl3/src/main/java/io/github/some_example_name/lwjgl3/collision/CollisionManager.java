@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public class CollisionManager {
@@ -18,6 +19,12 @@ public class CollisionManager {
     }
     // check collisions between all entities in the given list
     public void checkCollisions(List<Entity> entities) {
+    	for (Entity e : entities) {
+            if (e instanceof PlayableEntity) {
+                ((PlayableEntity) e).resetCollisionState();
+            }
+        }
+    	
         for (int i = 0; i < entities.size(); i++) {
             // pick the first entity
             Entity e1 = entities.get(i);
@@ -43,6 +50,9 @@ public class CollisionManager {
                     // notify both entities of the collision
                     //  CollisionResolver.onCollision(c1, c2);
                     collisionResolver.resolveCollisions(c1, c2);
+                    
+                    c1.onCollision(c2);
+                    c2.onCollision(c1);
                 }
             }
         }

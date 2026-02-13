@@ -6,4 +6,6 @@ public interface iCollidable {
     Rectangle getCollisionBounds();
     Vector2 getPosition();
     void setPosition(Vector2 position);
+    
+    void onCollision(iCollidable other);
 }
