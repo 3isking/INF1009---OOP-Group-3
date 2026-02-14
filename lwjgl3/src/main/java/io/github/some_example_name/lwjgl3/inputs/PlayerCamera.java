@@ -23,7 +23,6 @@ public class PlayerCamera implements Camera {
             0
         );
         camera.position.set(target);
-//        camera.position.lerp(target, 0.1f); // smooth follow
     }
 
     @Override

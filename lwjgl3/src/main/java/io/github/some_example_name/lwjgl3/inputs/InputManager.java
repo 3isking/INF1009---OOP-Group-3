@@ -1,9 +1,6 @@
 package io.github.some_example_name.lwjgl3.inputs;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
-
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
@@ -14,11 +11,8 @@ import io.github.some_example_name.lwjgl3.inputs.Inputs.Device;
 public class InputManager extends InputAdapter{
     private final Inputs inputs;
     private Camera camera;
-	
-	public InputManager(Camera camera) {
-		inputs = new Inputs(this);
-		this.camera = camera;
-		inputs.bind("up", Device.KEYBOARD, Input.Keys.UP);
+    private void defaultBinding() {
+    	inputs.bind("up", Device.KEYBOARD, Input.Keys.UP);
 		inputs.bind("down", Device.KEYBOARD, Input.Keys.DOWN);
 		inputs.bind("left", Device.KEYBOARD, Input.Keys.LEFT);
 		inputs.bind("right", Device.KEYBOARD, Input.Keys.RIGHT);
@@ -30,6 +24,12 @@ public class InputManager extends InputAdapter{
 		inputs.bind("camRight", Device.KEYBOARD, Input.Keys.D);
 		inputs.bind("changeCam", Device.KEYBOARD, Input.Keys.APOSTROPHE);
 		inputs.bind("rebind", Device.KEYBOARD, Input.Keys.BACKSLASH);
+    }
+	
+	public InputManager(Camera camera) {
+		inputs = new Inputs();
+		this.camera = camera;
+		defaultBinding();
 	}
 	
 	//get keypressed for keyboard and mouse
@@ -42,7 +42,7 @@ public class InputManager extends InputAdapter{
 	 }
 	 
 	 public Vector2 getMousePosition() {
-		 return inputs.mousePosition();
+		 return inputs.getMousePosition();
 	 }
 	 
 	 //For keybindings
@@ -75,22 +75,18 @@ public class InputManager extends InputAdapter{
 		camera.control(player);
 	    camera.update();
 	}
-
-	public void setCamera(Camera newCamera) {
-        this.camera = newCamera;
-    }
-
-    public Camera getCamera() {
-        return camera;
-    }
+	
+	public Camera getCamera() {
+		return camera;
+	}
     
     public void switchCamera() {
-    	Camera currentCam = getCamera();
+    	Camera currentCam = camera;
 
         if (currentCam instanceof PlayerCamera) {
-            setCamera(new FreeCamera(currentCam.getCamera(), this));
+            this.camera = new FreeCamera(this, currentCam.getCamera());
         } else {
-            setCamera(new PlayerCamera(currentCam.getCamera()));
+            this.camera = new PlayerCamera(currentCam.getCamera());
         }
     }
 	 

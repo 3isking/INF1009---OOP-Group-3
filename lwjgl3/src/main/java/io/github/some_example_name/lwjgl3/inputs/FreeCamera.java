@@ -3,17 +3,16 @@ package io.github.some_example_name.lwjgl3.inputs;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
-
 import io.github.some_example_name.lwjgl3.entities.Entity;
 
 public class FreeCamera implements Camera{
+	private InputManager inputManager;
     private OrthographicCamera camera;
-    private float speed = 200; 
-    private InputManager inputManager;
+    private float speed = 500; 
 
-    public FreeCamera(OrthographicCamera camera, InputManager inputManager) {
-        this.camera = camera;
-        this.inputManager = inputManager;
+    public FreeCamera(InputManager inputManager, OrthographicCamera camera) {
+    	this.inputManager = inputManager;
+    	this.camera = camera;
     }
 
     @Override
@@ -44,9 +43,7 @@ public class FreeCamera implements Camera{
     }
     
     @Override
-    public Matrix4 getCombinedMatrix (){
+    public Matrix4 getCombinedMatrix(){
         return camera.combined;
     }
 }
-
-

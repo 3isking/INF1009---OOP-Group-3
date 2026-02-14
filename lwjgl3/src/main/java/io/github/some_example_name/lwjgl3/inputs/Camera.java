@@ -8,5 +8,5 @@ public interface Camera {
 	void update();
     void control(Entity player);
     OrthographicCamera getCamera();
-    Matrix4 getCombinedMatrix ();
+    Matrix4 getCombinedMatrix();
 }
