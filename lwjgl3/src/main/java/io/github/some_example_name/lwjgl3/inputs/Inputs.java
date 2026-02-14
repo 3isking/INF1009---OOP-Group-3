@@ -72,9 +72,19 @@ public class Inputs {
     
   	//Bindings
     //add to the bindings and laststate hashmap
-  	public void bind(String action, Device device, int code) {
+  	public boolean bind(String action, Device device, int code) {
+  		for (Map.Entry<String, Binding> binded : bindings.entrySet()) {
+  			String bindedAction = binded.getKey();
+            Binding bindedKey = binded.getValue(); // Get the value
+            if (bindedKey.device == device && bindedKey.code==code) {
+            	System.out.println("Key/button " + code + " is already bound to " + bindedAction);
+            	return false;
+            }
+            
+        }
           bindings.put(action, new Binding(device, code));
           lastState.put(action, false);
+          return true;
       }
 
 	 public void setKeyBind(String action) {
@@ -85,20 +95,28 @@ public class Inputs {
 	 // Detect keybind input
 	 public boolean keyDown(int keycode) {
        if (waitingForBind != null) {
-       	bind(waitingForBind, Device.KEYBOARD, keycode);
-           System.out.println("Bound " + waitingForBind + " to button " + keycode);
-           waitingForBind = null;
-           return true;
+       	if (bind(waitingForBind, Device.KEYBOARD, keycode)) {
+       		System.out.println("Bound " + waitingForBind);     
+       	}
+       	else {
+       		System.out.println(waitingForBind + " is already binded to another key");
+       	}
+       	waitingForBind = null;
+       	return true;
        }
        return false;
    }
 	
 	 public boolean touchDown(int x, int y, int pointer, int button) {
 		if (waitingForBind != null) {
-			 bind(waitingForBind, Device.MOUSE, button);
-             System.out.println("Bound " + waitingForBind + " to button " + button);
-             waitingForBind = null;
-             return true;
+			 if (bind(waitingForBind, Device.MOUSE, button)) {
+				 System.out.println("Bound " + waitingForBind + " to button " + button);
+			 }
+			 else {
+				 System.out.println(waitingForBind + " is already binded to another key");
+			 }
+			 waitingForBind = null;
+			 return true;
         }
         return false;
     } 
