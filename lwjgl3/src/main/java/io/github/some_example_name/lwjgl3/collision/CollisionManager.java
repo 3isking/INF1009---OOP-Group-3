@@ -46,4 +46,8 @@ public class CollisionManager {
     public void addCollidableEntity(iCollidable collidable){
         collidableEntities.add(collidable);
     }
+
+    public void emptyCollidableEntities() {
+        collidableEntities.clear();
+    }
 }

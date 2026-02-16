@@ -33,6 +33,10 @@ public class MovementManager {
         movableEntitys.add(movable);
     }
 
+    public void emptyMovableEntities() {
+        movableEntitys.clear();
+    }
+
     public PlayerMovement getPlayerMovement() {
         return playerMovement;
     }
