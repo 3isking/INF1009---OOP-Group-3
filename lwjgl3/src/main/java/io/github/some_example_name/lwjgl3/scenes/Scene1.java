@@ -6,13 +6,10 @@ import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
-import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 import io.github.some_example_name.lwjgl3.entities.Wall;
-import io.github.some_example_name.lwjgl3.entities.iCollidable;
-import io.github.some_example_name.lwjgl3.entities.iMovable;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
@@ -43,11 +40,11 @@ public class Scene1 extends Scene{
         System.out.println("[Scene1] Entering scene...");
         
         // add player entity in the center
-        PlayableEntity player = new PlayableEntity(movementManager);
+        PlayableEntity player = new PlayableEntity(movementManager, collisionManager);
         player.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
 
         // add AI entity
-        AiEntity ai = new AiEntity();
+        AiEntity ai = new AiEntity(movementManager, collisionManager);
         ai.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
 
 
@@ -63,38 +60,28 @@ public class Scene1 extends Scene{
         entityManager.addEntity(ai);
         
         // Top wall
-        Wall topWall = new Wall(0, 460, 640, 20);
+        Wall topWall = new Wall(0, 460, 640, 20, collisionManager);
         topWall.setId("wall_top");
         addEntity(topWall);
         entityManager.addEntity(topWall);
         
         // Bottom wall
-        Wall bottomWall = new Wall(0, 0, 640, 20);
+        Wall bottomWall = new Wall(0, 0, 640, 20, collisionManager);
         bottomWall.setId("wall_bottom");
         addEntity(bottomWall);
         entityManager.addEntity(bottomWall);
         
         // Left wall
-        Wall leftWall = new Wall(0, 0, 20, 480);
+        Wall leftWall = new Wall(0, 0, 20, 480, collisionManager);
         leftWall.setId("wall_left");
         addEntity(leftWall);
         entityManager.addEntity(leftWall);
         
         // Right wall
-        Wall rightWall = new Wall(620, 0, 20, 480);
+        Wall rightWall = new Wall(620, 0, 20, 480, collisionManager);
         rightWall.setId("wall_right");
         addEntity(rightWall);
         entityManager.addEntity(rightWall);
-
-        for (Entity entity : getEntityList()) {
-            if (entity instanceof iMovable) {
-                movementManager.addMovableEntity((iMovable) entity);
-            }
-
-            if (entity instanceof iCollidable) {
-                collisionManager.addCollidableEntity((iCollidable) entity);
-            }
-        }
         
         System.out.println("[Scene1] Scene setup complete. Entities created: " + getEntityList().size());
     }
@@ -102,11 +89,10 @@ public class Scene1 extends Scene{
     @Override
     public void onExit() {
         System.out.println("[Scene1] Exiting scene...");
-        
-        // Remove all entities from the entity manager
-        for (Entity entity : getEntityList()) {
-            entityManager.removeEntity(entity.getId());
-        }
+
+        entityManager.clear();
+        // movementManager.emptyMovableEntities();
+        // collisionManager.emptyCollidableEntities();
         
         // Clear the scene entity list
         getEntityList().clear();

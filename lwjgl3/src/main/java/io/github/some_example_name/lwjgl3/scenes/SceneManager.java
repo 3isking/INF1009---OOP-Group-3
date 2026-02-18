@@ -78,6 +78,14 @@ public class SceneManager {
         scene2.onLoad();
     }
 
+    // Initialize Scene3 - SceneManager is responsible for scene initialization
+    public void initializeScene3() {
+        Scene3 scene3 = new Scene3(entityManager, inputManager, movementManager, collisionManager);
+        scene3.setSceneManager(this); // Set reference for scene transitions
+        addScene(scene3);
+        scene3.onLoad();
+    }
+
     public void update(float deltaTime) {
         if (currentScene != null) {
             currentScene.update(deltaTime);

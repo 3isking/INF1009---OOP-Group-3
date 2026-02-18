@@ -4,19 +4,22 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
-import io.github.some_example_name.lwjgl3.movement.AIMovement;
+import io.github.some_example_name.lwjgl3.movement.MovementManager;
 import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
 
 public class AiEntity
  extends Entity implements iMovable, iCollidable {
     
     private MovementStrategy movementStrategy;
+    private CollisionResolver resolver;
 
-    public AiEntity(){
+    public AiEntity(MovementManager movementManager, CollisionManager collisionManager){
         super();
     	this.id = "ai_1";
-        this.movementStrategy = new AIMovement();
+        this.movementStrategy = movementManager.getAiMovement();
+        this.resolver = collisionManager.getResolver();
         
     }
 
@@ -65,13 +68,11 @@ public class AiEntity
 
     @Override
     public void collideWithWall(Wall wall) {
-        CollisionResolver resolver = new CollisionResolver();
         resolver.resolveCollisions(this, wall);
     }
 
     @Override
     public void collideWithPlayer(PlayableEntity player) {
-        CollisionResolver resolver = new CollisionResolver();
         resolver.resolveCollisions(player, this);
     }
 

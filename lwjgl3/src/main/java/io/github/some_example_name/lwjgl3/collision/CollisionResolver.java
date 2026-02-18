@@ -7,8 +7,16 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
+import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 
 public final class CollisionResolver {
+    private SceneManager sceneManager;
+
+    public CollisionResolver(SceneManager sceneManager) {
+        // Constructor can be used to set up references if needed
+        this.sceneManager = sceneManager; 
+    }
+
     // Generic Collisions
     public void resolveCollisions(iCollidable a, iCollidable b) {
         a.collide(b); 
@@ -26,8 +34,9 @@ public final class CollisionResolver {
 
     // PLAYER vs AI
     public void resolveCollisions(PlayableEntity player, AiEntity ai) {
+        // Transition to Game Over scene
         System.out.println("Player collided with AI!");
-
+        sceneManager.setCurrentScene("Scene3"); 
     }
 
     // Shared Entity-Wall Collision Logic

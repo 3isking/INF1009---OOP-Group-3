@@ -44,25 +44,30 @@ public class GameMaster extends ApplicationAdapter{
         camera = new PlayerCamera(orthoCam);
         
         // Setup Managers
-        entityManager = new EntityManager();
         inputManager = new InputManager(camera);
         Gdx.input.setInputProcessor(inputManager);
+        outputManager = new OutputManager();
         movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
-        outputManager = new OutputManager();
-         sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager);
-         
+        entityManager = new EntityManager(movementManager, collisionManager);
+        sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager);
+
+        // Initialize CollisionManager with SceneManager reference for scene transitions
+        collisionManager.setCollisionManager(sceneManager);
+        
         // Initialize both scenes
         sceneManager.initializeScene1();
         sceneManager.initializeScene2();
+        sceneManager.initializeScene3();
         
         // Start with Scene2 (Main Menu)
         sceneManager.setCurrentScene("Scene2");
-        // Setup Debug
-        debugMode = true;
         
         // Setup audio
         outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
+
+        // Setup Debug
+        debugMode = true;
     }
 
     public void render(){
@@ -121,9 +126,7 @@ public class GameMaster extends ApplicationAdapter{
         batch.dispose();
         shape.dispose();
         
-        // if (sceneManager.getCurrentScene() != null) {
-            sceneManager.getCurrentScene().onUnload();
-        // }
+        sceneManager.getCurrentScene().onUnload();
     }
 
     public void debugMode(){
