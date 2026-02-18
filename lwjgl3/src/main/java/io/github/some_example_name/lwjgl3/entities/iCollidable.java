@@ -8,6 +8,6 @@ public interface iCollidable {
     void setPosition(Vector2 position);
     void collide(iCollidable other);
     void collideWithPlayer(PlayableEntity player);
-    void collideWithWall(Wall wall);
+    void collideWithObstacle(Obstacle obstacle);
     void collideWithAI(AiEntity ai);
 }

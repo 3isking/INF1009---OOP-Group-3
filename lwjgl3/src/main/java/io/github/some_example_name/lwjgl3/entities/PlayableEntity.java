@@ -12,8 +12,8 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     private MovementStrategy movementStrategy;
     
-    private boolean wasTouchingWallLastFrame = false;
-    private boolean isTouchingWallThisFrame = false;
+    private boolean wasTouchingObstacleLastFrame = false;
+    private boolean isTouchingObstacleThisFrame = false;
     private boolean playSoundSignal = false;
 
     public PlayableEntity(MovementManager movementManager){
@@ -32,9 +32,9 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
 
     @Override
     public void update(float deltaTime){
-        wasTouchingWallLastFrame = isTouchingWallThisFrame;
+        wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
         
-        isTouchingWallThisFrame = false;
+        isTouchingObstacleThisFrame = false;
     }
 
     @Override
@@ -65,10 +65,10 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     public void resetCollisionState() {
         // "Archive" the current state to history
-        wasTouchingWallLastFrame = isTouchingWallThisFrame;
+        wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
         
         // Reset current state to false (innocent until proven guilty)
-        isTouchingWallThisFrame = false;
+        isTouchingObstacleThisFrame = false;
         
         // Reset sound signal
         playSoundSignal = false; 
@@ -90,10 +90,10 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     }
 
     @Override
-    public void collideWithWall(Wall wall)
+    public void collideWithObstacle(Obstacle obstacle)
     {
         CollisionResolver resolver = new CollisionResolver();
-        resolver.resolveCollisions(this, wall);
+        resolver.resolveCollisions(this, obstacle);
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
-import io.github.some_example_name.lwjgl3.entities.Wall;
+import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 
 public final class CollisionResolver {
@@ -14,14 +14,14 @@ public final class CollisionResolver {
         a.collide(b); 
     }
 
-    // PLAYER vs WALL
-    public void resolveCollisions(PlayableEntity player, Wall wall) {
-        resolveEntityWall(player, wall);
+    // PLAYER vs obstacle
+    public void resolveCollisions(PlayableEntity player, Obstacle obstacle) {
+        resolveEntityObstacle(player, obstacle);
     }
 
-    // AI vs WALL
-    public void resolveCollisions(AiEntity ai, Wall wall) {
-        resolveEntityWall(ai, wall);
+    // AI vs obstacle
+    public void resolveCollisions(AiEntity ai, Obstacle obstacle) {
+        resolveEntityObstacle(ai, obstacle);
     }
 
     // PLAYER vs AI
@@ -30,18 +30,18 @@ public final class CollisionResolver {
 
     }
 
-    // Shared Entity-Wall Collision Logic
-    public void resolveEntityWall(Entity entity, Wall wall) 
+    // Shared Entity-obstacle Collision Logic
+    public void resolveEntityObstacle(Entity entity, Obstacle obstacle) 
     {
-        System.out.println(entity.getId() + " collided with " + wall.getId());
+        System.out.println(entity.getId() + " collided with " + obstacle.getId());
 
         Rectangle entityBounds = ((iCollidable) entity).getCollisionBounds();
-        Rectangle wallBounds   = wall.getCollisionBounds();
+        Rectangle obstacleBounds   = obstacle.getCollisionBounds();
 
-        float overlapLeft   = (entityBounds.x + entityBounds.width) - wallBounds.x;
-        float overlapRight  = (wallBounds.x + wallBounds.width) - entityBounds.x;
-        float overlapBottom = (entityBounds.y + entityBounds.height) - wallBounds.y;
-        float overlapTop    = (wallBounds.y + wallBounds.height) - entityBounds.y;
+        float overlapLeft   = (entityBounds.x + entityBounds.width) - obstacleBounds.x;
+        float overlapRight  = (obstacleBounds.x + obstacleBounds.width) - entityBounds.x;
+        float overlapBottom = (entityBounds.y + entityBounds.height) - obstacleBounds.y;
+        float overlapTop    = (obstacleBounds.y + obstacleBounds.height) - entityBounds.y;
 
         float minX = Math.min(overlapLeft, overlapRight);
         float minY = Math.min(overlapBottom, overlapTop);
@@ -52,19 +52,19 @@ public final class CollisionResolver {
         if (minX < minY) {
             // Horizontal collision
             if (overlapLeft < overlapRight)
-                // Player hit wall from left
+                // Player hit obstacle from left
                 entity.getPosition().x -= (overlapLeft + pushBuffer);
             else
-                // Player hit wall from right
+                // Player hit obstacle from right
                 entity.getPosition().x += (overlapRight + pushBuffer);
         }
         else {
             // Veritcal collision
             if (overlapBottom < overlapTop)
-                // Player hit wall from below
+                // Player hit obstacle from below
                 entity.getPosition().y -= (overlapBottom + pushBuffer);
             else
-                // Player hit wall from above
+                // Player hit obstacle from above
                 entity.getPosition().y += (overlapTop + pushBuffer);
         }
     }

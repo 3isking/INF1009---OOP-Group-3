@@ -10,7 +10,7 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
-import io.github.some_example_name.lwjgl3.entities.Wall;
+import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.entities.iMovable;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
@@ -63,25 +63,25 @@ public class Scene1 extends Scene{
         entityManager.addEntity(ai);
         
         // Top wall
-        Wall topWall = new Wall(0, 460, 640, 20);
+        Obstacle topWall = new Obstacle(0, 460, 640, 20);
         topWall.setId("wall_top");
         addEntity(topWall);
         entityManager.addEntity(topWall);
         
         // Bottom wall
-        Wall bottomWall = new Wall(0, 0, 640, 20);
+        Obstacle bottomWall = new Obstacle(0, 0, 640, 20);
         bottomWall.setId("wall_bottom");
         addEntity(bottomWall);
         entityManager.addEntity(bottomWall);
         
         // Left wall
-        Wall leftWall = new Wall(0, 0, 20, 480);
+        Obstacle leftWall = new Obstacle(0, 0, 20, 480);
         leftWall.setId("wall_left");
         addEntity(leftWall);
         entityManager.addEntity(leftWall);
         
         // Right wall
-        Wall rightWall = new Wall(620, 0, 20, 480);
+        Obstacle rightWall = new Obstacle(620, 0, 20, 480);
         rightWall.setId("wall_right");
         addEntity(rightWall);
         entityManager.addEntity(rightWall);
