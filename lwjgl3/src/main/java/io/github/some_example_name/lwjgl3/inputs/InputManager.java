@@ -22,7 +22,9 @@ public class InputManager extends InputAdapter{
 		inputs.bind("camLeft", Device.KEYBOARD, Input.Keys.A);
 		inputs.bind("camDown", Device.KEYBOARD, Input.Keys.S);
 		inputs.bind("camRight", Device.KEYBOARD, Input.Keys.D);
-		inputs.bind("changeCam", Device.KEYBOARD, Input.Keys.APOSTROPHE);
+		inputs.bind("freeCam", Device.KEYBOARD, Input.Keys.F1);
+		inputs.bind("playerCam", Device.KEYBOARD, Input.Keys.F2);
+		inputs.bind("defaultCam", Device.KEYBOARD, Input.Keys.F3);
 		inputs.bind("rebind", Device.KEYBOARD, Input.Keys.BACKSLASH);
     }
 	
@@ -79,15 +81,17 @@ public class InputManager extends InputAdapter{
 	public Camera getCamera() {
 		return camera;
 	}
-    
-    public void switchCamera() {
-    	Camera currentCam = camera;
+	
+	public void usePlayerCamera() {
+	    this.camera = new PlayerCamera(camera.getCamera());
+	}
 
-        if (currentCam instanceof PlayerCamera) {
-            this.camera = new FreeCamera(this, currentCam.getCamera());
-        } else {
-            this.camera = new PlayerCamera(currentCam.getCamera());
-        }
-    }
+	public void useFreeCamera() {
+	    this.camera = new FreeCamera(this, camera.getCamera());
+	}
+	
+	public void useDefaultCamera() {
+	    this.camera = new DefaultCamera(this, camera.getCamera());
+	}
 	 
 }

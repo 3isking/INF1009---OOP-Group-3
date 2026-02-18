@@ -117,6 +117,9 @@ public class Scene1 extends Scene{
         addEntity(w3); entityManager.addEntity(w3);
         addEntity(w4); entityManager.addEntity(w4);
         addEntity(w5); entityManager.addEntity(w5);
+        
+        //Set camera type to follow player
+        inputManager.usePlayerCamera();
 
         System.out.println("[Scene1 - Level] Scene setup complete. Entities created: " + getEntityList().size());
     }
@@ -129,7 +132,7 @@ public class Scene1 extends Scene{
         
         // Clear the scene entity list
         getEntityList().clear();
-        inputManager.switchCamera();
+        inputManager.useDefaultCamera();
         
         System.out.println("[Scene1 - Level] Scene cleanup complete.");
     }
