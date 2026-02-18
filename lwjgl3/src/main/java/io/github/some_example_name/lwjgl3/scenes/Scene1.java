@@ -21,6 +21,7 @@ public class Scene1 extends Scene{
     private InputManager inputManager;
     private MovementManager movementManager;
     private CollisionManager collisionManager;
+    private Texture backgroundTexture;
 
     public Scene1(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
         super("Scene1");
@@ -34,6 +35,7 @@ public class Scene1 extends Scene{
     public void onLoad() {
         System.out.println("[Scene1] Loading resources...");
         System.out.println("[Scene1] Resources loaded successfully!");
+        backgroundTexture = new Texture(Gdx.files.internal("background_scene1.png"));
     }
 
     @Override
@@ -127,7 +129,9 @@ public class Scene1 extends Scene{
 
     @Override
     public void render(SpriteBatch batch) {
-        // Scene-specific rendering if needed
-        // Entities are rendered by the entity manager
+        batch.end();
+        batch.begin();
+        batch.draw(backgroundTexture, -350, -300, 1000, 1000); 
+        
     }
 }

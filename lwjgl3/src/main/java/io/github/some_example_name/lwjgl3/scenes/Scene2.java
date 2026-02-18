@@ -3,6 +3,7 @@ package io.github.some_example_name.lwjgl3.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -21,6 +22,7 @@ public class Scene2 extends Scene {
     
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
+    private Texture backgroundTexture;
     private String titleText = "MAIN MENU";
     private String instructionText = "Click anywhere to start";
     private boolean clickToStart = false;
@@ -44,7 +46,9 @@ public class Scene2 extends Scene {
         font = new BitmapFont();
         font.getData().setScale(2.0f);
         shapeRenderer = new ShapeRenderer();
+        backgroundTexture = new Texture(Gdx.files.internal("background_scene2.png"));
         System.out.println("[Scene2 - Main Menu] Resources loaded successfully!");
+
     }
     
     // Method to set projection matrix for rendering
@@ -85,6 +89,9 @@ public class Scene2 extends Scene {
         if (shapeRenderer != null) {
             shapeRenderer.dispose();
         }
+        if (backgroundTexture != null) {
+            backgroundTexture.dispose();
+        }
         System.out.println("[Scene2 - Main Menu] Resources unloaded successfully!");
     }
 
@@ -102,29 +109,27 @@ public class Scene2 extends Scene {
                 sceneManager.setCurrentScene("Scene1");
             }
         }
+        // Exit Program
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+            Gdx.app.exit();
+        }
+
     }
 
     @Override
     public void render(SpriteBatch batch) {
         // End the current batch to draw shapes
         batch.end();
-        
-        // Draw menu background
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.1f, 0.1f, 0.15f, 1);
-        shapeRenderer.rect(0, 0, 640, 480);
-        shapeRenderer.end();
-        
-        // Restart batch for text rendering
         batch.begin();
-        
-        // Draw text
+        batch.draw(backgroundTexture, -350, -300, 1000, 1000); 
+        batch.end();
+        // Draw text     
+        batch.begin();
         font.setColor(Color.WHITE);
-
-        
         // Instruction
         font.getData().setScale(1.5f);
         font.draw(batch, instructionText, -100, 0);
         font.getData().setScale(2.0f); // Reset scale
+
     }
 }
