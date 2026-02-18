@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.utils.ScreenUtils;
+
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
@@ -18,7 +19,6 @@ import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.inputs.PlayerCamera;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
-import io.github.some_example_name.lwjgl3.scenes.Scene1;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 
 public class GameMaster extends ApplicationAdapter{
@@ -49,21 +49,15 @@ public class GameMaster extends ApplicationAdapter{
         Gdx.input.setInputProcessor(inputManager);
         movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
-        sceneManager = new SceneManager();
         outputManager = new OutputManager();
-
-        // Setup PlayableEntity
-        // PlayableEntity PlayableEntity = new PlayableEntity(inputManager);
-        // entityManager.addEntity(PlayableEntity);
-
-        // // Setup Wall
-        // Wall wall1 = new Wall();
-        // entityManager.addEntity(wall1);
-        Scene1 scene1 = new Scene1(entityManager, inputManager, movementManager, collisionManager);
-        sceneManager.addScene(scene1);
-        scene1.onLoad();
-        sceneManager.setCurrentScene(scene1);
-
+         sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager);
+         
+        // Initialize both scenes
+        sceneManager.initializeScene1();
+        sceneManager.initializeScene2();
+        
+        // Start with Scene2 (Main Menu)
+        sceneManager.setCurrentScene("Scene2");
         // Setup Debug
         debugMode = true;
         
