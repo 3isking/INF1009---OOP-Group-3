@@ -65,7 +65,7 @@ public class EntityManager {
 
     public void clear() {
         entities.clear();
-        // movementManager.emptyMovableEntities();
-        // collisionManager.emptyCollidableEntities();
+         movementManager.emptyMovableEntities();
+         collisionManager.emptyCollidableEntities();
     }
 }

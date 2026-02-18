@@ -21,21 +21,20 @@ public class CollisionManager {
         this.collidableEntities = new ArrayList<>();
     }
     // check collisions between all entities in the given list
+    
     public void checkCollisions(List<Entity> entities) {
-        // pick the first entity
-        for (iCollidable collidable : collidableEntities) {
+        // Create a copy of the list
+        // Allows the real list to be cleared safely if a collision triggers a scene change
+        List<iCollidable> snapshot = new ArrayList<>(collidableEntities);
+
+        // Iterate over the snapshot instead of the live list
+        for (iCollidable collidable : snapshot) {
             if (collidable instanceof PlayableEntity) {
                 ((PlayableEntity) collidable).resetCollisionState();
             }
 
-            // pick the first entity
-            for (iCollidable otherCollidable : collidableEntities) {
-                // used for collision detector
-                // check if the collision bounds overlap
+            for (iCollidable otherCollidable : snapshot) {
                 if (collidable != otherCollidable) {
-                    // used for collision resolver
-                    // notify both entities of the collision
-                    //  CollisionResolver.onCollision(collidable, otherCollidable);
                     if (collisionDetector.checkCollisions(collidable, otherCollidable)) {
                         collisionResolver.resolveCollisions(collidable, otherCollidable);
                     }
