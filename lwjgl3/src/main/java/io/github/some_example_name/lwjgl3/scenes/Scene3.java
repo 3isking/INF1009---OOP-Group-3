@@ -117,17 +117,13 @@ public class Scene3 extends Scene {
     @Override
     public void render(SpriteBatch batch) {
         // End the current batch to draw shapes
-        batch.end();
-        batch.begin();
         batch.draw(backgroundTexture, -350, -300, 1000, 1000); 
-        batch.end();
+
         // Draw text     
-        batch.begin();
         font.setColor(Color.WHITE);
         // Instruction
         font.getData().setScale(1.5f);
         font.draw(batch, instructionText, -100, 0);
         font.getData().setScale(2.0f); // Reset scale
-
     }
 }

@@ -55,7 +55,7 @@ public final class CollisionResolver {
         float minX = Math.min(overlapLeft, overlapRight);
         float minY = Math.min(overlapBottom, overlapTop);
         
-        float pushBuffer = 5.0f;
+        float pushBuffer = 0.5f;
 
         // Resolve along the smallest overlap axis
         if (minX < minY) {

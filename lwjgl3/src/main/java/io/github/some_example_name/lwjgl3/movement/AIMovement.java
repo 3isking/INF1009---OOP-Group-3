@@ -8,8 +8,8 @@ import io.github.some_example_name.lwjgl3.inputs.InputManager;
 public class AIMovement implements MovementStrategy {
     private float timer = 0f;
     private boolean goingLeft = true;
-    private final float interval = 1f; // seconds
-    private final float speed = 0.5f;    // adjust as needed
+    private final float interval = 4f; // seconds
+    private final float speed = 1f;    // adjust as needed
 
     @Override
     public void move(iMovable entity, InputManager inputManager) {
