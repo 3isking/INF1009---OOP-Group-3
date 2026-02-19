@@ -7,6 +7,7 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
+import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 
 public class CollisionManager {
     private SceneManager sceneManager;
@@ -14,10 +15,10 @@ public class CollisionManager {
     private CollisionResolver collisionResolver;
     private List<iCollidable> collidableEntities;
 
-    public void setCollisionManager(SceneManager sceneManager){
+    public void setCollisionManager(SceneManager sceneManager, OutputManager outputManager){
         this.sceneManager = sceneManager;
         this.collisionDetector = new CollisionDetector();
-        this.collisionResolver = new CollisionResolver(this.sceneManager);
+        this.collisionResolver = new CollisionResolver(this.sceneManager, outputManager);
         this.collidableEntities = new ArrayList<>();
     }
     // check collisions between all entities in the given list

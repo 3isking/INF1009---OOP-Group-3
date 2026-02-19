@@ -16,7 +16,6 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     private boolean wasTouchingWallLastFrame = false;
     private boolean isTouchingWallThisFrame = false;
-    private boolean playSoundSignal = false;
 
     public PlayableEntity(MovementManager movementManager, CollisionManager collisionManager){
         super();
@@ -63,25 +62,16 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         );
     }  
     
-    
+    // Output Manager
     public void resetCollisionState() {
-        // "Archive" the current state to history
         wasTouchingWallLastFrame = isTouchingWallThisFrame;
         
-        // Reset current state to false (innocent until proven guilty)
         isTouchingWallThisFrame = false;
-        
-        // Reset sound signal
-        playSoundSignal = false; 
     }
     
-    // Output Manager
-    public boolean wasHit() {
-        return playSoundSignal;
-    }
-
-    public void resetHitFlag() {
-        playSoundSignal = false;
+    public boolean isNewWallCollision() {
+        isTouchingWallThisFrame = true;
+        return !wasTouchingWallLastFrame;
     }
     
     // Collision Manager

@@ -53,7 +53,7 @@ public class GameMaster extends ApplicationAdapter{
         sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager);
 
         // Initialize CollisionManager with SceneManager reference for scene transitions
-        collisionManager.setCollisionManager(sceneManager);
+        collisionManager.setCollisionManager(sceneManager, outputManager);
         
         // Initialize both scenes
         sceneManager.initializeScene1();
@@ -64,7 +64,8 @@ public class GameMaster extends ApplicationAdapter{
         sceneManager.setCurrentScene("Scene2");
         
         // Setup audio
-        outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
+        outputManager.loadAudio("COLLISION_EVENT", "collide.wav"); // Wall
+        outputManager.loadAudio("HIT_EVENT", "hit.mp3"); // AI Entity
 
         // Setup Debug
         debugMode = true;
@@ -115,17 +116,6 @@ public class GameMaster extends ApplicationAdapter{
             inputManager.setKeyBind(rebindAction);
         }
         
-        // Collision audio stays last
-        for (Entity e : entityManager.getAllEntities()) {
-            if (e instanceof PlayableEntity) {
-                PlayableEntity p = (PlayableEntity) e;
-                if (p.wasHit()) {
-                    outputManager.playSound("COLLISION_EVENT");
-                    System.out.println("Abstract Engine: Collision Output Triggered!");
-                    p.resetHitFlag();
-                }
-            }
-        }
     }
 
 

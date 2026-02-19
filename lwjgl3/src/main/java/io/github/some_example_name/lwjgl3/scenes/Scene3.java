@@ -1,6 +1,7 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -19,6 +20,7 @@ public class Scene3 extends Scene {
     private MovementManager movementManager;
     private CollisionManager collisionManager;
     private SceneManager sceneManager;
+    private Music gameOverMusic;
     
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
@@ -63,6 +65,11 @@ public class Scene3 extends Scene {
         System.out.println("[Scene3 - Game Over] Entering scene...");
         clickToStart = false;
         
+        gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("gameover.mp3"));
+        gameOverMusic.setLooping(false); 
+        gameOverMusic.setVolume(0.5f); 
+        gameOverMusic.play();
+        
         // Main menu doesn't need entities, just UI
         System.out.println("[Scene3 - Game Over] Main menu ready.");
     }
@@ -70,6 +77,11 @@ public class Scene3 extends Scene {
     @Override
     public void onExit() {
         System.out.println("[Scene3 - Game Over] Exiting scene...");
+        
+        if (gameOverMusic != null) {
+            gameOverMusic.stop();
+            gameOverMusic.dispose();
+        }
         
         // Clear any entities if present
         entityManager.clear();

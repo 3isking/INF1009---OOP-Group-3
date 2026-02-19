@@ -8,13 +8,16 @@ import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
+import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 
 public final class CollisionResolver {
     private SceneManager sceneManager;
+    private OutputManager outputManager;
 
-    public CollisionResolver(SceneManager sceneManager) {
+    public CollisionResolver(SceneManager sceneManager, OutputManager outputManager) {
         // Constructor can be used to set up references if needed
         this.sceneManager = sceneManager; 
+        this.outputManager = outputManager;
     }
 
     // Generic Collisions
@@ -36,6 +39,7 @@ public final class CollisionResolver {
     public void resolveCollisions(PlayableEntity player, AiEntity ai) {
         // Transition to Game Over scene
         System.out.println("Player collided with AI!");
+        outputManager.playSound("HIT_EVENT");
         sceneManager.setCurrentScene("Scene3"); 
     }
 
@@ -43,6 +47,15 @@ public final class CollisionResolver {
     public void resolveEntityWall(Entity entity, Wall wall) 
     {
         System.out.println(entity.getId() + " collided with " + wall.getId());
+        
+        // Play sound 
+        if (entity instanceof PlayableEntity) {
+            PlayableEntity player = (PlayableEntity) entity;
+            
+            if (player.isNewWallCollision()) {
+                outputManager.playSound("COLLISION_EVENT");
+            }
+        }
 
         Rectangle entityBounds = ((iCollidable) entity).getCollisionBounds();
         Rectangle wallBounds   = wall.getCollisionBounds();

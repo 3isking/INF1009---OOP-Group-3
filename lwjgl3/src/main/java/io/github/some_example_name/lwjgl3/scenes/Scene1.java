@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.audio.Music;
 
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
@@ -14,6 +15,7 @@ import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
+
 public class Scene1 extends Scene {
 
     private EntityManager entityManager;
@@ -21,6 +23,7 @@ public class Scene1 extends Scene {
     private MovementManager movementManager;
     private CollisionManager collisionManager;
     private Texture backgroundTexture;
+    private Music backgroundMusic;
 
     private static final int LEVEL_WIDTH  = 2000;
     private static final int LEVEL_HEIGHT = 1200;
@@ -136,6 +139,12 @@ public class Scene1 extends Scene {
         entityManager.addEntity(w4);
         addEntity(w5);
         entityManager.addEntity(w5);
+        
+        // Background Music
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background_music.mp3"));
+        backgroundMusic.setLooping(true); // Makes the music loop 
+        backgroundMusic.setVolume(0.05f);  // Adjust volume
+        backgroundMusic.play();           // Start the music
 
         //Set camera type to follow player
         inputManager.usePlayerCamera();
@@ -147,6 +156,12 @@ public class Scene1 extends Scene {
     public void onExit() {
         System.out.println("[Scene1 - Level] Exiting scene...");
         entityManager.clear();
+        
+        // Clear background music
+        if (backgroundMusic != null) {
+            backgroundMusic.stop();
+            backgroundMusic.dispose();
+        }
 
         // Clear the scene entity list
         getEntityList().clear();
