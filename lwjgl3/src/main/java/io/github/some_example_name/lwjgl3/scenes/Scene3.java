@@ -127,6 +127,11 @@ public class Scene3 extends Scene {
         GlyphLayout layout = new GlyphLayout(font, instructionText);
         float layoutX = 0 - layout.width/2f;
         font.draw(batch, instructionText, layoutX, 0);
+
+        //title text
+        GlyphLayout layout2 = new GlyphLayout(font, titleText);
+        float layout2X = 0 - layout2.width/2f;
+        font.draw(batch, titleText, layout2X, 100);
         font.getData().setScale(2.0f); // Reset scale
     }
 }

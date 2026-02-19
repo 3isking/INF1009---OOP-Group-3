@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -124,7 +125,14 @@ public class Scene2 extends Scene {
         font.setColor(Color.WHITE);
         // Instruction
         font.getData().setScale(1.5f);
-        font.draw(batch, instructionText, -100, 0);
+        GlyphLayout layout = new GlyphLayout(font, instructionText);
+        float layoutX = 0 - layout.width/2f;
+        font.draw(batch, instructionText, layoutX, 0);
+
+        //title text
+        GlyphLayout layout2 = new GlyphLayout(font, titleText);
+        float layout2X = 0 - layout2.width/2f;
+        font.draw(batch, titleText, layout2X, 100);
         font.getData().setScale(2.0f); // Reset scale
 
     }

@@ -1,4 +1,5 @@
 package io.github.some_example_name.lwjgl3.scenes;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,12 +14,17 @@ import io.github.some_example_name.lwjgl3.entities.Wall;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
-public class Scene1 extends Scene{
+public class Scene1 extends Scene {
+
     private EntityManager entityManager;
     private InputManager inputManager;
     private MovementManager movementManager;
     private CollisionManager collisionManager;
     private Texture backgroundTexture;
+
+    private static final int LEVEL_WIDTH  = 2000;
+    private static final int LEVEL_HEIGHT = 1200;
+    private static final int TILE_SIZE = 200;
 
     public Scene1(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
         super("Scene1");
@@ -40,8 +46,8 @@ public class Scene1 extends Scene{
         System.out.println("[Scene1 - Level] Entering scene...");
 
         // Level Size
-        int levelWidth = 2000;
-        int levelHeight = 1200;
+        int levelWidth = LEVEL_WIDTH;
+        int levelHeight = LEVEL_HEIGHT;
 
         // player Spawn
         PlayableEntity player = new PlayableEntity(movementManager, collisionManager);
@@ -73,10 +79,14 @@ public class Scene1 extends Scene{
         ai4.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
         ai4.setPosition(new Vector2(1400, 500));
 
-        addEntity(ai1); entityManager.addEntity(ai1);
-        addEntity(ai2); entityManager.addEntity(ai2);
-        addEntity(ai3); entityManager.addEntity(ai3);
-        addEntity(ai4); entityManager.addEntity(ai4);
+        addEntity(ai1);
+        entityManager.addEntity(ai1);
+        addEntity(ai2);
+        entityManager.addEntity(ai2);
+        addEntity(ai3);
+        entityManager.addEntity(ai3);
+        addEntity(ai4);
+        entityManager.addEntity(ai4);
 
         // Border Walls
         Wall topWall = new Wall(0, levelHeight - 20, levelWidth, 20, collisionManager);
@@ -91,10 +101,14 @@ public class Scene1 extends Scene{
         Wall rightWall = new Wall(levelWidth - 20, 0, 20, levelHeight, collisionManager);
         rightWall.setId("wall_right");
 
-        addEntity(topWall); entityManager.addEntity(topWall);
-        addEntity(bottomWall); entityManager.addEntity(bottomWall);
-        addEntity(leftWall); entityManager.addEntity(leftWall);
-        addEntity(rightWall); entityManager.addEntity(rightWall);
+        addEntity(topWall);
+        entityManager.addEntity(topWall);
+        addEntity(bottomWall);
+        entityManager.addEntity(bottomWall);
+        addEntity(leftWall);
+        entityManager.addEntity(leftWall);
+        addEntity(rightWall);
+        entityManager.addEntity(rightWall);
 
         // Obstacles
         Wall w1 = new Wall(400, 600, 1200, 30, collisionManager);
@@ -102,7 +116,7 @@ public class Scene1 extends Scene{
 
         Wall w2 = new Wall(900, 250, 30, 250, collisionManager);
         w2.setId("wall_2");
-        
+
         Wall w3 = new Wall(250, 850, 400, 30, collisionManager);
         w3.setId("wall_3");
 
@@ -112,28 +126,32 @@ public class Scene1 extends Scene{
         Wall w5 = new Wall(900, 250, 250, 30, collisionManager);
         w5.setId("wall_5");
 
-        addEntity(w1); entityManager.addEntity(w1);
-        addEntity(w2); entityManager.addEntity(w2);
-        addEntity(w3); entityManager.addEntity(w3);
-        addEntity(w4); entityManager.addEntity(w4);
-        addEntity(w5); entityManager.addEntity(w5);
-        
+        addEntity(w1);
+        entityManager.addEntity(w1);
+        addEntity(w2);
+        entityManager.addEntity(w2);
+        addEntity(w3);
+        entityManager.addEntity(w3);
+        addEntity(w4);
+        entityManager.addEntity(w4);
+        addEntity(w5);
+        entityManager.addEntity(w5);
+
         //Set camera type to follow player
         inputManager.usePlayerCamera();
 
         System.out.println("[Scene1 - Level] Scene setup complete. Entities created: " + getEntityList().size());
     }
 
-
     @Override
     public void onExit() {
         System.out.println("[Scene1 - Level] Exiting scene...");
         entityManager.clear();
-        
+
         // Clear the scene entity list
         getEntityList().clear();
         inputManager.useDefaultCamera();
-        
+
         System.out.println("[Scene1 - Level] Scene cleanup complete.");
     }
 
@@ -141,7 +159,6 @@ public class Scene1 extends Scene{
     public void onUnload() {
         System.out.println("[Scene1 - Level] Unloading resources...");
 
-        
         System.out.println("[Scene1 - Level] Resources unloaded successfully!");
     }
 
@@ -152,6 +169,10 @@ public class Scene1 extends Scene{
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(backgroundTexture, -350, -300, 1000, 1000); 
+        for (int x = 0; x < LEVEL_WIDTH; x += TILE_SIZE) {
+            for (int y = 0; y < LEVEL_HEIGHT; y += TILE_SIZE) {
+                batch.draw(backgroundTexture, x, y, TILE_SIZE, TILE_SIZE);
+            }
+        }
     }
 }
