@@ -1,10 +1,10 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
@@ -24,7 +24,7 @@ public class Scene2 extends Scene {
     private ShapeRenderer shapeRenderer;
     private Texture backgroundTexture;
     private String titleText = "MAIN MENU";
-    private String instructionText = "Click anywhere to start";
+    private String instructionText = "Click anywhere to start or press ESC to exit.";
     private boolean clickToStart = false;
 
     public Scene2(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
@@ -97,10 +97,8 @@ public class Scene2 extends Scene {
 
     @Override
     public void update(float deltaTime) {
-        // Check for mouse click or key press to start game
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || 
-            Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
-            Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        // Check for mouse click to start game
+        if (inputManager.inputPressed("action")) {
             clickToStart = true;
             System.out.println("[Scene2 - Main Menu] Starting game, transitioning to Scene1...");
             
@@ -110,7 +108,7 @@ public class Scene2 extends Scene {
             }
         }
         // Exit Program
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+        if (inputManager.inputPressed("exit")){
             Gdx.app.exit();
         }
 
@@ -120,11 +118,14 @@ public class Scene2 extends Scene {
     public void render(SpriteBatch batch) {
         // End the current batch to draw shapes
         batch.draw(backgroundTexture, -350, -300, 1000, 1000); 
+
         // Draw text     
         font.setColor(Color.WHITE);
         // Instruction
         font.getData().setScale(1.5f);
-        font.draw(batch, instructionText, -100, 0);
+        GlyphLayout layout = new GlyphLayout(font, instructionText);
+        float layoutX = 0 - layout.width/2f;
+        font.draw(batch, instructionText, layoutX, 0);
         font.getData().setScale(2.0f); // Reset scale
 
     }
