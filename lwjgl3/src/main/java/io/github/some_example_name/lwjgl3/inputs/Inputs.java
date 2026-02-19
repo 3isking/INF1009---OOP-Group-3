@@ -120,21 +120,4 @@ public class Inputs {
         }
         return false;
     } 
-	
-	//Set is unordered and doesnt allow duplicates
-	public Set<String> getActions() {
-	    return bindings.keySet();
-	}
-	
-	public String getBindingName(String action) {
-	    Binding b = bindings.get(action);
-	    if (b == null) {
-	    	return "UNBOUND";
-	    }
-	    if (b.device == Device.KEYBOARD) {
-	        return Input.Keys.toString(b.code);
-	    } else {
-	        return "Mouse " + b.code;
-	    }
-	}
 }

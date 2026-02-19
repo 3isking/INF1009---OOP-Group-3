@@ -67,14 +67,6 @@ public class InputManager extends InputAdapter{
 		return inputs.touchDown(x, y, pointer, button);
     } 
 	
-	public Set<String> getActions() {
-	    return inputs.getActions();
-	}
-	
-	public String getBindingName(String action) {
-	    return inputs.getBindingName(action);
-	}
-	
 	//For camera
 	public void updateCamera(Entity player) {
 		camera.control(player);
