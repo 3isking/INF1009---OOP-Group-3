@@ -1,7 +1,6 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -25,7 +24,7 @@ public class Scene3 extends Scene {
     private ShapeRenderer shapeRenderer;
     private Texture backgroundTexture;
     private String titleText = "GAME OVER";
-    private String instructionText = "Game Over! Click or press Space/Enter to restart";
+    private String instructionText = "Game Over! Click to restart or press ESC to exit.";
     private boolean clickToStart = false;
 
     public Scene3(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
@@ -97,9 +96,7 @@ public class Scene3 extends Scene {
     @Override
     public void update(float deltaTime) {
         // Check for mouse click or key press to start game
-        if (Gdx.input.isButtonJustPressed(Input.Buttons.LEFT) || 
-            Gdx.input.isKeyJustPressed(Input.Keys.SPACE) ||
-            Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+        if (inputManager.inputPressed("action")) {
             clickToStart = true;
             System.out.println("[Scene3 - Game Over] Starting game, transitioning to Scene1...");
             
@@ -109,7 +106,7 @@ public class Scene3 extends Scene {
             }
         }
         // Exit Program
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)){
+        if (inputManager.inputPressed("exit")){
             Gdx.app.exit();
         }
 

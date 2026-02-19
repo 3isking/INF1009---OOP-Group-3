@@ -1,9 +1,11 @@
 package io.github.some_example_name.lwjgl3.inputs;
 
 import java.util.Set;
+
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;
+
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.inputs.Inputs.Device;
 
@@ -17,7 +19,7 @@ public class InputManager extends InputAdapter{
 		inputs.bind("left", Device.KEYBOARD, Input.Keys.LEFT);
 		inputs.bind("right", Device.KEYBOARD, Input.Keys.RIGHT);
 		inputs.bind("jump", Device.KEYBOARD, Input.Keys.SPACE);
-		inputs.bind("action", Device.MOUSE, Input.Keys.LEFT);
+		inputs.bind("action", Device.MOUSE, Input.Buttons.LEFT);
 		inputs.bind("camUp", Device.KEYBOARD, Input.Keys.W);
 		inputs.bind("camLeft", Device.KEYBOARD, Input.Keys.A);
 		inputs.bind("camDown", Device.KEYBOARD, Input.Keys.S);
@@ -26,6 +28,7 @@ public class InputManager extends InputAdapter{
 		inputs.bind("playerCam", Device.KEYBOARD, Input.Keys.F2);
 		inputs.bind("defaultCam", Device.KEYBOARD, Input.Keys.F3);
 		inputs.bind("rebind", Device.KEYBOARD, Input.Keys.BACKSLASH);
+		inputs.bind("exit", Device.KEYBOARD, Input.Keys.ESCAPE);
     }
 	
 	public InputManager(Camera camera) {
