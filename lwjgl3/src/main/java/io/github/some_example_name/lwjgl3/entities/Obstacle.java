@@ -23,8 +23,8 @@ public class Obstacle extends Entity implements iCollidable {
 //added by chavonne - accepts parameters for more flexible positioning
     public Obstacle(float x, float y, float width, float height, CollisionManager collisionManager){
         super();
+    	this.id = "obstacle";
         this.setPosition(new Vector2(x, y));
-        this.setId("0");
         this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), width, height));
         this.resolver = collisionManager.getResolver();
     }
@@ -43,12 +43,7 @@ public class Obstacle extends Entity implements iCollidable {
 
     @Override
     public Rectangle getCollisionBounds() {
-        return new Rectangle(
-            this.getPosition().x,
-            this.getPosition().y,
-            this.getSprite().getWidth(),
-            this.getSprite().getHeight()
-        );
+        return new Rectangle(this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
     }
 
     // Collision Manager

@@ -1,8 +1,8 @@
 package io.github.some_example_name.lwjgl3.entities;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.BoundingBox;
 
 public abstract class Entity {
     protected String id;
@@ -11,7 +11,7 @@ public abstract class Entity {
     protected Sprite sprite = null;
     protected float rotation;
     protected boolean visible;
-    protected BoundingBox boundingBox;
+    protected Rectangle collisionBox;
 
     public Entity() {
         this.position = new Vector2();

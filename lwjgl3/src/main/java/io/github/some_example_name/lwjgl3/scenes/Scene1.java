@@ -53,34 +53,24 @@ public class Scene1 extends Scene {
         int levelHeight = LEVEL_HEIGHT;
 
         // player Spawn
-        PlayableEntity player = new PlayableEntity(movementManager, collisionManager);
+        PlayableEntity player = new PlayableEntity(200, 200, movementManager, collisionManager);
         player.setId("player_1");
-        player.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
-        player.setPosition(new Vector2(200, 200));
 
         addEntity(player);
         entityManager.addEntity(player);
 
         // AI Entities
-        AiEntity ai1 = new AiEntity(movementManager, collisionManager);
+        AiEntity ai1 = new AiEntity(1600, 900, movementManager, collisionManager);
         ai1.setId("ai_1");
-        ai1.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
-        ai1.setPosition(new Vector2(1600, 900));
 
-        AiEntity ai2 = new AiEntity(movementManager, collisionManager);
+        AiEntity ai2 = new AiEntity(1800, 250, movementManager, collisionManager);
         ai2.setId("ai_2");
-        ai2.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
-        ai2.setPosition(new Vector2(1800, 250));
 
-        AiEntity ai3 = new AiEntity(movementManager, collisionManager);
+        AiEntity ai3 = new AiEntity(500, 950, movementManager, collisionManager);
         ai3.setId("ai_3");
-        ai3.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
-        ai3.setPosition(new Vector2(500, 950));
 
-        AiEntity ai4 = new AiEntity(movementManager, collisionManager);
+        AiEntity ai4 = new AiEntity(1400, 500, movementManager, collisionManager);
         ai4.setId("ai_4");
-        ai4.setSprite(new Sprite(new Texture(Gdx.files.internal("owl.png")), 50, 50));
-        ai4.setPosition(new Vector2(1400, 500));
 
         addEntity(ai1);
         entityManager.addEntity(ai1);
