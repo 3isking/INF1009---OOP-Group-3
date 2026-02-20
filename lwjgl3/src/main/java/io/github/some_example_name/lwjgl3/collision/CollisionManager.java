@@ -38,6 +38,11 @@ public class CollisionManager {
                 if (collidable != otherCollidable) {
                     if (collisionDetector.checkCollisions(collidable, otherCollidable)) {
                         collisionResolver.resolveCollisions(collidable, otherCollidable);
+
+                        // Exit if Critical Collision Occurs
+                        if (collisionResolver.hasCriticalCollisionOccurred()) {
+                            return;
+                        }
                     }
                 }
             }

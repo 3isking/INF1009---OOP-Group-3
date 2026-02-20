@@ -13,11 +13,20 @@ import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 public final class CollisionResolver {
     private SceneManager sceneManager;
     private OutputManager outputManager;
+    private Boolean criticalCollisionOccurred = false;
 
     public CollisionResolver(SceneManager sceneManager, OutputManager outputManager) {
         // Constructor can be used to set up references if needed
         this.sceneManager = sceneManager; 
         this.outputManager = outputManager;
+    }
+
+    public boolean hasCriticalCollisionOccurred() {
+        if (criticalCollisionOccurred) {
+            criticalCollisionOccurred = false;
+            return true;
+        }
+        return false;
     }
 
     // Generic Collisions
@@ -41,6 +50,7 @@ public final class CollisionResolver {
         System.out.println("[Collision] Player collided with AI!");
         outputManager.playSound("HIT_EVENT");
         sceneManager.setCurrentScene("Scene3"); 
+        criticalCollisionOccurred = true;
     }
 
     // Shared Entity-Obstacle Collision Logic
