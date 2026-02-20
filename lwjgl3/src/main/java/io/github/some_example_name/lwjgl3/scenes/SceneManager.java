@@ -19,6 +19,7 @@ public class SceneManager {
     private InputManager inputManager;
     private MovementManager movementManager;
     private CollisionManager collisionManager;
+    
 
     public SceneManager(EntityManager entityManager, InputManager inputManager, 
                         MovementManager movementManager, CollisionManager collisionManager) {
@@ -93,8 +94,8 @@ public class SceneManager {
     }
     
     public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
-        if (currentScene != null && currentScene instanceof Scene2) {
-            ((Scene2) currentScene).setProjectionMatrix(matrix);
+        if (currentScene != null) {
+            currentScene.setProjectionMatrix(matrix);
         }
     }
 

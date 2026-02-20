@@ -62,4 +62,6 @@ public abstract class Scene {
     public void setBackground(String background) {
         this.background = background;
     }
+    public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
+    }
 }
