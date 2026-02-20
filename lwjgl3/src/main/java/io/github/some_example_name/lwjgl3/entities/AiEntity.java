@@ -67,8 +67,8 @@ public class AiEntity
     }
 
     @Override
-    public void collideWithWall(Wall wall) {
-        resolver.resolveCollisions(this, wall);
+    public void collideWithObstacle(Obstacle obstacle) {
+        resolver.resolveCollisions(this, obstacle);
     }
 
     @Override

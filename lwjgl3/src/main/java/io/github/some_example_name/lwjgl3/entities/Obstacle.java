@@ -9,25 +9,25 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
 
-public class Wall extends Entity implements iCollidable {
+public class Obstacle extends Entity implements iCollidable {
     private CollisionResolver resolver;
 
-    // public Wall(){
+    // public Obstacle(){
     //     this.setPosition(new Vector2(300, 0));
     //     this.setVisible(true);
     //     this.setLayer(1);
     //     this.setRotation(0);
     //     this.setId("0");
-    //     this.setSprite(new Sprite(new Texture(Gdx.files.internal("wall.png")), 100, 100));
+    //     this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), 100, 100));
     // }
 //added by chavonne - accepts parameters for more flexible positioning
-    public Wall(float x, float y, float width, float height, CollisionManager collisionManager){
+    public Obstacle(float x, float y, float width, float height, CollisionManager collisionManager){
         this.setPosition(new Vector2(x, y));
         this.setVisible(true);
         this.setLayer(1);
         this.setRotation(0);
         this.setId("0");
-        this.setSprite(new Sprite(new Texture(Gdx.files.internal("wall.png")), width, height));
+        this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), width, height));
         this.resolver = collisionManager.getResolver();
     }
 
@@ -56,11 +56,11 @@ public class Wall extends Entity implements iCollidable {
     // Collision Manager
     public void collide(iCollidable other)
     {
-        other.collideWithWall(this);
+        other.collideWithObstacle(this);
     }
 
     @Override
-    public void collideWithWall(Wall wall)
+    public void collideWithObstacle(Obstacle obstacle)
     {
         
     }

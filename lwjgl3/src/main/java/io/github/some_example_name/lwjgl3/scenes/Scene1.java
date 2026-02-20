@@ -1,17 +1,17 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.audio.Music;
 
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
-import io.github.some_example_name.lwjgl3.entities.Wall;
+import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
@@ -91,43 +91,43 @@ public class Scene1 extends Scene {
         addEntity(ai4);
         entityManager.addEntity(ai4);
 
-        // Border Walls
-        Wall topWall = new Wall(0, levelHeight - 20, levelWidth, 20, collisionManager);
-        topWall.setId("wall_top");
+        // Border Obstacles
+        Obstacle topObstacle = new Obstacle(0, levelHeight - 20, levelWidth, 20, collisionManager);
+        topObstacle.setId("obstacle_top");
 
-        Wall bottomWall = new Wall(0, 0, levelWidth, 20, collisionManager);
-        bottomWall.setId("wall_bottom");
+        Obstacle bottomObstacle = new Obstacle(0, 0, levelWidth, 20, collisionManager);
+        bottomObstacle.setId("obstacle_bottom");
 
-        Wall leftWall = new Wall(0, 0, 20, levelHeight, collisionManager);
-        leftWall.setId("wall_left");
+        Obstacle leftObstacle = new Obstacle(0, 0, 20, levelHeight, collisionManager);
+        leftObstacle.setId("obstacle_left");
 
-        Wall rightWall = new Wall(levelWidth - 20, 0, 20, levelHeight, collisionManager);
-        rightWall.setId("wall_right");
+        Obstacle rightObstacle = new Obstacle(levelWidth - 20, 0, 20, levelHeight, collisionManager);
+        rightObstacle.setId("obstacle_right");
 
-        addEntity(topWall);
-        entityManager.addEntity(topWall);
-        addEntity(bottomWall);
-        entityManager.addEntity(bottomWall);
-        addEntity(leftWall);
-        entityManager.addEntity(leftWall);
-        addEntity(rightWall);
-        entityManager.addEntity(rightWall);
+        addEntity(topObstacle);
+        entityManager.addEntity(topObstacle);
+        addEntity(bottomObstacle);
+        entityManager.addEntity(bottomObstacle);
+        addEntity(leftObstacle);
+        entityManager.addEntity(leftObstacle);
+        addEntity(rightObstacle);
+        entityManager.addEntity(rightObstacle);
 
         // Obstacles
-        Wall w1 = new Wall(400, 600, 1200, 30, collisionManager);
-        w1.setId("wall_1");
+        Obstacle w1 = new Obstacle(400, 600, 1200, 30, collisionManager);
+        w1.setId("obstacle_1");
 
-        Wall w2 = new Wall(900, 250, 30, 250, collisionManager);
-        w2.setId("wall_2");
+        Obstacle w2 = new Obstacle(900, 250, 30, 250, collisionManager);
+        w2.setId("obstacle_2");
 
-        Wall w3 = new Wall(250, 850, 400, 30, collisionManager);
-        w3.setId("wall_3");
+        Obstacle w3 = new Obstacle(250, 850, 400, 30, collisionManager);
+        w3.setId("obstacle_3");
 
-        Wall w4 = new Wall(250, 850, 30, 250, collisionManager);
-        w4.setId("wall_4");
+        Obstacle w4 = new Obstacle(250, 850, 30, 250, collisionManager);
+        w4.setId("obstacle_4");
 
-        Wall w5 = new Wall(900, 250, 250, 30, collisionManager);
-        w5.setId("wall_5");
+        Obstacle w5 = new Obstacle(900, 250, 250, 30, collisionManager);
+        w5.setId("obstacle_5");
 
         addEntity(w1);
         entityManager.addEntity(w1);

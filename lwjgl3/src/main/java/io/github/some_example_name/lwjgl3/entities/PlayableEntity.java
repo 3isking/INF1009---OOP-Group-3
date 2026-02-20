@@ -14,8 +14,8 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     private MovementStrategy movementStrategy;
     private CollisionResolver resolver;
     
-    private boolean wasTouchingWallLastFrame = false;
-    private boolean isTouchingWallThisFrame = false;
+    private boolean wasTouchingObstacleLastFrame = false;
+    private boolean isTouchingObstacleThisFrame = false;
 
     public PlayableEntity(MovementManager movementManager, CollisionManager collisionManager){
         super();
@@ -33,8 +33,8 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
 
     @Override
     public void update(float deltaTime){
-        wasTouchingWallLastFrame = isTouchingWallThisFrame;
-        isTouchingWallThisFrame = false;
+        wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
+        isTouchingObstacleThisFrame = false;
     }
 
     @Override
@@ -64,14 +64,14 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     // Output Manager
     public void resetCollisionState() {
-        wasTouchingWallLastFrame = isTouchingWallThisFrame;
+        wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
         
-        isTouchingWallThisFrame = false;
+        isTouchingObstacleThisFrame = false;
     }
     
-    public boolean isNewWallCollision() {
-        isTouchingWallThisFrame = true;
-        return !wasTouchingWallLastFrame;
+    public boolean isNewObstacleCollision() {
+        isTouchingObstacleThisFrame = true;
+        return !wasTouchingObstacleLastFrame;
     }
     
     // Collision Manager
@@ -81,9 +81,9 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     }
 
     @Override
-    public void collideWithWall(Wall wall)
+    public void collideWithObstacle(Obstacle obstacle)
     {
-        resolver.resolveCollisions(this, wall);
+        resolver.resolveCollisions(this, obstacle);
     }
 
     @Override

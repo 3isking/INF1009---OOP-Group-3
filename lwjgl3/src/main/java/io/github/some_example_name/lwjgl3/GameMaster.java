@@ -12,7 +12,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
-import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.inputs.Camera;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
@@ -64,7 +63,7 @@ public class GameMaster extends ApplicationAdapter{
         sceneManager.setCurrentScene("Scene2");
         
         // Setup audio
-        outputManager.loadAudio("COLLISION_EVENT", "collide.wav"); // Wall
+        outputManager.loadAudio("COLLISION_EVENT", "collide.wav"); // Obstacle
         outputManager.loadAudio("HIT_EVENT", "hit.mp3"); // AI Entity
 
         // Setup Debug

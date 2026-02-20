@@ -49,7 +49,7 @@
 109,109,0,0,109,109,0,109,109,109,0,99,109,106,107,108,94,94,94,94,94,94,94,94,94,94,94,106,106,107
 </data>
  </layer>
- <objectgroup id="3" name="Walls">
+ <objectgroup id="3" name="Obstacles">
   <object id="4" x="672.667" y="447.5" width="130.667" height="128.5"/>
   <object id="5" x="1.83333" y="384" width="384" height="32"/>
   <object id="6" x="376" y="192.167" width="16" height="223.167"/>
