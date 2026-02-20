@@ -9,7 +9,6 @@ public abstract class Entity {
     protected Vector2 position;
     protected Vector2 velocity;
     protected Sprite sprite = null;
-    protected int layer;
     protected float rotation;
     protected boolean visible;
     protected BoundingBox boundingBox;
@@ -18,7 +17,6 @@ public abstract class Entity {
         this.position = new Vector2();
         this.velocity = new Vector2(0, 0);
         this.visible = true;
-        this.layer = 0;
         this.rotation = 0f;
         this.id = "0";
     }
@@ -46,15 +44,7 @@ public abstract class Entity {
     public void setSprite(Sprite sprite) {
         this.sprite = sprite;
     }
-
-    public int getLayer() {
-        return layer;
-    }
-
-    public void setLayer(int layer) {
-        this.layer = layer;
-    }
-
+    
     public float getRotation() {
         return rotation;
     }

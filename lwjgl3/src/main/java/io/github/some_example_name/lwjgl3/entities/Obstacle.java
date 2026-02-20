@@ -22,10 +22,8 @@ public class Obstacle extends Entity implements iCollidable {
     // }
 //added by chavonne - accepts parameters for more flexible positioning
     public Obstacle(float x, float y, float width, float height, CollisionManager collisionManager){
+        super();
         this.setPosition(new Vector2(x, y));
-        this.setVisible(true);
-        this.setLayer(1);
-        this.setRotation(0);
         this.setId("0");
         this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), width, height));
         this.resolver = collisionManager.getResolver();
