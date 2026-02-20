@@ -99,24 +99,7 @@ public class GameMaster extends ApplicationAdapter{
 
         debugMode();
         
-        // Input handling stays after render
-        // Testing camera change
-        if (inputManager.inputPressed("freeCam")) {
-            inputManager.useFreeCamera();
-        }
-        if (inputManager.inputPressed("playerCam")) {
-            inputManager.usePlayerCamera();
-        }
-        if (inputManager.inputPressed("defaultCam")) {
-            inputManager.useDefaultCamera();
-        }
-        String rebindAction = "right";
-        if (inputManager.inputPressed("rebind")) {
-            inputManager.setKeyBind(rebindAction);
-        }
-        
     }
-
 
     public void dispose(){
         batch.dispose();

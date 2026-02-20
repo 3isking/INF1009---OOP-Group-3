@@ -1,7 +1,5 @@
 package io.github.some_example_name.lwjgl3.inputs;
 
-import java.util.Set;
-
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Vector2;

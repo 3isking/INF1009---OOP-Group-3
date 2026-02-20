@@ -38,7 +38,7 @@ public final class CollisionResolver {
     // PLAYER vs AI
     public void resolveCollisions(PlayableEntity player, AiEntity ai) {
         // Transition to Game Over scene
-        System.out.println("Player collided with AI!");
+        System.out.println("[Collision] Player collided with AI!");
         outputManager.playSound("HIT_EVENT");
         sceneManager.setCurrentScene("Scene3"); 
     }
@@ -46,7 +46,7 @@ public final class CollisionResolver {
     // Shared Entity-Obstacle Collision Logic
     public void resolveEntityObstacle(Entity entity, Obstacle obstacle) 
     {
-        System.out.println(entity.getId() + " collided with " + obstacle.getId());
+        System.out.println("[Collision] " + entity.getId() + " collided with " + obstacle.getId());
         
         // Play sound 
         if (entity instanceof PlayableEntity) {

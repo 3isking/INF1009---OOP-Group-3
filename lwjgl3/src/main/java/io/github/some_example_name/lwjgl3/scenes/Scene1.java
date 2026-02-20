@@ -179,7 +179,22 @@ public class Scene1 extends Scene {
 
     @Override
     public void update(float deltaTime) {
-        // Update logic for Scene1 if needed
+        // Camera Control for Scene1
+        if (inputManager.inputPressed("freeCam")) {
+            inputManager.useFreeCamera();
+        }
+        if (inputManager.inputPressed("playerCam")) {
+            inputManager.usePlayerCamera();
+        }
+        if (inputManager.inputPressed("defaultCam")) {
+            inputManager.useDefaultCamera();
+        }
+
+        // Movement Rebind Test
+        String rebindAction = "right";
+        if (inputManager.inputPressed("rebind")) {
+            inputManager.setKeyBind(rebindAction);
+        }
     }
 
     @Override
