@@ -84,7 +84,7 @@ public class InputManager extends InputAdapter{
 	}
 	
 	public void useDefaultCamera() {
-	    this.camera = new DefaultCamera(this, camera.getCamera());
+	    this.camera = new DefaultCamera(camera.getCamera());
 	}
 	 
 }
