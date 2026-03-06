@@ -75,7 +75,7 @@ public class Scene2 extends Scene {
         for (int i = getEntityList().size() - 1; i >= 0; i--) {
             entityManager.removeEntity(getEntityList().get(i).getId());
         }
-        getEntityList().clear();
+        clearEntityList();
         
         System.out.println("[Scene2 - Main Menu] Scene cleanup complete.");
     }

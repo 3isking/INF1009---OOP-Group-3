@@ -37,7 +37,11 @@ public abstract class Scene {
     public abstract void render(SpriteBatch batch);
 
     public List<Entity> getEntityList() {
-        return entityList;
+        return new ArrayList<>(entityList);
+    }
+
+    public void clearEntityList() {
+        entityList.clear();
     }
     
     public void addEntity(Entity entity) {

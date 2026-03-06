@@ -85,7 +85,7 @@ public class Scene3 extends Scene {
         
         // Clear any entities if present
         entityManager.clear();
-        getEntityList().clear();
+        clearEntityList();
         
         System.out.println("[Scene3 - Game Over] Scene cleanup complete.");
     }

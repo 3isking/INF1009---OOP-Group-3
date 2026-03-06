@@ -4,14 +4,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.collision.CollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
-import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
-import io.github.some_example_name.lwjgl3.entities.Sprite;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 
@@ -154,7 +152,7 @@ public class Scene1 extends Scene {
         }
 
         // Clear the scene entity list
-        getEntityList().clear();
+        clearEntityList();
         inputManager.useDefaultCamera();
 
         System.out.println("[Scene1 - Level] Scene cleanup complete.");
