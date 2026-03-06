@@ -64,6 +64,13 @@ public class SceneManager {
         }
     }
     
+    //initialize ClassroomScene - SceneManager is responsible for scene initialization
+    public void initializeClassroomScene() {
+        ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager, movementManager, collisionManager);
+        addScene(classroomScene);
+        classroomScene.onLoad();
+    }
+
     // Initialize Scene1 - SceneManager is responsible for scene initialization
     public void initializeScene1() {
         Scene1 scene1 = new Scene1(entityManager, inputManager, movementManager, collisionManager);

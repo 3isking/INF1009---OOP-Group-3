@@ -55,12 +55,13 @@ public class GameMaster extends ApplicationAdapter{
         collisionManager.setCollisionManager(sceneManager, outputManager);
         
         // Initialize both scenes
+        sceneManager.initializeClassroomScene();
         sceneManager.initializeScene1();
         sceneManager.initializeScene2();
         sceneManager.initializeScene3();
         
         // Start with Scene2 (Main Menu)
-        sceneManager.setCurrentScene("Scene2");
+        sceneManager.setCurrentScene("ClassroomScene");
         
         // Setup audio
         outputManager.loadAudio("COLLISION_EVENT", "collide.wav"); // Obstacle
@@ -93,12 +94,11 @@ public class GameMaster extends ApplicationAdapter{
         
         // 6. RENDER
         batch.begin();
-        sceneManager.render(batch);
-        entityManager.render(batch);
+        sceneManager.render(batch);  // background draws at screen coords via ClassroomScene
+        entityManager.render(batch); // player draws on top
         batch.end();
 
         debugMode();
-        
     }
 
     public void dispose(){
