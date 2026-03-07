@@ -15,7 +15,9 @@ public class DefaultCamera implements Camera{
 
     @Override
     public void control(Entity player) {
-    	camera.position.set(new Vector3());
+    	//camera.position.set(new Vector3());
+        camera.position.set(0, 0, 0);  // keep centered at origin
+        camera.update();
     }
 
     @Override
