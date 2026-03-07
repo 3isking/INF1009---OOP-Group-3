@@ -20,6 +20,12 @@ public class Sprite {
         }
     }
 
+    public Sprite(Texture texture, float height) {
+        this.texture = texture;
+        this.height = height;
+        this.width = (texture.getWidth() / (float) texture.getHeight()) * height;
+    }
+
     public Sprite(Texture texture, float width, float height) {
         this.texture = texture;
         this.width = width;
@@ -60,6 +66,8 @@ public class Sprite {
     public void setHeight(float height) {
         this.height = height;
     }
+
+    
 
     public void dispose() {
         if (texture != null) {

@@ -23,7 +23,7 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         super();
     	this.id = "player";
         this.setPosition(new Vector2(x, y));
-        this.setSprite(new Sprite(new Texture(Gdx.files.internal("Player.png")), 50, 50));
+        this.setSprite(new Sprite(new Texture(Gdx.files.internal("plane.png")),30)); //2:1 ratio for plane sprite
         this.movementStrategy = movementManager.getPlayerMovement();
         this.resolver = collisionManager.getResolver();
     }
