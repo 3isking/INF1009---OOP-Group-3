@@ -64,12 +64,13 @@ public class GameMaster extends ApplicationAdapter {
 
         collisionManager.setCollisionManager(sceneManager, outputManager);
 
+        sceneManager.initializeScene2();
         sceneManager.initializeClassroomScene();
         sceneManager.initializeScene1();
-        sceneManager.initializeScene2();
         sceneManager.initializeScene3();
 
-        sceneManager.setCurrentScene("ClassroomScene");
+        sceneManager.setCurrentScene("Scene2");
+//        sceneManager.setCurrentScene("ClassroomScene");
 
         outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
         outputManager.loadAudio("HIT_EVENT", "hit.mp3");
