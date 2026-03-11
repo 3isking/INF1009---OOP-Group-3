@@ -77,6 +77,11 @@ public class AiEntity
 
     @Override
     public void collideWithAI(AiEntity ai) {
+        
+    }
 
+    @Override
+    public void collideWithCollectable(Collectable collectable) {
+        
     }
 }

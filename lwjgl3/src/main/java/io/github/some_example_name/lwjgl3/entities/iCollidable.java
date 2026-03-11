@@ -10,4 +10,5 @@ public interface iCollidable {
     void collideWithPlayer(PlayableEntity player);
     void collideWithObstacle(Obstacle obstacle);
     void collideWithAI(AiEntity ai);
+    void collideWithCollectable(Collectable collectable);
 }

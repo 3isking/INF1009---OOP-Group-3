@@ -70,4 +70,9 @@ public class Obstacle extends Entity implements iCollidable {
         resolver.resolveCollisions(ai, this);
     }
 
+    @Override
+    public void collideWithCollectable(Collectable collectable) {
+
+    }
+
 }

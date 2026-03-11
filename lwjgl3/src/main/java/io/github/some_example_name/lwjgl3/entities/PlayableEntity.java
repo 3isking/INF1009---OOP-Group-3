@@ -93,6 +93,11 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     @Override
     public void collideWithPlayer(PlayableEntity player)
     {
+        // player-player collisions can be ignored or handled here
+    }
+
+    @Override
+    public void collideWithCollectable(Collectable collectable) {
         
     }
 }
