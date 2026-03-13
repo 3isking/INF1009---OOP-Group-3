@@ -113,6 +113,7 @@ public class GameMaster extends ApplicationAdapter {
         batch.begin();
         sceneManager.render(batch);
         entityManager.render(batch);
+        sceneManager.renderUI(batch);
         batch.end();
 
         debugMode();
