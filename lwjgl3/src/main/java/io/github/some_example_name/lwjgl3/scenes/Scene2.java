@@ -288,4 +288,7 @@ public class Scene2 extends Scene {
         batch.draw(startBtnTexture, startBtnX, startBtnY, btnWidth, btnHeight);
         batch.draw(quitBtnTexture, quitBtnX, quitBtnY, btnWidth, btnHeight);
     }
+    @Override
+    public void renderUI(SpriteBatch batch) {
+    }
 }

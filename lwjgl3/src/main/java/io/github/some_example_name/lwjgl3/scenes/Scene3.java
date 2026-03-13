@@ -143,4 +143,7 @@ public class Scene3 extends Scene {
         font.draw(batch, titleText, layout2X, 100);
         font.getData().setScale(2.0f); // Reset scale
     }
+    @Override
+    public void renderUI(SpriteBatch batch) {
+    }
 }

@@ -193,4 +193,8 @@ public class Scene1 extends Scene {
             }
         }
     }
+    
+    @Override
+    public void renderUI(SpriteBatch batch) {
+    }
 }

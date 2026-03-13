@@ -35,6 +35,8 @@ public abstract class Scene {
     public abstract void update(float deltaTime);
     
     public abstract void render(SpriteBatch batch);
+    
+    public abstract void renderUI(SpriteBatch batch);
 
     public List<Entity> getEntityList() {
         return new ArrayList<>(entityList);

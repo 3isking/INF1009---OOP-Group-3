@@ -109,6 +109,12 @@ public class SceneManager implements iSceneManager {
     public void render(SpriteBatch batch) {
         if (currentScene != null) {
             currentScene.render(batch);
+        }
     }
-}
+    
+    public void renderUI(SpriteBatch batch) {
+        if (currentScene != null) {
+             currentScene.renderUI(batch);
+        }
+    }
 }

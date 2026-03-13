@@ -1,15 +1,26 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Json;
+
+import java.util.List;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
+import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
+import io.github.some_example_name.lwjgl3.entities.Question;
+import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
@@ -47,6 +58,12 @@ public class ClassroomScene extends Scene {
     private static final float SCALE = SCREEN_H / IMG_H;
     private static final float DRAW_W = (float) Math.ceil(IMG_W * SCALE) + 1f; // +1 to hide seam
     private static final float DRAW_H = SCREEN_H;
+    
+    private BitmapFont text1;
+    private BitmapFont text2;
+    private List<Question> questions;
+    private int currentQuestion = 0;
+    private String currentQuestionText = "";
 
     public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
                           iMovementManager movementManager, iCollisionManager collisionManager) {
@@ -80,6 +97,20 @@ public class ClassroomScene extends Scene {
         backgroundTexture = new Texture(Gdx.files.internal("classroom2.png"));
         bg1X = 0;
         bg2X = DRAW_W;
+        Json json = new Json();
+        Question[] questionArray = json.fromJson(Question[].class, Gdx.files.internal("questions.json"));
+        questions = java.util.Arrays.asList(questionArray);
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Black.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        params.size = 24;
+        params.color = Color.WHITE;
+        params.borderWidth = 1;        // outline thickness
+        params.borderColor = Color.BLACK;
+        text1 = generator.generateFont(params);
+        params.borderWidth = 0; 
+        params.color = Color.BLACK;
+        text2 = generator.generateFont(params);
+        generator.dispose();
     }
 
     @Override
@@ -143,6 +174,37 @@ public class ClassroomScene extends Scene {
                 addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
             }
+            
+            if (currentSecond % 5 == 0) {
+            	if (questions.isEmpty()) {
+            		return;
+            	}
+
+                // Get current question
+                Question q = questions.get(currentQuestion);
+                currentQuestionText = q.question;
+                AnswerFactory answerFactory = new AnswerFactory(collisionManager);
+                float spriteHeight = 80f; // match your Answer width/height in the factory
+
+                // Define lane centers
+                float topY = -SCREEN_H / 2f + SCREEN_H * 0.85f - spriteHeight / 2f;
+                float middleY = -SCREEN_H / 2f + SCREEN_H * 0.5f - spriteHeight / 2f;
+                float bottomY = -SCREEN_H / 2f + SCREEN_H * 0.15f - spriteHeight / 2f;
+                Answer topAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, topY, q.answers[0], 0 == q.correct);
+                Answer middleAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, middleY, q.answers[1], 1 == q.correct);
+                Answer bottomAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, bottomY, q.answers[2], 2 == q.correct);
+                addEntity(topAnswer);
+                addEntity(middleAnswer);
+                addEntity(bottomAnswer);
+                entityManager.addEntity(topAnswer);
+                entityManager.addEntity(middleAnswer);
+                entityManager.addEntity(bottomAnswer);
+                currentQuestion++;
+                if (currentQuestion >= questions.size()) {
+                    currentQuestion = 0; // loop back to first question if needed
+                }
+                
+            }
         }
 
         // Scroll obstacles by same amount as background
@@ -163,6 +225,29 @@ public class ClassroomScene extends Scene {
 
         batch.draw(backgroundTexture, left + bg1X, bottom, DRAW_W, DRAW_H);
         batch.draw(backgroundTexture, left + bg2X, bottom, DRAW_W, DRAW_H);
+    }
+    
+    @Override
+    public void renderUI(SpriteBatch batch) {
+        // question text and answer text on top of everything
+    	for (Entity entity : entityManager.getAllEntities()) {
+            if (entity instanceof Answer) {
+                Answer answer = (Answer) entity;
+                GlyphLayout layout = new GlyphLayout(text2, answer.getText());
+                float centerX = answer.getPosition().x + answer.getSprite().getWidth() / 2f;
+                float centerY = answer.getPosition().y + answer.getSprite().getHeight() / 2f;
+                float textX = centerX - layout.width / 2f;
+                float textY = centerY + layout.height / 2f +5f;
+                text2.draw(batch, layout, textX, textY);
+            }
+        }
+        if (!currentQuestionText.isEmpty()) {
+            GlyphLayout layout = new GlyphLayout(text1, currentQuestionText);
+            float x = camLeft() + (camera.viewportWidth / 2f) - layout.width / 2f;
+            float y = camBottom() + camera.viewportHeight - 20f;
+            text1.draw(batch, layout, x, y);
+        }
+        
     }
 
     @Override
