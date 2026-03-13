@@ -5,24 +5,24 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
-import io.github.some_example_name.lwjgl3.entities.EntityManager;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
-public class SceneManager {
+public class SceneManager implements iSceneManager {
     private Map<String, Scene> scenes;
     private Scene currentScene;
     
     // Manager references - SceneManager handles all scenes and their managers
-    private EntityManager entityManager;
-    private InputManager inputManager;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
+    private iEntityManager entityManager;
+    private iInputManager inputManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
     
 
-    public SceneManager(EntityManager entityManager, InputManager inputManager, 
-                        MovementManager movementManager, CollisionManager collisionManager) {
+    public SceneManager(iEntityManager entityManager, iInputManager inputManager, 
+                        iMovementManager movementManager, iCollisionManager collisionManager) {
         this.scenes = new HashMap<>();
         this.entityManager = entityManager;
         this.inputManager = inputManager;

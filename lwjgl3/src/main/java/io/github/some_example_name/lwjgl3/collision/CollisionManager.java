@@ -9,7 +9,7 @@ import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 
-public class CollisionManager {
+public class CollisionManager implements iCollisionManager {
     private SceneManager sceneManager;
     private CollisionDetector collisionDetector;
     private CollisionResolver collisionResolver;

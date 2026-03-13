@@ -148,17 +148,17 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
-import io.github.some_example_name.lwjgl3.entities.EntityManager;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class Scene2 extends Scene {
-    private EntityManager entityManager;
-    private InputManager inputManager;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
-    private SceneManager sceneManager;
+    private iEntityManager entityManager;
+    private iInputManager inputManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
+    private iSceneManager sceneManager;
     
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
@@ -180,15 +180,15 @@ public class Scene2 extends Scene {
     private String titleText = "MAIN MENU";
     private boolean clickToStart = false;
 
-    public Scene2(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
+    public Scene2(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
         super("Scene2");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
         this.movementManager = movementManager;
         this.collisionManager = collisionManager;
     }
-    
-    public void setSceneManager(SceneManager sceneManager) {
+
+    public void setSceneManager(iSceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
 

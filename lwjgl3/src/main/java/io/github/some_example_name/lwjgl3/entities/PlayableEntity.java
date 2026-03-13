@@ -6,9 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
 
 public class PlayableEntity extends Entity implements iMovable, iCollidable {
@@ -19,7 +19,7 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     private boolean wasTouchingObstacleLastFrame = false;
     private boolean isTouchingObstacleThisFrame = false;
 
-    public PlayableEntity(float x, float y, MovementManager movementManager, CollisionManager collisionManager){
+    public PlayableEntity(float x, float y, iMovementManager movementManager, iCollisionManager collisionManager){
         super();
     	this.id = "player";
         this.setPosition(new Vector2(x, y));

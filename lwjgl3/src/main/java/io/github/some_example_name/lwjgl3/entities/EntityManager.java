@@ -3,16 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
-
-public class EntityManager {
+public class EntityManager implements iEntityManager {
     private List<Entity> entities;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
 
-    public EntityManager(MovementManager movementManager, CollisionManager collisionManager) {
+    public EntityManager(iMovementManager movementManager, iCollisionManager collisionManager) {
         this.entities = new ArrayList<>();
         this.movementManager = movementManager;
         this.collisionManager = collisionManager;

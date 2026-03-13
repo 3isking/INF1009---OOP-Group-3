@@ -5,15 +5,15 @@ import java.util.List;
 
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.iMovable;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 
-public class MovementManager {
-    private final InputManager inputManager;
+public class MovementManager implements iMovementManager{
+    private final iInputManager inputManager;
     private final PlayerMovement playerMovement;
     private final AIMovement aiMovement;
     private List<iMovable> movableEntitys;
 
-    public MovementManager(InputManager inputManager) {
+    public MovementManager(iInputManager inputManager) {
         this.inputManager = inputManager;
         this.playerMovement = new PlayerMovement();
         this.aiMovement = new AIMovement();

@@ -2,7 +2,7 @@ package io.github.some_example_name.lwjgl3.factories;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 
@@ -13,9 +13,9 @@ public class ObstacleFactory {
         BOOKS
     }
 
-    private CollisionManager collisionManager;
+    private iCollisionManager collisionManager;
 
-    public ObstacleFactory(CollisionManager collisionManager) {
+    public ObstacleFactory(iCollisionManager collisionManager) {
         this.collisionManager = collisionManager;
     }
 

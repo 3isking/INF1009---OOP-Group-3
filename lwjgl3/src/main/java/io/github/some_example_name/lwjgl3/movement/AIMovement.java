@@ -3,7 +3,7 @@ package io.github.some_example_name.lwjgl3.movement;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.iMovable;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 
 public class AIMovement implements MovementStrategy {
     private float timer = 0f;
@@ -12,7 +12,7 @@ public class AIMovement implements MovementStrategy {
     private final float speed = 1f;    // adjust as needed
 
     @Override
-    public void move(iMovable entity, InputManager inputManager) {
+    public void move(iMovable entity, iInputManager inputManager) {
         if (entity == null) return;
 
         // Use Gdx.graphics.getDeltaTime() to get frame time

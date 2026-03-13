@@ -9,17 +9,17 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
-import io.github.some_example_name.lwjgl3.entities.EntityManager;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class Scene3 extends Scene {
-    private EntityManager entityManager;
-    private InputManager inputManager;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
-    private SceneManager sceneManager;
+    private iEntityManager entityManager;
+    private iInputManager inputManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
+    private iSceneManager sceneManager;
     private Music gameOverMusic;
     
     private BitmapFont font;
@@ -29,7 +29,7 @@ public class Scene3 extends Scene {
     private String instructionText = "Game Over! Click to restart or press ESC to exit.";
     private boolean clickToStart = false;
 
-    public Scene3(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
+    public Scene3(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
         super("Scene3");
         this.entityManager = entityManager;
         this.inputManager = inputManager;

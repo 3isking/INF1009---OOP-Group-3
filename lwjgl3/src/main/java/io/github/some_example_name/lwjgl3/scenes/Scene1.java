@@ -5,21 +5,21 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
-import io.github.some_example_name.lwjgl3.entities.EntityManager;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 
 public class Scene1 extends Scene {
 
-    private EntityManager entityManager;
-    private InputManager inputManager;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
+    private iEntityManager entityManager;
+    private iInputManager inputManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
     private Texture backgroundTexture;
     private Music backgroundMusic;
 
@@ -27,7 +27,7 @@ public class Scene1 extends Scene {
     private static final int LEVEL_HEIGHT = 1200;
     private static final int TILE_SIZE = 200;
 
-    public Scene1(EntityManager entityManager, InputManager inputManager, MovementManager movementManager, CollisionManager collisionManager) {
+    public Scene1(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
         super("Scene1");
         this.entityManager = entityManager;
         this.inputManager = inputManager;

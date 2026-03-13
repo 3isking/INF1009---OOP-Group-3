@@ -3,7 +3,7 @@ package io.github.some_example_name.lwjgl3.movement;
 import com.badlogic.gdx.math.Vector2;
 
 import io.github.some_example_name.lwjgl3.entities.iMovable;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 
 public class PlayerMovement implements MovementStrategy {
 
@@ -15,7 +15,7 @@ public class PlayerMovement implements MovementStrategy {
     private float laneSwapTimer = 0f;
 
     @Override
-    public void move(iMovable entity, InputManager inputManager) {
+    public void move(iMovable entity, iInputManager inputManager) {
         
         if (entity == null || inputManager == null) {
             return;
@@ -25,7 +25,7 @@ public class PlayerMovement implements MovementStrategy {
         float deltaTime = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
         laneSwapTimer += deltaTime;
 
-        // Side Movements
+        /*
         Vector2 newVel = new Vector2(0, 0);
         if (inputManager.inputHeld("left")) {
             newVel = new Vector2(-horizontalSpeed, 0);
@@ -37,7 +37,7 @@ public class PlayerMovement implements MovementStrategy {
 
         // apply movement immediately
         entity.setPosition(entity.getPosition().add(entity.getVelocity()));
-
+        */
         // Lane Swaps
         if (inputManager.inputHeld("down") && laneSwapTimer > laneSwapCooldown) {
             currentLane--;

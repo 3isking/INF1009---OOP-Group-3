@@ -8,7 +8,7 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.inputs.Inputs.Device;
 
 
-public class InputManager extends InputAdapter{
+public class InputManager extends InputAdapter implements iInputManager {
     private final Inputs inputs;
     private Camera camera;
     private void defaultBinding() {

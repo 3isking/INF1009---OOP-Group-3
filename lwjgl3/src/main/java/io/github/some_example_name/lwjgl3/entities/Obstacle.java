@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
 
 public class Obstacle extends Entity implements iCollidable {
@@ -21,7 +21,7 @@ public class Obstacle extends Entity implements iCollidable {
     //     this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), 100, 100));
     // }
 //added by chavonne - accepts parameters for more flexible positioning
-    public Obstacle(float x, float y, float width, float height, CollisionManager collisionManager){
+    public Obstacle(float x, float y, float width, float height, iCollisionManager collisionManager){
         super();
     	this.id = "obstacle";
         this.setPosition(new Vector2(x, y));

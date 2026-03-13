@@ -19,6 +19,7 @@ import io.github.some_example_name.lwjgl3.inputs.Camera;
 import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.inputs.DefaultCamera;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 

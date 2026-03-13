@@ -6,22 +6,22 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import io.github.some_example_name.lwjgl3.collision.CollisionManager;
-import io.github.some_example_name.lwjgl3.entities.EntityManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
-import io.github.some_example_name.lwjgl3.movement.MovementManager;
+import io.github.some_example_name.lwjgl3.inputs.iInputManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class ClassroomScene extends Scene {
 
-    private EntityManager entityManager;
-    private InputManager inputManager;
-    private MovementManager movementManager;
-    private CollisionManager collisionManager;
+    private iEntityManager entityManager;
+    private iInputManager inputManager;
+    private iMovementManager movementManager;
+    private iCollisionManager collisionManager;
 
     // Grab the real OrthographicCamera so we can read its actual viewport size at runtime
     private OrthographicCamera camera;
@@ -48,8 +48,8 @@ public class ClassroomScene extends Scene {
     private static final float DRAW_W = (float) Math.ceil(IMG_W * SCALE) + 1f; // +1 to hide seam
     private static final float DRAW_H = SCREEN_H;
 
-    public ClassroomScene(EntityManager entityManager, InputManager inputManager,
-                          MovementManager movementManager, CollisionManager collisionManager) {
+    public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
+                          iMovementManager movementManager, iCollisionManager collisionManager) {
         super("ClassroomScene");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
