@@ -44,7 +44,7 @@ public class ClassroomScene extends Scene {
     private float spawnTimer = 0f;
     private int lastSpawnSecond = -1;
 
-    private static final float SCROLL_SPEED = 6f;
+    private static final float SCROLL_SPEED = 3f;
 
     // Virtual / design resolution — used for entity placement and image scaling only
     private static final float SCREEN_W = 640f;
@@ -163,7 +163,7 @@ public class ClassroomScene extends Scene {
         if (currentSecond != lastSpawnSecond) {
             lastSpawnSecond = currentSecond;
 
-            if (currentSecond % 2 == 0) {
+            if (currentSecond % 3 == 0 && currentSecond % 7 != 0) { // Avoid spawning obstacles on question seconds
                 ObstacleFactory factory = new ObstacleFactory(collisionManager);
                 float spawnY = -SCREEN_H / 2f + MathUtils.random(100, 400);
                 // Spawn just off the real right edge so obstacles appear from the correct side
@@ -175,7 +175,7 @@ public class ClassroomScene extends Scene {
                 entityManager.addEntity(newObstacle);
             }
             
-            if (currentSecond % 5 == 0) {
+            if (currentSecond % 7 == 0) {
             	if (questions.isEmpty()) {
             		return;
             	}

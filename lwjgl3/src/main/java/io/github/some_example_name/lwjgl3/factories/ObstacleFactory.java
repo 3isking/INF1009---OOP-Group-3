@@ -32,7 +32,7 @@ public class ObstacleFactory {
 
     private Obstacle createEraser(float x, float y) {
         Obstacle obstacle = new Obstacle(x, y, 0, 0, collisionManager);
-        obstacle.setSprite(new Sprite(new Texture(Gdx.files.internal("eraser.png")), 60f));
+        obstacle.setSprite(new Sprite(new Texture(Gdx.files.internal("eraser.png")), 80f));
         return obstacle;
     }
 
