@@ -1,8 +1,5 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.utils.Json;
-
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
@@ -13,17 +10,19 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Json;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
-import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Question;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
-import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
@@ -45,6 +44,7 @@ public class ClassroomScene extends Scene {
     private int lastSpawnSecond = -1;
 
     private static final float SCROLL_SPEED = 3f;
+    private static final float BG_SCROLL_SPEED = 1.5f;
 
     // Virtual / design resolution — used for entity placement and image scaling only
     private static final float SCREEN_W = 640f;
@@ -94,7 +94,7 @@ public class ClassroomScene extends Scene {
 
     @Override
     public void onLoad() {
-        backgroundTexture = new Texture(Gdx.files.internal("classroom2.png"));
+        backgroundTexture = new Texture(Gdx.files.internal("classroom2_1.png"));
         bg1X = 0;
         bg2X = DRAW_W;
         Json json = new Json();
@@ -146,9 +146,10 @@ public class ClassroomScene extends Scene {
     @Override
     public void update(float deltaTime) {
         float scrollAmount = SCROLL_SPEED * deltaTime * 60f;
+        float bgScrollAmount = BG_SCROLL_SPEED * deltaTime * 60f;
 
-        bg1X -= scrollAmount;
-        bg2X -= scrollAmount;
+        bg1X -= bgScrollAmount;
+        bg2X -= bgScrollAmount;
 
         // Leapfrog: when a panel has scrolled fully off the left edge, jump it
         // to just after the other panel.  bg1X/bg2X are offsets from camLeft(),
