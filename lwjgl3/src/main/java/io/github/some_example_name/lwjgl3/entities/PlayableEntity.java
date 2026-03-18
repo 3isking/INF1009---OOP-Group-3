@@ -19,6 +19,12 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     private boolean wasTouchingObstacleLastFrame = false;
     private boolean isTouchingObstacleThisFrame = false;
 
+    // --- Power-up fields ---
+    private int powerUps = 0;
+    private boolean powerActive = false;
+    private float powerDuration = 5f; 
+    private float powerTimer = 0f;
+
     public PlayableEntity(float x, float y, iMovementManager movementManager, iCollisionManager collisionManager){
         super();
     	this.id = "player";
@@ -39,6 +45,15 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     public void update(float deltaTime){
         wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
         isTouchingObstacleThisFrame = false;
+
+        // Power up timer
+        if (powerActive) {
+            powerTimer += deltaTime;
+            if (powerTimer >= powerDuration) {
+                powerActive = false;    // deactivate multiplier
+                powerTimer = 0f;        // reset timer
+            }
+        }
     }
 
     @Override
@@ -99,6 +114,35 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     @Override
     public void collideWithCollectable(Collectable collectable) {
         
+    }
+
+    // --- Power-up methods ---
+    public void addPowerUp() {
+        powerUps++;
+    }
+
+    public boolean canUsePowerUp() {
+        return powerUps > 0 && !powerActive;
+    }
+
+    public void usePowerUp() {
+        if (canUsePowerUp()) {
+            powerUps--;
+            powerActive = true;
+            powerTimer = 0f; 
+        }
+    }
+
+    public void deactivatePowerUp() {
+        powerActive = false;
+    }
+
+    public boolean isPowerActive() {
+        return powerActive;
+    }
+
+    public boolean isPowerUpsAvailable() {
+        return powerUps > 0;
     }
 }
 

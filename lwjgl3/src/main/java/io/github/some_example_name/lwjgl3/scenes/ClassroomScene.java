@@ -3,6 +3,7 @@ package io.github.some_example_name.lwjgl3.scenes;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,6 +24,8 @@ import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
+import io.github.some_example_name.lwjgl3.factories.CollectableFactory;
+import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
@@ -65,6 +68,15 @@ public class ClassroomScene extends Scene {
     private int currentQuestion = 0;
     private String currentQuestionText = "";
 
+    // Scoring system
+    private float distanceTravelled = 0f;
+    private int score = 0;
+
+    // Multiplier indicator
+    private Texture multiplierIcon;      // Default icon
+    private Texture multiplierActiveIcon; // Glow/active state
+
+
     public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
                           iMovementManager movementManager, iCollisionManager collisionManager) {
         super("ClassroomScene");
@@ -94,23 +106,48 @@ public class ClassroomScene extends Scene {
 
     @Override
     public void onLoad() {
+        // Background
         backgroundTexture = new Texture(Gdx.files.internal("classroom2_1.png"));
         bg1X = 0;
         bg2X = DRAW_W;
-        Json json = new Json();
-        Question[] questionArray = json.fromJson(Question[].class, Gdx.files.internal("questions.json"));
-        questions = java.util.Arrays.asList(questionArray);
+
+        // Questions JSON
+        try {
+            Json json = new Json();
+            Question[] questionArray = json.fromJson(Question[].class, Gdx.files.internal("questions.json"));
+            if (questionArray == null || questionArray.length == 0) {
+                System.err.println("Warning: questions.json empty or missing!");
+                questions = java.util.Collections.emptyList();
+            } else {
+                questions = java.util.Arrays.asList(questionArray);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            questions = java.util.Collections.emptyList();
+        }
+
+        // Fonts
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Roboto-Black.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter params = new FreeTypeFontGenerator.FreeTypeFontParameter();
         params.size = 24;
         params.color = Color.WHITE;
-        params.borderWidth = 1;        // outline thickness
+        params.borderWidth = 1;
         params.borderColor = Color.BLACK;
         text1 = generator.generateFont(params);
-        params.borderWidth = 0; 
+        params.borderWidth = 0;
         params.color = Color.BLACK;
         text2 = generator.generateFont(params);
         generator.dispose();
+
+        // Power-up icons
+        try {
+            multiplierIcon = new Texture(Gdx.files.internal("power.jpg"));
+            multiplierActiveIcon = new Texture(Gdx.files.internal("owl.png")); // ensure exists
+        } catch (Exception e) {
+            e.printStackTrace();
+            multiplierIcon = null;
+            multiplierActiveIcon = null;
+        }
     }
 
     @Override
@@ -126,6 +163,7 @@ public class ClassroomScene extends Scene {
         player.setId("player_1");
         addEntity(player);
         entityManager.addEntity(player);
+        player.addPowerUp();
 
         // Spawn initial obstacles just off the right edge of the VIRTUAL screen
         ObstacleFactory factory = new ObstacleFactory(collisionManager);
@@ -148,26 +186,31 @@ public class ClassroomScene extends Scene {
         float scrollAmount = SCROLL_SPEED * deltaTime * 60f;
         float bgScrollAmount = BG_SCROLL_SPEED * deltaTime * 60f;
 
+        // Find player once
+        PlayableEntity player = null;
+        for (Entity entity : entityManager.getAllEntities()) {
+            if (entity instanceof PlayableEntity) {
+                player = (PlayableEntity) entity;
+                break;
+            }
+        }
+
+        // Scroll background
         bg1X -= bgScrollAmount;
         bg2X -= bgScrollAmount;
-
-        // Leapfrog: when a panel has scrolled fully off the left edge, jump it
-        // to just after the other panel.  bg1X/bg2X are offsets from camLeft(),
-        // so the off-screen condition is simply offset + DRAW_W <= 0.
         if (bg1X + DRAW_W <= 0) bg1X = bg2X + DRAW_W;
         if (bg2X + DRAW_W <= 0) bg2X = bg1X + DRAW_W;
 
-        // Spawn timer
+        // Update spawn timer
         spawnTimer += deltaTime;
         int currentSecond = (int) spawnTimer;
-
         if (currentSecond != lastSpawnSecond) {
             lastSpawnSecond = currentSecond;
 
-            if (currentSecond % 3 == 0 && currentSecond % 7 != 0) { // Avoid spawning obstacles on question seconds
+            // Spawn obstacles
+            if (currentSecond % 3 == 0 && currentSecond % 7 != 0) {
                 ObstacleFactory factory = new ObstacleFactory(collisionManager);
                 float spawnY = -SCREEN_H / 2f + MathUtils.random(100, 400);
-                // Spawn just off the real right edge so obstacles appear from the correct side
                 float spawnX = camRight() + 40f;
                 Obstacle newObstacle = factory.create(
                         MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS,
@@ -175,43 +218,60 @@ public class ClassroomScene extends Scene {
                 addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
             }
-            
-            if (currentSecond % 7 == 0) {
-            	if (questions.isEmpty()) {
-            		return;
-            	}
 
-                // Get current question
+            // Spawn questions safely
+            if (currentSecond % 7 == 0 && !questions.isEmpty()) {
                 Question q = questions.get(currentQuestion);
                 currentQuestionText = q.question;
-                AnswerFactory answerFactory = new AnswerFactory(collisionManager);
-                float spriteHeight = 80f; // match your Answer width/height in the factory
 
-                // Define lane centers
+                AnswerFactory answerFactory = new AnswerFactory(collisionManager);
+                float spriteHeight = 80f;
+
                 float topY = -SCREEN_H / 2f + SCREEN_H * 0.85f - spriteHeight / 2f;
                 float middleY = -SCREEN_H / 2f + SCREEN_H * 0.5f - spriteHeight / 2f;
                 float bottomY = -SCREEN_H / 2f + SCREEN_H * 0.15f - spriteHeight / 2f;
+
                 Answer topAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, topY, q.answers[0], 0 == q.correct);
                 Answer middleAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, middleY, q.answers[1], 1 == q.correct);
                 Answer bottomAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, bottomY, q.answers[2], 2 == q.correct);
+
                 addEntity(topAnswer);
                 addEntity(middleAnswer);
                 addEntity(bottomAnswer);
                 entityManager.addEntity(topAnswer);
                 entityManager.addEntity(middleAnswer);
                 entityManager.addEntity(bottomAnswer);
-                currentQuestion++;
-                if (currentQuestion >= questions.size()) {
-                    currentQuestion = 0; // loop back to first question if needed
+
+                currentQuestion = (currentQuestion + 1) % questions.size();
+            }
+
+            // Handle SHIFT power-up activation
+            if (player != null && player.canUsePowerUp() && score >= 5) {
+                if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+                    player.usePowerUp();
+                    System.out.println("Multiplier activated!");
                 }
-                
             }
         }
 
-        // Scroll obstacles by same amount as background
+        // Scroll obstacles & collectables
         for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof Obstacle) {
-                ((Obstacle) entity).getPosition().x -= scrollAmount;
+            if (entity instanceof Obstacle || entity instanceof Collectable) {
+                entity.getPosition().x -= scrollAmount;
+            }
+        }
+
+        // Update distance and score
+        float distanceIncrement = scrollAmount / 100f;
+        if (player != null && player.isPowerActive()) distanceIncrement *= 2;
+        distanceTravelled += distanceIncrement;
+        score = (int) distanceTravelled;
+
+        // Ensure power-up check every frame
+        if (player != null && player.canUsePowerUp() && score >= 5) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
+                player.usePowerUp();
+                System.out.println("Multiplier activated!");
             }
         }
     }
@@ -248,7 +308,35 @@ public class ClassroomScene extends Scene {
             float y = camBottom() + camera.viewportHeight - 20f;
             text1.draw(batch, layout, x, y);
         }
-        
+
+        // Display score
+        text1.draw(batch, "Score: " + score, camLeft() + 20, camBottom() + camera.viewportHeight - 50);
+
+        // --- Power-up prompt ---
+        PlayableEntity player = null;
+        for (Entity entity : entityManager.getAllEntities()) {
+            if (entity instanceof PlayableEntity) {
+                player = (PlayableEntity) entity;
+                break;
+            }
+        }
+
+        // Power-up indicator
+        if (player != null) {
+            float iconWidth = 50;
+            float iconHeight = 50;
+            float iconX = camLeft() + camera.viewportWidth - iconWidth - 20;
+            float iconY = camBottom() + camera.viewportHeight - iconHeight - 20; 
+
+            if (player.canUsePowerUp() && !player.isPowerActive() && score >= 5) {
+                // Available to activate
+                batch.draw(multiplierIcon, iconX, iconY, iconWidth, iconHeight);
+            } 
+            else if (player.isPowerActive()) {
+                // Active
+                batch.draw(multiplierActiveIcon, iconX, iconY, iconWidth, iconHeight);
+            }
+        }
     }
 
     @Override
