@@ -82,6 +82,7 @@ public class SceneManager implements iSceneManager {
     //initialize ClassroomScene - SceneManager is responsible for scene initialization
     public void initializeClassroomScene() {
         ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager, movementManager, collisionManager);
+        classroomScene.setSceneManager(this); 
         addScene(classroomScene);
         classroomScene.onLoad();
     }

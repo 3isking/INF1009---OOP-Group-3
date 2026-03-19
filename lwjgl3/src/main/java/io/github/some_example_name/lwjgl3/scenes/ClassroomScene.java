@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Json;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Answer;
+import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
@@ -24,8 +25,6 @@ import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
-import io.github.some_example_name.lwjgl3.factories.CollectableFactory;
-import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
@@ -35,6 +34,7 @@ public class ClassroomScene extends Scene {
     private iInputManager inputManager;
     private iMovementManager movementManager;
     private iCollisionManager collisionManager;
+    private iSceneManager sceneManager;
 
     // Grab the real OrthographicCamera so we can read its actual viewport size at runtime
     private OrthographicCamera camera;
@@ -47,7 +47,7 @@ public class ClassroomScene extends Scene {
     private int lastSpawnSecond = -1;
 
     private static final float SCROLL_SPEED = 3f;
-    private static final float BG_SCROLL_SPEED = 1.5f;
+    private static final float BG_SCROLL_SPEED = 1.2f;
 
     // Virtual / design resolution — used for entity placement and image scaling only
     private static final float SCREEN_W = 640f;
@@ -86,6 +86,10 @@ public class ClassroomScene extends Scene {
         this.collisionManager = collisionManager;
         // Grab the live OrthographicCamera — its viewportWidth/Height update on resize
         this.camera = inputManager.getCamera().getCamera();
+    }
+
+    public void setSceneManager(iSceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 
     // --- Dynamic camera edge helpers ---
@@ -274,6 +278,11 @@ public class ClassroomScene extends Scene {
                 System.out.println("Multiplier activated!");
             }
         }
+
+        // Go to Game Over Once HP Turns 0
+        if (player != null && player.getHealth() == 0) {
+            sceneManager.setCurrentScene("Scene3"); 
+        }
     }
 
     @Override
@@ -311,6 +320,7 @@ public class ClassroomScene extends Scene {
 
         // Display score
         text1.draw(batch, "Score: " + score, camLeft() + 20, camBottom() + camera.viewportHeight - 50);
+        
 
         // --- Power-up prompt ---
         PlayableEntity player = null;
@@ -321,8 +331,11 @@ public class ClassroomScene extends Scene {
             }
         }
 
-        // Power-up indicator
+        // Display Health & Power-up
         if (player != null) {
+            // Display health
+            text1.draw(batch, "Health: " + player.getHealth(), camLeft() + 20, camBottom() + camera.viewportHeight - 80);
+
             float iconWidth = 50;
             float iconHeight = 50;
             float iconX = camLeft() + camera.viewportWidth - iconWidth - 20;

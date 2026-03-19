@@ -3,9 +3,10 @@ package io.github.some_example_name.lwjgl3.collision;
 import com.badlogic.gdx.math.Rectangle;
 
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
+import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Entity;
-import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
+import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
 import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
@@ -34,9 +35,21 @@ public final class CollisionResolver {
         a.collide(b); 
     }
 
-    // PLAYER vs WALL
+    // Player vs Any Obstacle 
     public void resolveCollisions(PlayableEntity player, Obstacle obstacle) {
-        resolveEntityObstacle(player, obstacle);
+        if (obstacle.getHitPlayer()){
+            return;
+        }
+
+        if (obstacle instanceof Answer){
+            Answer answer = (Answer) obstacle;        
+            if (answer.isCorrect()){
+                return;
+            }
+        } 
+        
+        player.takeDamage(1);
+        obstacle.setHitPlayer();       
     }
 
     // AI vs WALL

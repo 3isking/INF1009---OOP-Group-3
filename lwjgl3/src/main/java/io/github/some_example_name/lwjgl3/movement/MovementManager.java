@@ -11,17 +11,17 @@ public class MovementManager implements iMovementManager{
     private final iInputManager inputManager;
     private final PlayerMovement playerMovement;
     private final AIMovement aiMovement;
-    private List<iMovable> movableEntitys;
+    private List<iMovable> movableEntities;
 
     public MovementManager(iInputManager inputManager) {
         this.inputManager = inputManager;
         this.playerMovement = new PlayerMovement();
         this.aiMovement = new AIMovement();
-        this.movableEntitys = new ArrayList<>();
+        this.movableEntities = new ArrayList<>();
     }
 
     public void moveEntities(List<Entity> entityList) {
-        for (iMovable movable : movableEntitys) {
+        for (iMovable movable : movableEntities) {
             MovementStrategy strategy = movable.getMovementStrategy();
             if (strategy != null) {
                 strategy.move(movable, inputManager);
@@ -30,11 +30,11 @@ public class MovementManager implements iMovementManager{
     }
 
     public void addMovableEntity(iMovable movable){
-        movableEntitys.add(movable);
+        movableEntities.add(movable);
     }
 
     public void emptyMovableEntities() {
-        movableEntitys.clear();
+        movableEntities.clear();
     }
 
     public PlayerMovement getPlayerMovement() {

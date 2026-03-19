@@ -7,9 +7,14 @@ import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 
 public class PlayerMovement implements MovementStrategy {
 
-    private final float horizontalSpeed = 3f;
+    private static final float SCREEN_W = 640f;
+    private static final float SCREEN_H = 480f;
+
     private final float verticalSpeed = 3000f;
-    private final float[] lanes = {-120f, 0f, 120f};
+    float topY = -SCREEN_H / 2f + SCREEN_H * 0.85f - 30 / 2f;
+    float middleY = -SCREEN_H / 2f + SCREEN_H * 0.5f - 30 / 2f;
+    float bottomY = -SCREEN_H / 2f + SCREEN_H * 0.15f - 30 / 2f;
+    private final float[] lanes = {bottomY, middleY, topY};
     private int currentLane = 1;
     private float laneSwapCooldown = 0.2f;
     private float laneSwapTimer = 0f;
@@ -24,20 +29,6 @@ public class PlayerMovement implements MovementStrategy {
         // Use Gdx.graphics.getDeltaTime() to get frame time
         float deltaTime = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
         laneSwapTimer += deltaTime;
-
-        /*
-        Vector2 newVel = new Vector2(0, 0);
-        if (inputManager.inputHeld("left")) {
-            newVel = new Vector2(-horizontalSpeed, 0);
-        }
-        if (inputManager.inputHeld("right")) {
-            newVel = new Vector2(horizontalSpeed, 0);
-        }
-        entity.setVelocity(newVel);
-
-        // apply movement immediately
-        entity.setPosition(entity.getPosition().add(entity.getVelocity()));
-        */
         // Lane Swaps
         if (inputManager.inputHeld("down") && laneSwapTimer > laneSwapCooldown) {
             currentLane--;

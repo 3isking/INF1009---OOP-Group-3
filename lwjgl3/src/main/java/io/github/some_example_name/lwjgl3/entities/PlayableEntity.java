@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
@@ -18,6 +18,8 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     
     private boolean wasTouchingObstacleLastFrame = false;
     private boolean isTouchingObstacleThisFrame = false;
+
+    private int health = 5;
 
     // --- Power-up fields ---
     private int powerUps = 0;
@@ -114,6 +116,17 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     @Override
     public void collideWithCollectable(Collectable collectable) {
         
+    }
+
+    public int getHealth(){
+        return health;
+    }
+
+    public void takeDamage(int damage){
+        health -= damage;
+        if (health < 0){
+            health = 0;
+        }
     }
 
     // --- Power-up methods ---

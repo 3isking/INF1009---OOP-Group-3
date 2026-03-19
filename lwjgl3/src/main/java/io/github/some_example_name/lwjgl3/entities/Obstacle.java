@@ -6,11 +6,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 
 public class Obstacle extends Entity implements iCollidable {
     private CollisionResolver resolver;
+    private boolean hasHitPlayer = false;
 
     // public Obstacle(){
     //     this.setPosition(new Vector2(300, 0));
@@ -27,6 +28,14 @@ public class Obstacle extends Entity implements iCollidable {
         this.setPosition(new Vector2(x, y));
         this.setSprite(new Sprite(new Texture(Gdx.files.internal("obstacle.png")), width, height));
         this.resolver = collisionManager.getResolver();
+    }
+
+    public boolean getHitPlayer(){
+        return hasHitPlayer;
+    }
+
+    public void setHitPlayer(){
+        hasHitPlayer = true;
     }
 
     @Override
