@@ -13,4 +13,6 @@ public interface iInputManager {
     void usePlayerCamera();
     void useFreeCamera();
     void useDefaultCamera();
+    int getMappedKey(String action);
+    String getWaitingForBind();
 }

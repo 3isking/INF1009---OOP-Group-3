@@ -58,6 +58,16 @@ public class InputManager extends InputAdapter implements iInputManager {
 	public boolean keyDown(int keycode) {
 		return inputs.keyDown(keycode);
    }
+	
+	@Override
+	public int getMappedKey(String action) {
+        return inputs.getMappedKey(action);
+    }
+	
+	@Override
+	public String getWaitingForBind() {
+		return inputs.getWaitingForBind();
+	}
 
 	//wait to set keybind for mouse
 	@Override

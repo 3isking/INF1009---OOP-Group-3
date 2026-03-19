@@ -9,6 +9,7 @@ import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
+import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 
 public class SceneManager implements iSceneManager {
     private Map<String, Scene> scenes;
@@ -19,15 +20,18 @@ public class SceneManager implements iSceneManager {
     private iInputManager inputManager;
     private iMovementManager movementManager;
     private iCollisionManager collisionManager;
+    private iOutputManager outputManager;
     
 
     public SceneManager(iEntityManager entityManager, iInputManager inputManager, 
-                        iMovementManager movementManager, iCollisionManager collisionManager) {
+                        iMovementManager movementManager, iCollisionManager collisionManager,
+                        iOutputManager outputManager) {
         this.scenes = new HashMap<>();
         this.entityManager = entityManager;
         this.inputManager = inputManager;
         this.movementManager = movementManager;
         this.collisionManager = collisionManager;
+        this.outputManager = outputManager;
     }
 
     public void addScene(Scene scene) {
@@ -48,9 +52,20 @@ public class SceneManager implements iSceneManager {
         if (this.currentScene != null) {
             this.currentScene.onExit();
         }
+        
         this.currentScene = scene;
+        
         if (this.currentScene != null) {
             this.currentScene.onEnter();
+        }
+
+        // --- PLAY THE MUSIC BASED ON THE SCENE ---
+        if (outputManager != null) {
+            if (sceneName.equals("MainMenu") || sceneName.equals("SettingsScene")) {
+                outputManager.playMusic("MAIN_BGM", true);
+            } else if (sceneName.equals("ClassroomScene") || sceneName.equals("Scene1")) {
+                outputManager.playMusic("PLAY_BGM", true);
+            }
         }
     }
     
@@ -69,6 +84,22 @@ public class SceneManager implements iSceneManager {
         ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager, movementManager, collisionManager);
         addScene(classroomScene);
         classroomScene.onLoad();
+    }
+    
+    // Initialize MainMenu - SceneManager is responsible for scene initialization
+    public void initializeMainMenu() {
+        MainMenu mainMenu = new MainMenu(entityManager, inputManager, movementManager, collisionManager);
+        mainMenu.setSceneManager(this); 
+        addScene(mainMenu);
+        mainMenu.onLoad();
+    }
+    
+    // Initialize SettingsScene - SceneManager is responsible for scene initialization
+    public void initializeSettingsScene() {
+        SettingsScene settingsScene = new SettingsScene(entityManager, inputManager, movementManager, collisionManager);
+        settingsScene.setSceneManager(this); 
+        addScene(settingsScene);
+        settingsScene.onLoad();
     }
 
     // Initialize Scene1 - SceneManager is responsible for scene initialization
@@ -116,5 +147,9 @@ public class SceneManager implements iSceneManager {
         if (currentScene != null) {
              currentScene.renderUI(batch);
         }
+    }
+    
+    public iOutputManager getOutputManager() {
+        return this.outputManager;
     }
 }

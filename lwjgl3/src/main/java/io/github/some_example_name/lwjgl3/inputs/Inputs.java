@@ -71,19 +71,21 @@ public class Inputs {
   	//Bindings
     //add to the bindings and laststate hashmap
   	public boolean bind(String action, Device device, int code) {
-  		for (Map.Entry<String, Binding> binded : bindings.entrySet()) {
-  			String bindedAction = binded.getKey();
-            Binding bindedKey = binded.getValue(); // Get the value
-            if (bindedKey.device == device && bindedKey.code==code) {
-            	System.out.println("Key/button " + code + " is already bound to " + bindedAction);
-            	return false;
-            }
-            
-        }
-          bindings.put(action, new Binding(device, code));
-          lastState.put(action, false);
-          return true;
-      }
+		for (Map.Entry<String, Binding> binded : bindings.entrySet()) {
+			String bindedAction = binded.getKey();
+			Binding bindedKey = binded.getValue(); // Get the value
+			
+			if (bindedKey.device == device && bindedKey.code == code) {
+				// Just print a note instead of returning false!
+				System.out.println("Note: Key/button " + code + " is now bound to BOTH '" + bindedAction + "' and '" + action + "'.");
+			}
+		}
+		
+		// Map the new action to the key regardless of whether it's already in use
+		bindings.put(action, new Binding(device, code));
+		lastState.put(action, false);
+		return true;
+	}
 
 	 public void setKeyBind(String action) {
 		waitingForBind = action;
@@ -118,4 +120,18 @@ public class Inputs {
         }
         return false;
     } 
+
+	// Returns the integer keycode bound to a specific action
+	public int getMappedKey(String action) {
+		Binding b = bindings.get(action);
+		if (b != null) {
+			return b.code;
+		}
+		return -1; // -1 indicates the action isn't bound to anything
+	}
+
+	// Returns the name of the action currently waiting for a bind (or null)
+	public String getWaitingForBind() {
+		return waitingForBind;
+	}
 }

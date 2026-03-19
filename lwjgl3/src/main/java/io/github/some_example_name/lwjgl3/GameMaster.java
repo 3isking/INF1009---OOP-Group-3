@@ -21,6 +21,7 @@ import io.github.some_example_name.lwjgl3.inputs.DefaultCamera;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
+import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 
 public class GameMaster extends ApplicationAdapter {
@@ -61,20 +62,26 @@ public class GameMaster extends ApplicationAdapter {
         movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
         entityManager = new EntityManager(movementManager, collisionManager);
-        sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager);
-
+        sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager, outputManager);
+        
         collisionManager.setCollisionManager(sceneManager, outputManager);
 
-        sceneManager.initializeScene2();
+        outputManager.loadMusic("MAIN_BGM", "main_bgmusic.mp3"); 
+        outputManager.loadMusic("PLAY_BGM", "play_bgmusic.mp3");
+        
+        sceneManager.initializeMainMenu();
         sceneManager.initializeClassroomScene();
+        sceneManager.initializeSettingsScene();
         sceneManager.initializeScene1();
         sceneManager.initializeScene3();
 
-        sceneManager.setCurrentScene("Scene2");
+        sceneManager.setCurrentScene("MainMenu");
 //        sceneManager.setCurrentScene("ClassroomScene");
 
         outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
         outputManager.loadAudio("HIT_EVENT", "hit.mp3");
+        
+
 
         debugMode = true;
     }
