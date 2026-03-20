@@ -190,6 +190,11 @@ public class ClassroomScene extends Scene {
         float scrollAmount = SCROLL_SPEED * deltaTime * 60f;
         float bgScrollAmount = BG_SCROLL_SPEED * deltaTime * 60f;
 
+        // Update all entities
+        for (Entity entity : entityManager.getAllEntities()) {
+            entity.update(deltaTime);
+        }
+
         // Find player once
         PlayableEntity player = null;
         for (Entity entity : entityManager.getAllEntities()) {

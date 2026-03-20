@@ -1,6 +1,7 @@
 package io.github.some_example_name.lwjgl3.entities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,51 +13,109 @@ import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class PlayableEntity extends Entity implements iMovable, iCollidable {
-    
+
     private MovementStrategy movementStrategy;
     private CollisionResolver resolver;
-    
+
     private boolean wasTouchingObstacleLastFrame = false;
-    private boolean isTouchingObstacleThisFrame = false;
+    private boolean isTouchingObstacleThisFrame  = false;
 
     private int health = 5;
 
     // --- Power-up fields ---
-    private int powerUps = 0;
-    private boolean powerActive = false;
-    private float powerDuration = 5f; 
-    private float powerTimer = 0f;
+    private int     powerUps      = 0;
+    private boolean powerActive   = false;
+    private float   powerDuration = 5f;
+    private float   powerTimer    = 0f;
 
-    public PlayableEntity(float x, float y, iMovementManager movementManager, iCollisionManager collisionManager){
+    // --- Invincibility / blink fields ---
+    private float invincibilityTimer              = 0f;
+    private static final float INVINCIBILITY_DURATION = 1f;
+    private static final float BLINK_INTERVAL         = 0.1f;
+    private float blinkTimer                     = 0f;
+
+    public PlayableEntity(float x, float y, iMovementManager movementManager, iCollisionManager collisionManager) {
         super();
-    	this.id = "player";
+        this.id = "player";
         this.setPosition(new Vector2(x, y));
-        this.setSprite(new Sprite(new Texture(Gdx.files.internal("plane.png")),30)); //2:1 ratio for plane sprite
+        this.setSprite(new Sprite(new Texture(Gdx.files.internal("plane.png")), 30));
         this.movementStrategy = movementManager.getPlayerMovement();
-        this.resolver = collisionManager.getResolver();
+        this.resolver         = collisionManager.getResolver();
     }
 
-    @Override
-    public void render(SpriteBatch batch){
-        // batch.begin();
-        batch.draw(this.getSprite().getTexture(), this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
-        // batch.end();
-    }
+    // -------------------------------------------------------------------------
+    // Render — applies sprite alpha so blink is actually visible
+    // -------------------------------------------------------------------------
 
     @Override
-    public void update(float deltaTime){
+    public void render(SpriteBatch batch) {
+        Color c = getSprite().getColor();
+        batch.setColor(c.r, c.g, c.b, c.a);
+        batch.draw(getSprite().getTexture(),
+                getPosition().x, getPosition().y,
+                getSprite().getWidth(), getSprite().getHeight());
+        batch.setColor(1f, 1f, 1f, 1f); // reset so other entities are unaffected
+    }
+
+    // -------------------------------------------------------------------------
+    // Update
+    // -------------------------------------------------------------------------
+
+    @Override
+    public void update(float deltaTime) {
         wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
-        isTouchingObstacleThisFrame = false;
+        isTouchingObstacleThisFrame  = false;
 
-        // Power up timer
+        // Power-up timer
         if (powerActive) {
             powerTimer += deltaTime;
             if (powerTimer >= powerDuration) {
-                powerActive = false;    // deactivate multiplier
-                powerTimer = 0f;        // reset timer
+                powerActive = false;
+                powerTimer  = 0f;
             }
         }
+
+        // Invincibility + blink timer
+        updateInvincibility(deltaTime);
     }
+
+    // -------------------------------------------------------------------------
+    // Invincibility
+    // -------------------------------------------------------------------------
+
+    public void triggerInvincibility() {
+        invincibilityTimer = INVINCIBILITY_DURATION;
+        blinkTimer         = 0f;
+    }
+
+    public boolean isInvincible() {
+        return invincibilityTimer > 0f;
+    }
+
+    private void updateInvincibility(float deltaTime) {
+        if (invincibilityTimer <= 0f) return;
+
+        invincibilityTimer -= deltaTime;
+        blinkTimer         += deltaTime;
+
+        // Toggle alpha every BLINK_INTERVAL seconds
+        if (blinkTimer >= BLINK_INTERVAL) {
+            blinkTimer = 0f;
+            float currentAlpha = getSprite().getColor().a;
+            getSprite().setAlpha(currentAlpha < 0.5f ? 1f : 0.3f);
+        }
+
+        // Timer expired — fully restore opacity
+        if (invincibilityTimer <= 0f) {
+            invincibilityTimer = 0f;
+            blinkTimer         = 0f;
+            getSprite().setAlpha(1f);
+        }
+    }
+
+    // -------------------------------------------------------------------------
+    // Movement
+    // -------------------------------------------------------------------------
 
     @Override
     public Vector2 getVelocity() {
@@ -73,32 +132,36 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         return this.movementStrategy;
     }
 
+    // -------------------------------------------------------------------------
+    // Collision
+    // -------------------------------------------------------------------------
+
     @Override
     public Rectangle getCollisionBounds() {
-        return new Rectangle(this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
-    }  
-    
-    // Output Manager
+        return new Rectangle(getPosition().x, getPosition().y,
+                getSprite().getWidth(), getSprite().getHeight());
+    }
+
     public void resetCollisionState() {
         wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
-        
-        isTouchingObstacleThisFrame = false;
+        isTouchingObstacleThisFrame  = false;
     }
-    
+
     public boolean isNewObstacleCollision() {
         isTouchingObstacleThisFrame = true;
         return !wasTouchingObstacleLastFrame;
     }
-    
-    // Collision Manager
-    public void collide(iCollidable other)
-    {
+
+    public void collide(iCollidable other) {
         other.collideWithPlayer(this);
     }
 
     @Override
-    public void collideWithObstacle(Obstacle obstacle)
-    {
+    public void collideWithObstacle(Obstacle obstacle) {
+        // Guard here as well — CollisionManager calls this path via the generic
+        // resolveCollisions(iCollidable, iCollidable) overload, which would bypass
+        // the invincibility check in CollisionResolver and apply damage a second time.
+        if (isInvincible()) return;
         resolver.resolveCollisions(this, obstacle);
     }
 
@@ -108,28 +171,31 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     }
 
     @Override
-    public void collideWithPlayer(PlayableEntity player)
-    {
-        // player-player collisions can be ignored or handled here
+    public void collideWithPlayer(PlayableEntity player) {
+        // player-player collisions ignored
     }
 
     @Override
     public void collideWithCollectable(Collectable collectable) {
-        
     }
 
-    public int getHealth(){
+    // -------------------------------------------------------------------------
+    // Health
+    // -------------------------------------------------------------------------
+
+    public int getHealth() {
         return health;
     }
 
-    public void takeDamage(int damage){
+    public void takeDamage(int damage) {
         health -= damage;
-        if (health < 0){
-            health = 0;
-        }
+        if (health < 0) health = 0;
     }
 
-    // --- Power-up methods ---
+    // -------------------------------------------------------------------------
+    // Power-up
+    // -------------------------------------------------------------------------
+
     public void addPowerUp() {
         powerUps++;
     }
@@ -142,7 +208,7 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         if (canUsePowerUp()) {
             powerUps--;
             powerActive = true;
-            powerTimer = 0f; 
+            powerTimer  = 0f;
         }
     }
 
@@ -158,4 +224,3 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         return powerUps > 0;
     }
 }
-
