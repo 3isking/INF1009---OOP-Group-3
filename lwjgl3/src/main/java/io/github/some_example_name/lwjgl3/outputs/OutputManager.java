@@ -32,7 +32,7 @@ public class OutputManager implements iOutputManager {
             return;
         }
 
-        // MAGIC TRICK: If the exact same song is already playing, do nothing!
+        // If the exact same song is already playing, do nothing
         if (currentMusic == nextMusic && currentMusic.isPlaying()) {
             return; 
         }
@@ -58,7 +58,6 @@ public class OutputManager implements iOutputManager {
 
     public void setSfxVolume(float volume) {
         this.globalSfxVolume = volume;
-        // You can multiply your Sound effects by this variable in your playAudio/playSound method!
     }
 
     public void dispose() {

@@ -14,6 +14,7 @@ import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 public class SceneManager implements iSceneManager {
     private Map<String, Scene> scenes;
     private Scene currentScene;
+    private Scene overlayScene;
     
     // Manager references - SceneManager handles all scenes and their managers
     private iEntityManager entityManager;
@@ -40,6 +41,10 @@ public class SceneManager implements iSceneManager {
 
     public Scene getCurrentScene() {
         return this.currentScene;
+    }
+    
+    public Scene getScene(String sceneName) {
+        return scenes.get(sceneName);
     }
 
     public void setCurrentScene(String sceneName) {
@@ -102,6 +107,13 @@ public class SceneManager implements iSceneManager {
         addScene(settingsScene);
         settingsScene.onLoad();
     }
+    
+    public void initializeGameOverScene() {
+        GameOverScene gameOverScene = new GameOverScene(entityManager, inputManager, movementManager, collisionManager);
+        gameOverScene.setSceneManager(this); 
+        addScene(gameOverScene);
+        gameOverScene.onLoad();
+    }
 
     // Initialize Scene1 - SceneManager is responsible for scene initialization
     public void initializeScene1() {
@@ -125,9 +137,12 @@ public class SceneManager implements iSceneManager {
         addScene(scene3);
         scene3.onLoad();
     }
+    
 
     public void update(float deltaTime) {
-        if (currentScene != null) {
+        if (overlayScene != null) {
+            overlayScene.update(deltaTime);
+        } else if (currentScene != null) {
             currentScene.update(deltaTime);
         }
     }
@@ -145,12 +160,27 @@ public class SceneManager implements iSceneManager {
     }
     
     public void renderUI(SpriteBatch batch) {
-        if (currentScene != null) {
-             currentScene.renderUI(batch);
-        }
+        if (currentScene != null) currentScene.renderUI(batch);
+        if (overlayScene != null) overlayScene.renderUI(batch);
     }
     
     public iOutputManager getOutputManager() {
         return this.outputManager;
+    }
+    
+    public void openOverlay(String sceneName) {
+        overlayScene = scenes.get(sceneName);
+        if (overlayScene != null) overlayScene.onEnter();
+    }
+
+    public void closeOverlay() {
+        if (overlayScene != null) {
+            overlayScene.onExit();
+            overlayScene = null;
+        }
+    }
+
+    public boolean isOverlayActive() {
+        return overlayScene != null;
     }
 }

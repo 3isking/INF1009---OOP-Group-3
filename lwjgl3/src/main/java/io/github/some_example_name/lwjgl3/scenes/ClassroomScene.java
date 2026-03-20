@@ -311,7 +311,16 @@ public class ClassroomScene extends Scene {
 
         // Go to Game Over Once HP Turns 0
         if (player != null && player.getHealth() == 0) {
-            sceneManager.setCurrentScene("Scene3"); 
+            // 1. Get the GameOverScene from the SceneManager
+            Scene gameOver = sceneManager.getScene("GameOverScene");
+            
+            // 2. Cast it and pass the score over
+            if (gameOver instanceof GameOverScene) {
+                ((GameOverScene) gameOver).setFinalScore(this.score);
+            }
+            
+            // 3. Open the overlay
+            sceneManager.openOverlay("GameOverScene");
         }
     }
 

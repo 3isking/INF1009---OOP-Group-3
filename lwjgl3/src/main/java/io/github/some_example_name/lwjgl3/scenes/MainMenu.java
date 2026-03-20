@@ -140,9 +140,9 @@ public class MainMenu extends Scene {
             }
         }
         
-        if (inputManager.inputPressed("exit")){
-            Gdx.app.exit();
-        }
+//        if (inputManager.inputPressed("exit")){
+//            Gdx.app.exit();
+//        }
     }
 
     @Override

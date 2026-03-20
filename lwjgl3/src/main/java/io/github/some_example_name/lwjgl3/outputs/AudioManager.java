@@ -18,7 +18,7 @@ public class AudioManager {
 
     public void play(String id, float volume) {
         if (soundMap.containsKey(id)) {
-            soundMap.get(id).play(volume); 
+            soundMap.get(id).play(volume);
         }
     }
 

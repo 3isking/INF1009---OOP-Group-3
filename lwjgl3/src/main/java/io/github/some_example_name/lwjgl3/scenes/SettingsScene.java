@@ -23,7 +23,7 @@ public class SettingsScene extends Scene {
 
     private BitmapFont font;
     private Texture backgroundTexture;
-    private Texture backBtnTexture; // You'll need a back_button.png
+    private Texture backBtnTexture; 
 
     // --- Settings State ---
     private int musicVolume = 100;
@@ -35,7 +35,6 @@ public class SettingsScene extends Scene {
     private boolean isRebindingDown = false;
 
     // --- UI Click Bounds (X, Y, Width, Height) ---
-    // Adjust these later if they don't visually align with your text/buttons
     private Rectangle musicMinusRect = new Rectangle(-100, 120, 40, 40);
     private Rectangle musicPlusRect = new Rectangle(60, 120, 40, 40);
     
@@ -76,7 +75,6 @@ public class SettingsScene extends Scene {
 
     @Override
     public void onExit() {
-        // Save logic could go here later (e.g., saving preferences to a file)
     }
 
     @Override
@@ -88,11 +86,11 @@ public class SettingsScene extends Scene {
 
     @Override
     public void update(float deltaTime) {
-        // Automatically fetch the latest keys every frame
+        // fetch the latest keys every frame
         upKey = inputManager.getMappedKey("up");
         downKey = inputManager.getMappedKey("down");
 
-        // If we are currently waiting for a key press, block UI clicking!
+        // If we are currently waiting for a key press, block UI clicking.
         if (inputManager.getWaitingForBind() != null) {
             return; 
         }
@@ -172,6 +170,5 @@ public class SettingsScene extends Scene {
     }
 
     public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
-        // Not using shape renderer right now, but required by Scene interface
     }
 }

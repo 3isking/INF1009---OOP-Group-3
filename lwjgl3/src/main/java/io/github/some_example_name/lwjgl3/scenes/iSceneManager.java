@@ -9,9 +9,14 @@ public interface iSceneManager {
     void setCurrentScene(String sceneName);
     void setCurrentScene(Scene scene);
     
+    void openOverlay(String sceneName);
+    void closeOverlay();
+    boolean isOverlayActive();
+    
     void initializeClassroomScene();
     void initializeMainMenu();
     void initializeSettingsScene();
+    void initializeGameOverScene();
     void initializeScene1();
     void initializeScene2();
     void initializeScene3();
@@ -19,7 +24,8 @@ public interface iSceneManager {
     void update(float deltaTime);
     void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix);
     void render(SpriteBatch batch);
-    void renderUI(SpriteBatch batch); // Added missing UI method
+    void renderUI(SpriteBatch batch);
+    Scene getScene(String sceneName);
     
     iOutputManager getOutputManager();
 }

@@ -72,6 +72,7 @@ public class GameMaster extends ApplicationAdapter {
         sceneManager.initializeMainMenu();
         sceneManager.initializeClassroomScene();
         sceneManager.initializeSettingsScene();
+        sceneManager.initializeGameOverScene();
         sceneManager.initializeScene1();
         sceneManager.initializeScene3();
 
@@ -98,6 +99,17 @@ public class GameMaster extends ApplicationAdapter {
     public void render() {
         float dt = Math.min(Gdx.graphics.getDeltaTime(), 0.16f);
         ScreenUtils.clear(0, 0, 0.2f, 1);
+        
+     // --- FREEZE BACKGROUND GAMEPLAY IF OVERLAY IS ACTIVE ---
+        if (!sceneManager.isOverlayActive()) {
+            movementManager.moveEntities(entityManager.getAllEntities());
+            inputManager.updateCamera(entityManager.getEntity("player_1"));
+            collisionManager.checkCollisions(entityManager.getAllEntities());
+        }
+
+//        Matrix4 camMatrix = inputManager.getCamera().getCombinedMatrix();
+//        batch.setProjectionMatrix(camMatrix);
+//        shape.setProjectionMatrix(camMatrix);
 
         // 1. MOVE FIRST
         movementManager.moveEntities(entityManager.getAllEntities());
