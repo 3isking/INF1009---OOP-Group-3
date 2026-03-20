@@ -46,7 +46,7 @@ public class ClassroomScene extends Scene {
     private float spawnTimer = 0f;
     private int lastSpawnSecond = -1;
 
-    private static final float SCROLL_SPEED = 3f;
+    private static final float SCROLL_SPEED = 4f;
     private static final float BG_SCROLL_SPEED = 1.2f;
 
     // Virtual / design resolution — used for entity placement and image scaling only
@@ -82,6 +82,14 @@ public class ClassroomScene extends Scene {
     private float blinkTimer = 0f;
     private boolean showMultiplier = true;
     private static final float BLINK_INTERVAL = 0.2f; // speed of blinking
+
+    float spriteHeight = 80f; // match answer factory
+
+    float[] lanes = {
+        -SCREEN_H / 2f + SCREEN_H * 0.85f - spriteHeight / 2f,  // top
+        -SCREEN_H / 2f + SCREEN_H * 0.5f  - spriteHeight / 2f,  // middle
+        -SCREEN_H / 2f + SCREEN_H * 0.15f - spriteHeight / 2f   // bottom
+    };
 
 
     public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
@@ -175,21 +183,6 @@ public class ClassroomScene extends Scene {
         addEntity(player);
         entityManager.addEntity(player);
         player.addPowerUp();
-
-        // Spawn initial obstacles just off the right edge of the VIRTUAL screen
-        ObstacleFactory factory = new ObstacleFactory(collisionManager);
-
-        Obstacle eraser = factory.create(ObstacleType.ERASER,
-                -SCREEN_W / 2f + SCREEN_W + 160f,
-                -SCREEN_H / 2f + 200f);
-        Obstacle books = factory.create(ObstacleType.BOOKS,
-                -SCREEN_W / 2f + SCREEN_W + 560f,
-                -SCREEN_H / 2f + 200f);
-
-        addEntity(eraser);
-        entityManager.addEntity(eraser);
-        addEntity(books);
-        entityManager.addEntity(books);
     }
 
     @Override
@@ -219,10 +212,15 @@ public class ClassroomScene extends Scene {
             lastSpawnSecond = currentSecond;
 
             // Spawn obstacles
-            if (currentSecond % 3 == 0 && currentSecond % 7 != 0) {
-                ObstacleFactory factory = new ObstacleFactory(collisionManager);
-                float spawnY = -SCREEN_H / 2f + MathUtils.random(100, 400);
+            if (currentSecond % 2 == 0 
+    && currentSecond != 0
+    && (currentSecond % 7 != 0)          // not on question tick
+    && ((currentSecond + 1) % 7 != 0)    // not 1 second before question
+    && ((currentSecond - 1) % 7 != 0)) { // not 1 second after question
                 float spawnX = camRight() + 40f;
+                float spawnY = lanes[MathUtils.random(0, 2)];
+
+                ObstacleFactory factory = new ObstacleFactory(collisionManager);
                 Obstacle newObstacle = factory.create(
                         MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS,
                         spawnX, spawnY);
@@ -304,7 +302,7 @@ public class ClassroomScene extends Scene {
         float distanceIncrement = scrollAmount / 100f;
         if (player != null && player.isPowerActive()) distanceIncrement *= 2;
         distanceTravelled += distanceIncrement;
-        score = (int) distanceTravelled;
+        score = (int) (distanceTravelled * 10);
 
         // Go to Game Over Once HP Turns 0
         if (player != null && player.getHealth() == 0) {
