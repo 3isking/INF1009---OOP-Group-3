@@ -18,7 +18,7 @@ public class OutputManager implements iOutputManager {
     }
 
     public void playSound(String id) {
-        audio.play(id);
+    	audio.play(id, globalSfxVolume);
     }
     
     public void loadMusic(String action, String filePath) {

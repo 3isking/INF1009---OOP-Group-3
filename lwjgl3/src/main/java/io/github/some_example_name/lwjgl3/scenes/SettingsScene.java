@@ -105,12 +105,23 @@ public class SettingsScene extends Scene {
             float mx = worldMousePos.x;
             float my = worldMousePos.y;
 
-            // Volume Controls
-            if (musicMinusRect.contains(mx, my)) musicVolume = Math.max(0, musicVolume - 10);
-            if (musicPlusRect.contains(mx, my)) musicVolume = Math.min(100, musicVolume + 10);
-            if (sfxMinusRect.contains(mx, my)) sfxVolume = Math.max(0, sfxVolume - 10);
-            if (sfxPlusRect.contains(mx, my)) sfxVolume = Math.min(100, sfxVolume + 10);
-
+         // Volume Controls
+            if (musicMinusRect.contains(mx, my)) {
+                musicVolume = Math.max(0, musicVolume - 10);
+                sceneManager.getOutputManager().setMusicVolume(musicVolume / 100f);
+            }
+            if (musicPlusRect.contains(mx, my)) {
+                musicVolume = Math.min(100, musicVolume + 10);
+                sceneManager.getOutputManager().setMusicVolume(musicVolume / 100f);
+            }
+            if (sfxMinusRect.contains(mx, my)) {
+                sfxVolume = Math.max(0, sfxVolume - 10);
+                sceneManager.getOutputManager().setSfxVolume(sfxVolume / 100f);
+            }
+            if (sfxPlusRect.contains(mx, my)) {
+                sfxVolume = Math.min(100, sfxVolume + 10);
+                sceneManager.getOutputManager().setSfxVolume(sfxVolume / 100f);
+            }
             // Rebind Buttons - Tells InputManager to start listening for the next key press!
             if (upRebindRect.contains(mx, my)) inputManager.setKeyBind("up");
             if (downRebindRect.contains(mx, my)) inputManager.setKeyBind("down");
