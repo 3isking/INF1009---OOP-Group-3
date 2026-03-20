@@ -75,6 +75,13 @@ public class ClassroomScene extends Scene {
     // Multiplier indicator
     private Texture multiplierIcon;      // Default icon
     private Texture multiplierActiveIcon; // Glow/active state
+    private float multiplierTimer = 0f;
+    private static final float MULTIPLIER_DURATION = 5f;
+
+    // Multiplier effect
+    private float blinkTimer = 0f;
+    private boolean showMultiplier = true;
+    private static final float BLINK_INTERVAL = 0.2f; // speed of blinking
 
 
     public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
@@ -146,7 +153,7 @@ public class ClassroomScene extends Scene {
         // Power-up icons
         try {
             multiplierIcon = new Texture(Gdx.files.internal("power.jpg"));
-            multiplierActiveIcon = new Texture(Gdx.files.internal("owl.png")); // ensure exists
+            multiplierActiveIcon = new Texture(Gdx.files.internal("power.jpg")); // ensure exists
         } catch (Exception e) {
             e.printStackTrace();
             multiplierIcon = null;
@@ -248,14 +255,42 @@ public class ClassroomScene extends Scene {
 
                 currentQuestion = (currentQuestion + 1) % questions.size();
             }
+        }
 
-            // Handle SHIFT power-up activation
-            if (player != null && player.canUsePowerUp() && score >= 5) {
-                if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-                    player.usePowerUp();
-                    System.out.println("Multiplier activated!");
+        // Handle SHIFT power-up activation (ONLY ONCE)
+        if (player != null && player.canUsePowerUp() && score >= 5) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
+                player.usePowerUp();
+                multiplierTimer = MULTIPLIER_DURATION;
+            }
+        }
+
+        // Handle countdown + blinking EVERY FRAME
+        if (player != null && player.isPowerActive()) {
+
+            // ⏱Countdown
+            multiplierTimer -= deltaTime;
+
+            if (multiplierTimer <= 0f) {
+                multiplierTimer = 0f;
+                player.deactivatePowerUp();
+                showMultiplier = true;
+                blinkTimer = 0f;
+            } else {
+                // Blinking effect
+                blinkTimer += deltaTime;
+
+                if (blinkTimer >= BLINK_INTERVAL) {
+                    blinkTimer = 0f;
+                    showMultiplier = !showMultiplier;
                 }
             }
+
+        } 
+        else {
+            // Reset when not active
+            showMultiplier = true;
+            blinkTimer = 0f;
         }
 
         // Scroll obstacles & collectables
@@ -270,14 +305,6 @@ public class ClassroomScene extends Scene {
         if (player != null && player.isPowerActive()) distanceIncrement *= 2;
         distanceTravelled += distanceIncrement;
         score = (int) distanceTravelled;
-
-        // Ensure power-up check every frame
-        if (player != null && player.canUsePowerUp() && score >= 5) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT)) {
-                player.usePowerUp();
-                System.out.println("Multiplier activated!");
-            }
-        }
 
         // Go to Game Over Once HP Turns 0
         if (player != null && player.getHealth() == 0) {
@@ -346,8 +373,20 @@ public class ClassroomScene extends Scene {
                 batch.draw(multiplierIcon, iconX, iconY, iconWidth, iconHeight);
             } 
             else if (player.isPowerActive()) {
-                // Active
-                batch.draw(multiplierActiveIcon, iconX, iconY, iconWidth, iconHeight);
+                // Draw blinking icon
+                if (showMultiplier) {
+                    batch.draw(multiplierActiveIcon, iconX, iconY, iconWidth, iconHeight);
+                }
+
+                // Draw timer text beside icon
+                String timeText = String.valueOf((int)Math.ceil(multiplierTimer));
+
+                GlyphLayout layout = new GlyphLayout(text1, timeText);
+
+                float textX = iconX - layout.width - 10; // left of icon
+                float textY = iconY + iconHeight / 2f + layout.height / 2f;
+
+                text1.draw(batch, layout, textX, textY);
             }
         }
     }
