@@ -8,15 +8,15 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
-import io.github.some_example_name.lwjgl3.outputs.OutputManager;
+import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 
 public final class CollisionResolver {
     private iSceneManager sceneManager;
-    private OutputManager outputManager;
+    private iOutputManager outputManager;
     private Boolean criticalCollisionOccurred = false;
 
-    public CollisionResolver(iSceneManager sceneManager, OutputManager outputManager) {
+    public CollisionResolver(iSceneManager sceneManager, iOutputManager outputManager) {
         // Constructor can be used to set up references if needed
         this.sceneManager = sceneManager; 
         this.outputManager = outputManager;
