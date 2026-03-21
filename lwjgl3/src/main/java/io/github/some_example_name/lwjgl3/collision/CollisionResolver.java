@@ -2,6 +2,10 @@ package io.github.some_example_name.lwjgl3.collision;
 
 import com.badlogic.gdx.math.Rectangle;
 
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Entity;
@@ -14,11 +18,13 @@ import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 public final class CollisionResolver {
     private iSceneManager sceneManager;
     private iOutputManager outputManager;
+    private iCollisionManager collisionManager;
     private Boolean criticalCollisionOccurred = false;
 
-    public CollisionResolver(iSceneManager sceneManager, iOutputManager outputManager) {
+    public CollisionResolver(iSceneManager sceneManager, iOutputManager outputManager, iCollisionManager collisionManager) {
         this.sceneManager = sceneManager;
         this.outputManager = outputManager;
+        this.collisionManager = collisionManager;
     }
 
     public boolean hasCriticalCollisionOccurred() {
@@ -48,6 +54,16 @@ public final class CollisionResolver {
         if (obstacle instanceof Answer) {
             Answer answer = (Answer) obstacle;
             if (answer.isCorrect()) {
+                List<iCollidable> toRemove = new ArrayList<>();
+                // snapshot via a method that returns a copy
+                for (iCollidable c : collisionManager.getCollidableEntities()) {
+                    if (c instanceof Answer) {
+                        toRemove.add(c);
+                    }
+                }
+                for (iCollidable c : toRemove) {
+                    collisionManager.removeCollidableEntity(c);
+                }
                 return;
             }
         }
@@ -81,12 +97,12 @@ public final class CollisionResolver {
             }
         }
 
-        Rectangle entityBounds  = ((iCollidable) entity).getCollisionBounds();
+        Rectangle entityBounds   = ((iCollidable) entity).getCollisionBounds();
         Rectangle obstacleBounds = obstacle.getCollisionBounds();
 
-        float overlapLeft   = (entityBounds.x + entityBounds.width)    - obstacleBounds.x;
-        float overlapRight  = (obstacleBounds.x + obstacleBounds.width) - entityBounds.x;
-        float overlapBottom = (entityBounds.y + entityBounds.height)    - obstacleBounds.y;
+        float overlapLeft   = (entityBounds.x + entityBounds.width)     - obstacleBounds.x;
+        float overlapRight  = (obstacleBounds.x + obstacleBounds.width)  - entityBounds.x;
+        float overlapBottom = (entityBounds.y + entityBounds.height)     - obstacleBounds.y;
         float overlapTop    = (obstacleBounds.y + obstacleBounds.height) - entityBounds.y;
 
         float minX = Math.min(overlapLeft, overlapRight);

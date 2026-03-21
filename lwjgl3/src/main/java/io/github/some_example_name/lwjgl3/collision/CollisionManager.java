@@ -6,6 +6,7 @@ import java.util.List;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 
@@ -15,20 +16,16 @@ public class CollisionManager implements iCollisionManager {
     private CollisionResolver collisionResolver;
     private List<iCollidable> collidableEntities;
 
-    public void setCollisionManager(iSceneManager sceneManager, iOutputManager outputManager){
+    public void setCollisionManager(iEntityManager entityManager, iSceneManager sceneManager, iOutputManager outputManager) {
         this.sceneManager = sceneManager;
         this.collisionDetector = new CollisionDetector();
-        this.collisionResolver = new CollisionResolver(this.sceneManager, outputManager);
+        this.collisionResolver = new CollisionResolver(sceneManager, outputManager, this);
         this.collidableEntities = new ArrayList<>();
     }
-    // check collisions between all entities in the given list
-    
+
     public void checkCollisions(List<Entity> entities) {
-        // Create a copy of the list
-        // Allows the real list to be cleared safely if a collision triggers a scene change
         List<iCollidable> snapshot = new ArrayList<>(collidableEntities);
 
-        // Iterate over the snapshot instead of the live list
         for (iCollidable collidable : snapshot) {
             if (collidable instanceof PlayableEntity) {
                 ((PlayableEntity) collidable).resetCollisionState();
@@ -39,7 +36,6 @@ public class CollisionManager implements iCollisionManager {
                     if (collisionDetector.checkCollisions(collidable, otherCollidable)) {
                         collisionResolver.resolveCollisions(collidable, otherCollidable);
 
-                        // Exit if Critical Collision Occurs
                         if (collisionResolver.hasCriticalCollisionOccurred()) {
                             return;
                         }
@@ -51,10 +47,18 @@ public class CollisionManager implements iCollisionManager {
 
     public CollisionResolver getResolver() {
         return this.collisionResolver;
-    }  
+    }
 
-    public void addCollidableEntity(iCollidable collidable){
+    public void addCollidableEntity(iCollidable collidable) {
         collidableEntities.add(collidable);
+    }
+
+    public List<iCollidable> getCollidableEntities() {
+        return new ArrayList<>(collidableEntities);
+    }
+
+    public void removeCollidableEntity(iCollidable collidable) {
+        collidableEntities.remove(collidable);
     }
 
     public void emptyCollidableEntities() {

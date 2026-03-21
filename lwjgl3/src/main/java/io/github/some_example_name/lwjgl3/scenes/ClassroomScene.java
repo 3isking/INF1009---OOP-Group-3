@@ -196,13 +196,8 @@ public class ClassroomScene extends Scene {
         }
 
         // Find player once
-        PlayableEntity player = null;
-        for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof PlayableEntity) {
-                player = (PlayableEntity) entity;
-                break;
-            }
-        }
+        PlayableEntity player = (PlayableEntity) entityManager.getEntity("player_1");
+        
 
         // Scroll background
         bg1X -= bgScrollAmount;

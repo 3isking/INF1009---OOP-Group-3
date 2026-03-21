@@ -33,7 +33,7 @@ public class AnswerFactory {
 
         Answer answer = new Answer(x, y, width, height, collisionManager, text, isCorrect);
         answer.setSprite(new Sprite(bubbleTexture, width));
-
+        collisionManager.addCollidableEntity(answer); 
         return answer;
     }
     

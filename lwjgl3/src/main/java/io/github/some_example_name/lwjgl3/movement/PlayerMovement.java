@@ -19,50 +19,41 @@ public class PlayerMovement implements MovementStrategy {
     private float laneSwapCooldown = 0.2f;
     private float laneSwapTimer = 0f;
 
-    @Override
+   @Override
     public void move(iMovable entity, iInputManager inputManager) {
         
         if (entity == null || inputManager == null) {
             return;
         }
 
-        // Use Gdx.graphics.getDeltaTime() to get frame time
         float deltaTime = com.badlogic.gdx.Gdx.graphics.getDeltaTime();
-        laneSwapTimer += deltaTime;
-        // Lane Swaps
-        if (inputManager.inputHeld("down") && laneSwapTimer > laneSwapCooldown) {
+
+        // inputPressed fires ONCE per keypress, no cooldown needed
+        if (inputManager.inputPressed("down")) {
             currentLane--;
-            if (currentLane < 0){
-                currentLane = 0;
-            }
-            laneSwapTimer = 0;
+            if (currentLane < 0) currentLane = 0;
         }
-        if (inputManager.inputHeld("up") && laneSwapTimer > laneSwapCooldown) {
+        if (inputManager.inputPressed("up")) {
             currentLane++;
-            if (currentLane > 2){
-                currentLane = 2;
-            }
-            laneSwapTimer = 0;
+            if (currentLane > 2) currentLane = 2;
         }
 
-        // Slowly Increment Movement over Time by Calculating Distance between Target and Current
-        float targetY = lanes[currentLane];
+        // Smooth movement toward target lane
+        float targetY  = lanes[currentLane];
         float currentY = entity.getPosition().y;
-        float diff = targetY - currentY;
+        float diff     = targetY - currentY;
 
         if (Math.abs(diff) > 1f) {
-            float direction = Math.signum(diff);
+            float direction  = Math.signum(diff);
             float moveAmount = verticalSpeed * deltaTime * direction;
 
-            // Prevent overshooting the lane
             if (Math.abs(moveAmount) > Math.abs(diff)) {
                 moveAmount = diff;
             }
 
-            entity.setPosition(new Vector2(entity.getPosition().x,currentY + moveAmount));
+            entity.setPosition(new Vector2(entity.getPosition().x, currentY + moveAmount));
         }
 
-        // reset velocity for next frame
         entity.setVelocity(new Vector2(0, 0));
     }
 }

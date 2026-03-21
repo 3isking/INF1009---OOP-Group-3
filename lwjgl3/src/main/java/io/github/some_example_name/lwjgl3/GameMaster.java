@@ -64,7 +64,7 @@ public class GameMaster extends ApplicationAdapter {
         entityManager = new EntityManager(movementManager, collisionManager);
         sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager, outputManager);
         
-        collisionManager.setCollisionManager(sceneManager, outputManager);
+        collisionManager.setCollisionManager(entityManager, sceneManager, outputManager);
 
         outputManager.loadMusic("MAIN_BGM", "main_bgmusic.mp3"); 
         outputManager.loadMusic("PLAY_BGM", "play_bgmusic.mp3");

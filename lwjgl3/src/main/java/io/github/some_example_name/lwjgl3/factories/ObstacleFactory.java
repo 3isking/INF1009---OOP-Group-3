@@ -33,12 +33,14 @@ public class ObstacleFactory {
     private Obstacle createEraser(float x, float y) {
         Obstacle obstacle = new Obstacle(x, y, 0, 0, collisionManager);
         obstacle.setSprite(new Sprite(new Texture(Gdx.files.internal("eraser.png")), 80f));
+        obstacle.setId("eraser");
         return obstacle;
     }
 
     private Obstacle createBooks(float x, float y) {
         Obstacle obstacle = new Obstacle(x, y, 0, 0, collisionManager);
         obstacle.setSprite(new Sprite(new Texture(Gdx.files.internal("books.png")), 80f));
+        obstacle.setId("books");
         return obstacle;
     }
 }

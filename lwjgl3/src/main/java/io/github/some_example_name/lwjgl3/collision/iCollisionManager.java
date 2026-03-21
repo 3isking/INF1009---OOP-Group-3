@@ -10,4 +10,6 @@ public interface iCollisionManager {
     void addCollidableEntity(iCollidable collidable);
     void emptyCollidableEntities();
     CollisionResolver getResolver();
+    List<iCollidable> getCollidableEntities();
+    void removeCollidableEntity(iCollidable collidable);
 }
