@@ -23,10 +23,8 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     private int health = 5;
 
     // --- Power-up fields ---
-    private int     powerUps      = 0;
-    private boolean powerActive   = false;
-    private float   powerDuration = 5f;
-    private float   powerTimer    = 0f;
+    private int     powerUps    = 0;
+    private boolean powerActive = false;
 
     // --- Invincibility / blink fields ---
     private float invincibilityTimer              = 0f;
@@ -65,15 +63,6 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     public void update(float deltaTime) {
         wasTouchingObstacleLastFrame = isTouchingObstacleThisFrame;
         isTouchingObstacleThisFrame  = false;
-
-        // Power-up timer
-        if (powerActive) {
-            powerTimer += deltaTime;
-            if (powerTimer >= powerDuration) {
-                powerActive = false;
-                powerTimer  = 0f;
-            }
-        }
 
         // Invincibility + blink timer
         updateInvincibility(deltaTime);
@@ -177,6 +166,7 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
 
     @Override
     public void collideWithCollectable(Collectable collectable) {
+        resolver.resolveCollisions(this, collectable);
     }
 
     // -------------------------------------------------------------------------
@@ -197,31 +187,46 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
     // Power-up
     // -------------------------------------------------------------------------
 
+    // Called when player picks up a multiplier collectable
     public void addPowerUp() {
+        // accumulate every multiplier picked up
         powerUps++;
     }
 
+    // Returns true when there is at least one multiplier
     public boolean canUsePowerUp() {
         return powerUps > 0 && !powerActive;
     }
 
+    // Activate the multiplier immediately
     public void usePowerUp() {
         if (canUsePowerUp()) {
             powerUps--;
             powerActive = true;
-            powerTimer  = 0f;
         }
     }
 
-    public void deactivatePowerUp() {
-        powerActive = false;
+    // Stored power-up count increments
+    // Player can power-up multiple times
+    public int getPowerUpCount() {
+        return powerUps;
     }
 
     public boolean isPowerActive() {
         return powerActive;
     }
 
-    public boolean isPowerUpsAvailable() {
+    public boolean hasPowerUpCollected() {
         return powerUps > 0;
+    }
+
+    public void consumePowerUpCharge() {
+        if (powerUps > 0) {
+            powerUps--;
+        }
+    }
+
+    public void deactivatePowerUp() {
+        powerActive = false;
     }
 }
