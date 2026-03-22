@@ -25,6 +25,8 @@ import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
+import io.github.some_example_name.lwjgl3.factories.CollectableFactory; 
+import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
@@ -182,7 +184,6 @@ public class ClassroomScene extends Scene {
         player.setId("player_1");
         addEntity(player);
         entityManager.addEntity(player);
-        player.addPowerUp();
     }
 
     @Override
@@ -226,6 +227,22 @@ public class ClassroomScene extends Scene {
                         spawnX, spawnY);
                 addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
+
+                // Always spawn power-ups in player state
+                // Don't spawn if player is currently powered-up
+                if (!player.canUsePowerUp()) {
+                    float spawnY1;
+                    do {
+                        spawnY1 = lanes[MathUtils.random(0, 2)];
+                    } while (Math.abs(spawnY1 - spawnY) < 0.01f); // choose different lane to avoid overlap
+
+                    float collectableX = spawnX + 80f; 
+
+                    CollectableFactory factory1 = new CollectableFactory(collisionManager);
+                    Collectable newCollectable = factory1.create(CollectableType.POWERUP, collectableX, spawnY1);
+                    addEntity(newCollectable);
+                    entityManager.addEntity(newCollectable);
+                }
             }
 
             // Spawn questions safely
@@ -255,18 +272,25 @@ public class ClassroomScene extends Scene {
             }
         }
 
-        // Handle SHIFT power-up activation (ONLY ONCE)
-        if (player != null && player.canUsePowerUp() && score >= 5) {
-            if (Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_LEFT) || Gdx.input.isKeyJustPressed(Input.Keys.SHIFT_RIGHT)) {
-                player.usePowerUp();
-                multiplierTimer = MULTIPLIER_DURATION;
+        // Multiplier power-up activation logic
+        // If player has charges and currently no active multiplier then start one
+        if (player != null && player.canUsePowerUp() && !player.isPowerActive()) {
+            player.usePowerUp();
+            multiplierTimer = MULTIPLIER_DURATION;
+        }
+
+        // If multiplier is already active, consuming additional collected charges extends the current timer immediately
+        if (player != null && player.isPowerActive()) {
+            while (player.getPowerUpCount() > 0) {
+                player.consumePowerUpCharge();
+                multiplierTimer += MULTIPLIER_DURATION;
             }
         }
 
         // Handle countdown + blinking EVERY FRAME
         if (player != null && player.isPowerActive()) {
 
-            // ⏱Countdown
+            // Countdown
             multiplierTimer -= deltaTime;
 
             if (multiplierTimer <= 0f) {
@@ -284,7 +308,7 @@ public class ClassroomScene extends Scene {
                 }
             }
 
-        } 
+        }
         else {
             // Reset when not active
             showMultiplier = true;
@@ -375,8 +399,7 @@ public class ClassroomScene extends Scene {
             float iconX = camLeft() + camera.viewportWidth - iconWidth - 20;
             float iconY = camBottom() + camera.viewportHeight - iconHeight - 20; 
 
-            if (player.canUsePowerUp() && !player.isPowerActive() && score >= 5) {
-                // Available to activate
+            if (player.canUsePowerUp() && !player.isPowerActive()) {
                 batch.draw(multiplierIcon, iconX, iconY, iconWidth, iconHeight);
             } 
             else if (player.isPowerActive()) {

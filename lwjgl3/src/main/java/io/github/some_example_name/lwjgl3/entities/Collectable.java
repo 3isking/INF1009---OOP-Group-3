@@ -9,6 +9,7 @@ import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
 
 public class Collectable extends Entity implements iCollidable {
     private CollisionResolver resolver;
+    private boolean collected = false;
 
     public Collectable(float x, float y, float width, float height, CollisionManager collisionManager) {
         this.setPosition(new Vector2(x, y));
@@ -17,6 +18,18 @@ public class Collectable extends Entity implements iCollidable {
         this.setId("collectable");
         this.resolver = collisionManager.getResolver();
 
+    }
+
+    // -------------------------------------------------------------------------
+    // Power-up
+    // -------------------------------------------------------------------------
+    public boolean isCollected() {
+        return collected;
+    }
+
+    public void setCollected(boolean collected) {
+        this.collected = collected;
+        this.setVisible(!collected);
     }
 
     @Override
