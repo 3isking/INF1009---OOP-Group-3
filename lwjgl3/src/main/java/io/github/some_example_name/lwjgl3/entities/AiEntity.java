@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.collision.CollisionResolver;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.movement.MovementStrategy;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class AiEntity
  extends Entity implements iMovable, iCollidable {
@@ -82,6 +82,11 @@ public class AiEntity
 
     @Override
     public void collideWithCollectable(Collectable collectable) {
+        
+    }
+
+    @Override
+    public void collideWithAnswer(Answer answer) {
         
     }
 }

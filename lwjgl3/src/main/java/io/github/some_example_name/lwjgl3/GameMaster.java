@@ -16,12 +16,10 @@ import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.EntityManager;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.inputs.Camera;
-import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.inputs.DefaultCamera;
+import io.github.some_example_name.lwjgl3.inputs.InputManager;
 import io.github.some_example_name.lwjgl3.movement.MovementManager;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 import io.github.some_example_name.lwjgl3.outputs.OutputManager;
-import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 import io.github.some_example_name.lwjgl3.scenes.SceneManager;
 
 public class GameMaster extends ApplicationAdapter {
@@ -84,9 +82,7 @@ public class GameMaster extends ApplicationAdapter {
         outputManager.loadAudio("COLLISION_EVENT", "collide.wav");
         outputManager.loadAudio("HIT_EVENT", "hit.mp3");
         
-
-
-        debugMode = true;
+        debugMode = false;
     }
 
     @Override

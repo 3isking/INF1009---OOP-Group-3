@@ -169,6 +169,11 @@ public class PlayableEntity extends Entity implements iMovable, iCollidable {
         resolver.resolveCollisions(this, collectable);
     }
 
+    @Override
+    public void collideWithAnswer(Answer answer) {
+        resolver.resolveCollisions(this, answer);
+    }
+
     // -------------------------------------------------------------------------
     // Health
     // -------------------------------------------------------------------------

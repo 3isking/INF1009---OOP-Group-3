@@ -11,4 +11,5 @@ public interface iCollidable {
     void collideWithObstacle(Obstacle obstacle);
     void collideWithAI(AiEntity ai);
     void collideWithCollectable(Collectable collectable);
+    void collideWithAnswer(Answer answer);
 }

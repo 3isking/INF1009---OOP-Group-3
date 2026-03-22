@@ -84,4 +84,9 @@ public class Obstacle extends Entity implements iCollidable {
 
     }
 
+    @Override
+    public void collideWithAnswer(Answer answer) {
+        
+    }
+
 }

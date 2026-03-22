@@ -46,8 +46,10 @@ public class ClassroomScene extends Scene {
 
     private float spawnTimer = 0f;
     private int lastSpawnSecond = -1;
-
     private float collectableSpawnTimer = 0f;
+
+    private boolean answerHit = false;
+    private boolean lastAnswerCorrect = false;
 
     private static final float SCROLL_SPEED = 4f;
     private static final float BG_SCROLL_SPEED = 1.2f;
@@ -235,6 +237,14 @@ public class ClassroomScene extends Scene {
 
             // Spawn questions safely
             if (currentSecond % 7 == 0 && !questions.isEmpty()) {
+                answerHit = false;
+                // Reset wasHit on all old answers before spawning new ones
+                for (Entity entity : entityManager.getAllEntities()) {
+                    if (entity instanceof Answer) {
+                        ((Answer) entity).resetWasHit();
+                    }
+                }
+
                 Question q = questions.get(currentQuestion);
                 currentQuestionText = q.question;
 
@@ -257,6 +267,14 @@ public class ClassroomScene extends Scene {
                 entityManager.addEntity(bottomAnswer);
 
                 currentQuestion = (currentQuestion + 1) % questions.size();
+            }
+        }
+
+        // Check for hit answers this frame before they get removed
+        for (Entity entity : entityManager.getAllEntities()) {
+            if (entity instanceof Answer && ((Answer) entity).wasHit()) {
+                answerHit = true;
+                lastAnswerCorrect = ((Answer) entity).isCorrect();
             }
         }
 
@@ -283,7 +301,7 @@ public class ClassroomScene extends Scene {
                         collectableLane = MathUtils.random(0, 2);
                     } while (collectableLane == obstacleLane);
                 }
-                float spawnY = lanes[collectableLane];
+                float spawnY = lanes[collectableLane] + 20;
 
                 CollectableFactory factory = new CollectableFactory(collisionManager);
                 Collectable newCollectable = factory.create(CollectableType.POWERUP, spawnX, spawnY);
@@ -379,7 +397,7 @@ public class ClassroomScene extends Scene {
     public void renderUI(SpriteBatch batch) {
         // question text and answer text on top of everything
     	for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof Answer) {
+            if (entity instanceof Answer && entity.isVisible()) {
                 Answer answer = (Answer) entity;
                 GlyphLayout layout = new GlyphLayout(text2, answer.getText());
                 float centerX = answer.getPosition().x + answer.getSprite().getWidth() / 2f;
@@ -389,11 +407,18 @@ public class ClassroomScene extends Scene {
                 text2.draw(batch, layout, textX, textY);
             }
         }
+
         if (!currentQuestionText.isEmpty()) {
+            if (answerHit) {
+                text1.setColor(lastAnswerCorrect ? Color.GREEN : Color.RED);
+            } else {
+                text1.setColor(Color.WHITE);
+            }
             GlyphLayout layout = new GlyphLayout(text1, currentQuestionText);
             float x = camLeft() + (camera.viewportWidth / 2f) - layout.width / 2f;
             float y = camBottom() + camera.viewportHeight - 20f;
             text1.draw(batch, layout, x, y);
+            text1.setColor(Color.WHITE);
         }
 
         // Display score

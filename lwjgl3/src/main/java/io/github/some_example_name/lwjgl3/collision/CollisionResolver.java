@@ -1,16 +1,15 @@
 package io.github.some_example_name.lwjgl3.collision;
 
-import com.badlogic.gdx.math.Rectangle;
-
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+
+import com.badlogic.gdx.math.Rectangle;
 
 import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Answer;
+import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
-import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
@@ -55,17 +54,6 @@ public final class CollisionResolver {
         if (obstacle instanceof Answer) {
             Answer answer = (Answer) obstacle;
             if (answer.isCorrect()) {
-                List<iCollidable> toRemove = new ArrayList<>();
-                // snapshot via a method that returns a copy
-                for (iCollidable c : collisionManager.getCollidableEntities()) {
-                    if (c instanceof Answer) {
-                        toRemove.add(c);
-                    }
-                }
-                for (iCollidable c : toRemove) {
-                    collisionManager.removeCollidableEntity(c);
-                }
-                outputManager.playSound("CORRECT_EVENT");
                 return;
             }
         }
@@ -74,6 +62,31 @@ public final class CollisionResolver {
         outputManager.playSound("HIT_EVENT"); // hit.mp3 when player takes damage
         player.triggerInvincibility(); // 1 second of invincibility + blink
         obstacle.setHitPlayer();
+    }
+
+    public void resolveCollisions(PlayableEntity player, Answer answer){
+        answer.setWasHit();
+    
+        // Hide all answers regardless of correct or wrong
+        for (iCollidable c : collisionManager.getCollidableEntities()) {
+            if (c instanceof Answer) {
+                ((Answer) c).setVisible(false);
+            }
+        }
+
+        if (answer.isCorrect()) {
+            List<iCollidable> toRemove = new ArrayList<>();
+            // snapshot via a method that returns a copy
+            for (iCollidable c : collisionManager.getCollidableEntities()) {
+                if (c instanceof Answer) {
+                    toRemove.add(c);
+                }
+            }
+            for (iCollidable c : toRemove) {
+                collisionManager.removeCollidableEntity(c);
+            }
+            outputManager.playSound("CORRECT_EVENT");
+        }
     }
 
     // AI vs WALL

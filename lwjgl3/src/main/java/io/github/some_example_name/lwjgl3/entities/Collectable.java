@@ -74,4 +74,9 @@ public class Collectable extends Entity implements iCollidable {
     public void collideWithCollectable(Collectable collectable) {
 
     }
+
+    @Override
+    public void collideWithAnswer(Answer answer) {
+        
+    }
 }
