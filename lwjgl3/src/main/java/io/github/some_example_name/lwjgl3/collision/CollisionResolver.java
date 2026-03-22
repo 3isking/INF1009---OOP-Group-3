@@ -3,12 +3,8 @@ package io.github.some_example_name.lwjgl3.collision;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.badlogic.gdx.math.Rectangle;
-
-import io.github.some_example_name.lwjgl3.entities.AiEntity;
 import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Collectable;
-import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
@@ -89,19 +85,6 @@ public final class CollisionResolver {
         }
     }
 
-    // AI vs WALL
-    public void resolveCollisions(AiEntity ai, Obstacle obstacle) {
-        resolveEntityObstacle(ai, obstacle);
-    }
-
-    // PLAYER vs AI
-    public void resolveCollisions(PlayableEntity player, AiEntity ai) {
-        System.out.println("[Collision] Player collided with AI!");
-        outputManager.playSound("HIT_EVENT");
-        sceneManager.setCurrentScene("Scene3");
-        criticalCollisionOccurred = true;
-    }
-
     // MULTIPLIER vs PLAYER
     public void resolveCollisions(PlayableEntity player, Collectable collectable) {
         if (collectable.isCollected()) {
@@ -110,44 +93,5 @@ public final class CollisionResolver {
 
         player.addPowerUp();
         collectable.setCollected(true);
-    }
-
-    // Shared Entity-Obstacle Collision Logic
-    public void resolveEntityObstacle(Entity entity, Obstacle obstacle) {
-        System.out.println("[Collision] " + entity.getId() + " collided with " + obstacle.getId());
-
-        if (entity instanceof PlayableEntity) {
-            PlayableEntity player = (PlayableEntity) entity;
-            if (player.isNewObstacleCollision()) {
-                outputManager.playSound("COLLISION_EVENT");
-            }
-        }
-
-        Rectangle entityBounds   = ((iCollidable) entity).getCollisionBounds();
-        Rectangle obstacleBounds = obstacle.getCollisionBounds();
-
-        float overlapLeft   = (entityBounds.x + entityBounds.width)     - obstacleBounds.x;
-        float overlapRight  = (obstacleBounds.x + obstacleBounds.width)  - entityBounds.x;
-        float overlapBottom = (entityBounds.y + entityBounds.height)     - obstacleBounds.y;
-        float overlapTop    = (obstacleBounds.y + obstacleBounds.height) - entityBounds.y;
-
-        float minX = Math.min(overlapLeft, overlapRight);
-        float minY = Math.min(overlapBottom, overlapTop);
-
-        float pushBuffer = 0.5f;
-
-        if (minX < minY) {
-            // Horizontal collision
-            if (overlapLeft < overlapRight)
-                entity.getPosition().x -= (overlapLeft + pushBuffer);
-            else
-                entity.getPosition().x += (overlapRight + pushBuffer);
-        } else {
-            // Vertical collision
-            if (overlapBottom < overlapTop)
-                entity.getPosition().y -= (overlapBottom + pushBuffer);
-            else
-                entity.getPosition().y += (overlapTop + pushBuffer);
-        }
     }
 }

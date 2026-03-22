@@ -10,13 +10,11 @@ import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 public class MovementManager implements iMovementManager{
     private final iInputManager inputManager;
     private final PlayerMovement playerMovement;
-    private final AIMovement aiMovement;
     private List<iMovable> movableEntities;
 
     public MovementManager(iInputManager inputManager) {
         this.inputManager = inputManager;
         this.playerMovement = new PlayerMovement();
-        this.aiMovement = new AIMovement();
         this.movableEntities = new ArrayList<>();
     }
 
@@ -39,9 +37,5 @@ public class MovementManager implements iMovementManager{
 
     public PlayerMovement getPlayerMovement() {
         return playerMovement;
-    }
-
-    public AIMovement getAiMovement() {
-        return aiMovement;
     }
 }

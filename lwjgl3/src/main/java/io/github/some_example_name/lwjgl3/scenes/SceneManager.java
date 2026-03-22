@@ -114,29 +114,6 @@ public class SceneManager implements iSceneManager {
         addScene(gameOverScene);
         gameOverScene.onLoad();
     }
-
-    // Initialize Scene1 - SceneManager is responsible for scene initialization
-    public void initializeScene1() {
-        Scene1 scene1 = new Scene1(entityManager, inputManager, movementManager, collisionManager);
-        addScene(scene1);
-        scene1.onLoad();
-    }
-    
-    // Initialize Scene2 - SceneManager is responsible for scene initialization
-    public void initializeScene2() {
-        Scene2 scene2 = new Scene2(entityManager, inputManager, movementManager, collisionManager);
-        scene2.setSceneManager(this); // Set reference for scene transitions
-        addScene(scene2);
-        scene2.onLoad();
-    }
-
-    // Initialize Scene3 - SceneManager is responsible for scene initialization
-    public void initializeScene3() {
-        Scene3 scene3 = new Scene3(entityManager, inputManager, movementManager, collisionManager);
-        scene3.setSceneManager(this); // Set reference for scene transitions
-        addScene(scene3);
-        scene3.onLoad();
-    }
     
 
     public void update(float deltaTime) {

@@ -66,11 +66,6 @@ public class Collectable extends Entity implements iCollidable {
     }
 
     @Override
-    public void collideWithAI(AiEntity ai) {
-        resolver.resolveCollisions(ai, this);
-    }
-
-    @Override
     public void collideWithCollectable(Collectable collectable) {
 
     }

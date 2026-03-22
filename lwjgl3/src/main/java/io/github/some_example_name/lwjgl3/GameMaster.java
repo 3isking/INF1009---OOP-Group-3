@@ -73,8 +73,6 @@ public class GameMaster extends ApplicationAdapter {
         sceneManager.initializeClassroomScene();
         sceneManager.initializeSettingsScene();
         sceneManager.initializeGameOverScene();
-        sceneManager.initializeScene1();
-        sceneManager.initializeScene3();
 
         sceneManager.setCurrentScene("MainMenu");
 //        sceneManager.setCurrentScene("ClassroomScene");

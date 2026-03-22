@@ -1,6 +1,7 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import io.github.some_example_name.lwjgl3.outputs.iOutputManager; // Added this missing import!
 
 public interface iSceneManager {
@@ -17,9 +18,6 @@ public interface iSceneManager {
     void initializeMainMenu();
     void initializeSettingsScene();
     void initializeGameOverScene();
-    void initializeScene1();
-    void initializeScene2();
-    void initializeScene3();
     
     void update(float deltaTime);
     void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix);
