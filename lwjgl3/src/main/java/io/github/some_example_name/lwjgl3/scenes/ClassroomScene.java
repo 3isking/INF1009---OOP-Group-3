@@ -468,6 +468,8 @@ public class ClassroomScene extends Scene {
 
     @Override
     public void onExit() {
+        distanceTravelled = 0f;
+        score = 0;
         entityManager.clear();
         clearEntityList();
     }
