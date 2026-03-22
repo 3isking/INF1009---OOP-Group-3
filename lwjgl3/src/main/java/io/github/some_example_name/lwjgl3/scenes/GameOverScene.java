@@ -52,7 +52,9 @@ public class GameOverScene extends Scene {
 
     @Override
     public void onEnter() {
-    	//Game over sound effect
+    	if (sceneManager != null && sceneManager.getOutputManager() != null) {
+            sceneManager.getOutputManager().playMusic("GAMEOVER_BGM", false);
+        }
     }
 
     @Override

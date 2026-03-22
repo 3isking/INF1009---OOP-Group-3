@@ -64,11 +64,13 @@ public final class CollisionResolver {
                 for (iCollidable c : toRemove) {
                     collisionManager.removeCollidableEntity(c);
                 }
+                outputManager.playSound("CORRECT_EVENT");
                 return;
             }
         }
 
         player.takeDamage(1);
+        outputManager.playSound("HIT_EVENT"); // hit.mp3 when player takes damage
         player.triggerInvincibility(); // 1 second of invincibility + blink
         obstacle.setHitPlayer();
     }

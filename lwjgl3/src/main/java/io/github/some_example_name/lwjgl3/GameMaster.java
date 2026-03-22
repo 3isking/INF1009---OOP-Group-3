@@ -68,6 +68,8 @@ public class GameMaster extends ApplicationAdapter {
 
         outputManager.loadMusic("MAIN_BGM", "main_bgmusic.mp3"); 
         outputManager.loadMusic("PLAY_BGM", "play_bgmusic.mp3");
+        outputManager.loadMusic("GAMEOVER_BGM", "gameover.mp3");
+        outputManager.loadAudio("CORRECT_EVENT", "correct_bgsound.mp3");
         
         sceneManager.initializeMainMenu();
         sceneManager.initializeClassroomScene();
