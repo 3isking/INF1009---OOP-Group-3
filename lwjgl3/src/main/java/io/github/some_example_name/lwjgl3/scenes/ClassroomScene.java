@@ -3,7 +3,6 @@ package io.github.some_example_name.lwjgl3.scenes;
 import java.util.List;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -23,10 +22,10 @@ import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Question;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
+import io.github.some_example_name.lwjgl3.factories.CollectableFactory;
+import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
-import io.github.some_example_name.lwjgl3.factories.CollectableFactory; 
-import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
@@ -47,6 +46,8 @@ public class ClassroomScene extends Scene {
 
     private float spawnTimer = 0f;
     private int lastSpawnSecond = -1;
+
+    private float collectableSpawnTimer = 0f;
 
     private static final float SCROLL_SPEED = 4f;
     private static final float BG_SCROLL_SPEED = 1.2f;
@@ -190,6 +191,7 @@ public class ClassroomScene extends Scene {
     public void update(float deltaTime) {
         float scrollAmount = SCROLL_SPEED * deltaTime * 60f;
         float bgScrollAmount = BG_SCROLL_SPEED * deltaTime * 60f;
+        int obstacleLane = -1;
 
         // Update all entities
         for (Entity entity : entityManager.getAllEntities()) {
@@ -214,12 +216,13 @@ public class ClassroomScene extends Scene {
 
             // Spawn obstacles
             if (currentSecond % 2 == 0 
-    && currentSecond != 0
-    && (currentSecond % 7 != 0)          // not on question tick
-    && ((currentSecond + 1) % 7 != 0)    // not 1 second before question
-    && ((currentSecond - 1) % 7 != 0)) { // not 1 second after question
+            && currentSecond != 0
+            && (currentSecond % 7 != 0)          // not on question tick
+            && ((currentSecond + 1) % 7 != 0)    // not 1 second before question
+            && ((currentSecond - 1) % 7 != 0)) { // not 1 second after question
                 float spawnX = camRight() + 40f;
-                float spawnY = lanes[MathUtils.random(0, 2)];
+                obstacleLane = MathUtils.random(0, 2);
+                float spawnY = lanes[obstacleLane];
 
                 ObstacleFactory factory = new ObstacleFactory(collisionManager);
                 Obstacle newObstacle = factory.create(
@@ -227,23 +230,8 @@ public class ClassroomScene extends Scene {
                         spawnX, spawnY);
                 addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
-
-                // Always spawn power-ups in player state
-                // Don't spawn if player is currently powered-up
-                if (!player.canUsePowerUp()) {
-                    float spawnY1;
-                    do {
-                        spawnY1 = lanes[MathUtils.random(0, 2)];
-                    } while (Math.abs(spawnY1 - spawnY) < 0.01f); // choose different lane to avoid overlap
-
-                    float collectableX = spawnX + 80f; 
-
-                    CollectableFactory factory1 = new CollectableFactory(collisionManager);
-                    Collectable newCollectable = factory1.create(CollectableType.POWERUP, collectableX, spawnY1);
-                    addEntity(newCollectable);
-                    entityManager.addEntity(newCollectable);
-                }
             }
+
 
             // Spawn questions safely
             if (currentSecond % 7 == 0 && !questions.isEmpty()) {
@@ -269,6 +257,38 @@ public class ClassroomScene extends Scene {
                 entityManager.addEntity(bottomAnswer);
 
                 currentQuestion = (currentQuestion + 1) % questions.size();
+            }
+        }
+
+        // Always spawn power-ups in player state
+        // Don't spawn if player is currently powered-up
+        collectableSpawnTimer += deltaTime;
+        if (collectableSpawnTimer >= 8) {
+
+            boolean safeToSpawn = (currentSecond % 7 != 0)
+                            && ((currentSecond + 1) % 7 != 0)
+                            && ((currentSecond - 1) % 7 != 0);
+
+            if (safeToSpawn && !player.canUsePowerUp()) {
+                collectableSpawnTimer = 0f;
+
+                float spawnX = camRight() + 40f;
+
+                int collectableLane;
+                // If obstacle is not occupied, then generate randomly
+                if (obstacleLane == -1){
+                    collectableLane = MathUtils.random(0, 2);
+                } else {
+                    do {
+                        collectableLane = MathUtils.random(0, 2);
+                    } while (collectableLane == obstacleLane);
+                }
+                float spawnY = lanes[collectableLane];
+
+                CollectableFactory factory = new CollectableFactory(collisionManager);
+                Collectable newCollectable = factory.create(CollectableType.POWERUP, spawnX, spawnY);
+                addEntity(newCollectable);
+                entityManager.addEntity(newCollectable);
             }
         }
 
