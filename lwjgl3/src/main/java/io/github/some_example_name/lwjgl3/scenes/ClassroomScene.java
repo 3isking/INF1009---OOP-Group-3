@@ -159,6 +159,7 @@ public class ClassroomScene extends Scene {
         text1 = generator.generateFont(params);
         params.borderWidth = 0;
         params.color = Color.BLACK;
+        params.size = 20;
         text2 = generator.generateFont(params);
         generator.dispose();
 

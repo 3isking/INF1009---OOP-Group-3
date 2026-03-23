@@ -39,8 +39,8 @@ public class AnswerFactory implements EntityFactory<Answer>{
     @Override
     public Answer createEntity(Class<Answer> type, float x, float y, Object extra) {
         AnswerData data = (AnswerData) extra;
-        float width = 80f;
-        float height = 80f;
+        float width = 90f;
+        float height = 90f;
 
         Answer answer = new Answer(x, y, width, height, collisionManager, data.text, data.isCorrect);
         answer.setSprite(new Sprite(bubbleTexture, width));
