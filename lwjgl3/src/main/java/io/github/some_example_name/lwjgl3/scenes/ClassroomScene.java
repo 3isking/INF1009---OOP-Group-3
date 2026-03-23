@@ -463,6 +463,12 @@ public class ClassroomScene extends Scene {
     public void onExit() {
         distanceTravelled = 0f;
         score = 0;
+        currentQuestionText = "";
+        answerHit = false;
+        spawnTimer = 0f;
+        lastSpawnSecond = -1;
+        collectableSpawnTimer = 0f;
+        currentQuestion = 0;
         entityManager.clear();
         clearEntityList();
     }
