@@ -476,5 +476,9 @@ public class ClassroomScene extends Scene {
     @Override
     public void onUnload() {
         if (backgroundTexture != null) backgroundTexture.dispose();
+        if (multiplierIcon != null) multiplierIcon.dispose();
+        if (multiplierActiveIcon != null) multiplierActiveIcon.dispose();
+        if (text1 != null) text1.dispose();
+        if (text2 != null) text2.dispose();
     }
 }

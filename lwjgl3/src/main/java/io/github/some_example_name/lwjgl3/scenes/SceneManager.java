@@ -36,6 +36,10 @@ public class SceneManager implements iSceneManager {
     }
 
     public void addScene(Scene scene) {
+        Scene existing = scenes.get(scene.getName());
+        if (existing != null) {
+            existing.onUnload(); // dispose textures/fonts of the old scene first
+        }
         scenes.put(scene.getName(), scene);
     }
 

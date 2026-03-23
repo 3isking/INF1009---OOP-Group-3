@@ -44,7 +44,6 @@ public class AnswerFactory implements EntityFactory<Answer>{
 
         Answer answer = new Answer(x, y, width, height, collisionManager, data.text, data.isCorrect);
         answer.setSprite(new Sprite(bubbleTexture, width));
-        collisionManager.addCollidableEntity(answer); 
         return answer;
     }
     

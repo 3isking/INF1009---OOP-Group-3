@@ -1,9 +1,14 @@
 package io.github.some_example_name.lwjgl3.factories;
 
+import java.util.HashMap;
+import java.util.function.BiFunction;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 
@@ -16,23 +21,22 @@ public class ObstacleFactory implements EntityFactory<Obstacle> {
 
     private iCollisionManager collisionManager;
 
+    private final Map<ObstacleType, BiFunction<Float, Float, Obstacle>> registry = new HashMap<>();
+
     public ObstacleFactory(iCollisionManager collisionManager) {
         this.collisionManager = collisionManager;
+        // Register types here or via a public method
+        registry.put(ObstacleType.ERASER, this::createEraser);
+        registry.put(ObstacleType.BOOKS, this::createBooks);
     }
 
     @Override
     public Obstacle createEntity(Class<Obstacle> type, float x, float y, Object extra) {
-        ObstacleType obstacleType = (ObstacleType) extra;
-
-        switch (obstacleType) {
-            case ERASER:
-                return createEraser(x, y);
-            case BOOKS:
-                return createBooks(x, y);
-            default:
-                throw new IllegalArgumentException("Unknown obstacle type: " + type);
+        BiFunction<Float, Float, Obstacle> constructor = registry.get(extra);
+        if (constructor == null) {
+            throw new IllegalArgumentException("No constructor registered for: " + extra);
         }
-
+        return constructor.apply(x, y);
     }
 
     private Obstacle createEraser(float x, float y) {
