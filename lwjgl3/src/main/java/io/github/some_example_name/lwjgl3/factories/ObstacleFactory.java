@@ -2,11 +2,12 @@ package io.github.some_example_name.lwjgl3.factories;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 
-public class ObstacleFactory {
+public class ObstacleFactory implements EntityFactory<Obstacle> {
 
     public enum ObstacleType {
         ERASER,
@@ -19,8 +20,11 @@ public class ObstacleFactory {
         this.collisionManager = collisionManager;
     }
 
-    public Obstacle create(ObstacleType type, float x, float y) {
-        switch (type) {
+    @Override
+    public Obstacle createEntity(Class<Obstacle> type, float x, float y, Object extra) {
+        ObstacleType obstacleType = (ObstacleType) extra;
+
+        switch (obstacleType) {
             case ERASER:
                 return createEraser(x, y);
             case BOOKS:
@@ -28,6 +32,7 @@ public class ObstacleFactory {
             default:
                 throw new IllegalArgumentException("Unknown obstacle type: " + type);
         }
+
     }
 
     private Obstacle createEraser(float x, float y) {
@@ -43,4 +48,6 @@ public class ObstacleFactory {
         obstacle.setId("books");
         return obstacle;
     }
+
+    
 }

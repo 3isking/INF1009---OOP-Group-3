@@ -1,20 +1,39 @@
 package io.github.some_example_name.lwjgl3.entities;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
+import io.github.some_example_name.lwjgl3.factories.EntityFactory;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class EntityManager implements iEntityManager {
     private List<Entity> entities;
     private iMovementManager movementManager;
     private iCollisionManager collisionManager;
+    private final Map<Class<? extends Entity>, EntityFactory<? extends Entity>> factories = new HashMap<>();
 
     public EntityManager(iMovementManager movementManager, iCollisionManager collisionManager) {
         this.entities = new ArrayList<>();
         this.movementManager = movementManager;
         this.collisionManager = collisionManager;
+    }
+
+    public <T extends Entity> void registerFactory(Class<T> type, EntityFactory<T> factory) {
+        factories.put(type, factory);
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Entity> T createEntity(Class<T> type, float x, float y, Object extra) {
+        EntityFactory<? extends Entity> factory = factories.get(type);
+        if (factory != null) {
+            return type.cast(((EntityFactory<T>) factory).createEntity(type, x, y, extra));
+        } else {
+            throw new IllegalArgumentException("Unknown entity type: " + type.getSimpleName());
+        }
     }
 
     public void addEntity(Entity entity) {

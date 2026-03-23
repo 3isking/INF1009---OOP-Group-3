@@ -22,9 +22,7 @@ import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.Question;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
-import io.github.some_example_name.lwjgl3.factories.CollectableFactory;
 import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
-import io.github.some_example_name.lwjgl3.factories.ObstacleFactory;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
@@ -180,10 +178,7 @@ public class ClassroomScene extends Scene {
         bg2X = DRAW_W;
 
         // Place player relative to the virtual design size so it feels consistent
-        PlayableEntity player = new PlayableEntity(
-                (int)(-SCREEN_W / 2f + 100),
-                (int)(-SCREEN_H / 2f + 200),
-                movementManager, collisionManager);
+        PlayableEntity player = entityManager.createEntity(PlayableEntity.class, (int)(-SCREEN_W / 2f + 100), (int)(-SCREEN_H / 2f + 200), null);
         player.setId("player_1");
         addEntity(player);
         entityManager.addEntity(player);
@@ -226,10 +221,7 @@ public class ClassroomScene extends Scene {
                 obstacleLane = MathUtils.random(0, 2);
                 float spawnY = lanes[obstacleLane];
 
-                ObstacleFactory factory = new ObstacleFactory(collisionManager);
-                Obstacle newObstacle = factory.create(
-                        MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS,
-                        spawnX, spawnY);
+                Obstacle newObstacle = entityManager.createEntity( Obstacle.class, spawnX, spawnY, MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS);
                 addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
             }
@@ -248,16 +240,16 @@ public class ClassroomScene extends Scene {
                 Question q = questions.get(currentQuestion);
                 currentQuestionText = q.question;
 
-                AnswerFactory answerFactory = new AnswerFactory(collisionManager);
                 float spriteHeight = 80f;
 
                 float topY = -SCREEN_H / 2f + SCREEN_H * 0.85f - spriteHeight / 2f;
                 float middleY = -SCREEN_H / 2f + SCREEN_H * 0.5f - spriteHeight / 2f;
                 float bottomY = -SCREEN_H / 2f + SCREEN_H * 0.15f - spriteHeight / 2f;
+                float screenX = -SCREEN_W / 2f + SCREEN_W + 300f;
 
-                Answer topAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, topY, q.answers[0], 0 == q.correct);
-                Answer middleAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, middleY, q.answers[1], 1 == q.correct);
-                Answer bottomAnswer = answerFactory.create(-SCREEN_W / 2f + SCREEN_W + 300f, bottomY, q.answers[2], 2 == q.correct);
+                Answer topAnswer = entityManager.createEntity(Answer.class, screenX, topY, new AnswerFactory.AnswerData(q.answers[0], 0 == q.correct));
+                Answer middleAnswer = entityManager.createEntity(Answer.class, screenX, middleY, new AnswerFactory.AnswerData(q.answers[1], 1 == q.correct));
+                Answer bottomAnswer = entityManager.createEntity(Answer.class, screenX, bottomY, new AnswerFactory.AnswerData(q.answers[2], 2 == q.correct));
 
                 addEntity(topAnswer);
                 addEntity(middleAnswer);
@@ -303,8 +295,7 @@ public class ClassroomScene extends Scene {
                 }
                 float spawnY = lanes[collectableLane] + 20;
 
-                CollectableFactory factory = new CollectableFactory(collisionManager);
-                Collectable newCollectable = factory.create(CollectableType.POWERUP, spawnX, spawnY);
+                Collectable newCollectable = entityManager.createEntity(Collectable.class, spawnX, spawnY, CollectableType.POWERUP);
                 addEntity(newCollectable);
                 entityManager.addEntity(newCollectable);
             }
