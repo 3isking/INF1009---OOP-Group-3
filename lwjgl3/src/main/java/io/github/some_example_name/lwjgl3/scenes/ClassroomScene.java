@@ -142,6 +142,7 @@ public class ClassroomScene extends Scene {
                 questions = java.util.Collections.emptyList();
             } else {
                 questions = java.util.Arrays.asList(questionArray);
+                java.util.Collections.shuffle(questions);
             }
         } catch (Exception e) {
             e.printStackTrace();
