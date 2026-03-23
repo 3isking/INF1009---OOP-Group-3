@@ -55,9 +55,8 @@ public class Obstacle extends Entity implements iCollidable {
         return new Rectangle(this.getPosition().x, this.getPosition().y, this.getSprite().getWidth(), this.getSprite().getHeight());
     }
 
-    // Collision Manager
-    public void collide(iCollidable other)
-    {
+    @Override
+    public void collide(iCollidable other) {
         other.collideWithObstacle(this);
     }
 

@@ -47,13 +47,6 @@ public final class CollisionResolver {
             return;
         }
 
-        if (obstacle instanceof Answer) {
-            Answer answer = (Answer) obstacle;
-            if (answer.isCorrect()) {
-                return;
-            }
-        }
-
         player.takeDamage(1);
         outputManager.playSound("HIT_EVENT"); // hit.mp3 when player takes damage
         player.triggerInvincibility(); // 1 second of invincibility + blink
@@ -61,9 +54,13 @@ public final class CollisionResolver {
     }
 
     public void resolveCollisions(PlayableEntity player, Answer answer) {
-    answer.setWasHit();
+        if (answer.wasHit()){
+            return;
+        }
+        
+        answer.setWasHit();
 
-    List<iCollidable> toRemove = new ArrayList<>();
+        List<iCollidable> toRemove = new ArrayList<>();
         for (iCollidable c : collisionManager.getCollidableEntities()) {
             if (c instanceof Answer) {
                 ((Answer) c).setVisible(false);
@@ -78,6 +75,10 @@ public final class CollisionResolver {
 
         if (answer.isCorrect()) {
             outputManager.playSound("CORRECT_EVENT");
+        } else {
+            player.takeDamage(1);
+            outputManager.playSound("HIT_EVENT");
+            player.triggerInvincibility();
         }
     }
 

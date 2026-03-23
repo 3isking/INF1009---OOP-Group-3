@@ -348,7 +348,7 @@ public class ClassroomScene extends Scene {
 
         // Scroll obstacles & collectables
         for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof Obstacle || entity instanceof Collectable) {
+            if (entity instanceof Obstacle || entity instanceof Collectable || entity instanceof Answer) {
                 entity.getPosition().x -= scrollAmount;
             }
         }
