@@ -60,27 +60,23 @@ public final class CollisionResolver {
         obstacle.setHitPlayer();
     }
 
-    public void resolveCollisions(PlayableEntity player, Answer answer){
-        answer.setWasHit();
-    
-        // Hide all answers regardless of correct or wrong
+    public void resolveCollisions(PlayableEntity player, Answer answer) {
+    answer.setWasHit();
+
+    List<iCollidable> toRemove = new ArrayList<>();
         for (iCollidable c : collisionManager.getCollidableEntities()) {
             if (c instanceof Answer) {
                 ((Answer) c).setVisible(false);
+                toRemove.add(c); // always collect for removal
             }
         }
 
+        // Remove from collision manager regardless of correct/wrong
+        for (iCollidable c : toRemove) {
+            collisionManager.removeCollidableEntity(c);
+        }
+
         if (answer.isCorrect()) {
-            List<iCollidable> toRemove = new ArrayList<>();
-            // snapshot via a method that returns a copy
-            for (iCollidable c : collisionManager.getCollidableEntities()) {
-                if (c instanceof Answer) {
-                    toRemove.add(c);
-                }
-            }
-            for (iCollidable c : toRemove) {
-                collisionManager.removeCollidableEntity(c);
-            }
             outputManager.playSound("CORRECT_EVENT");
         }
     }
