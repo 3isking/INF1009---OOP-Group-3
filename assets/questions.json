@@ -93,7 +93,7 @@
   {"question":"You can have ___cake or ice cream.","answers":["Either","Neither","But"],"correct":0},
   {"question":"He was late ___ the heavy traffic.","answers":["due to","because","so"],"correct":1},
   {"question":"She is smart ___ very humble.","answers":["And","Or","Because"],"correct":0},
-  {"question":"Wait here ___ until I get back.","answers":["Since","Although","Until"],"correct":2},
+  {"question":"Wait here ___ I get back.","answers":["Since","Although","Until"],"correct":2},
   {"question":"He was hungry ___ he ate a sandwich.","answers":["so","although","but"],"correct":0},
   {"question":"She is small ___ very strong.","answers":["because","but","so"],"correct":1},
   {"question":"We stayed home ___ it was raining.","answers":["because","but","so"],"correct":0},
@@ -110,7 +110,5 @@
   {"question":"___ the difficulty, she solved the puzzle.","answers":["Despite","Because","Therefore"],"correct":0},
   {"question":"___ he is young, he is very wise.","answers":["Therefore","Although","Since"],"correct":1},
   {"question":"___ she practices daily, she improves quickly.","answers":["Since","However","Otherwise"],"correct":0},
-  {"question":"___ he apologized, she forgave him.","answers":["However","Otherwise","Since"],"correct":2},
-  {"question":"The theory is compelling, ___ it lacks empirical data.","answers":["hence","moreover","albeit"],"correct":2},
-  {"question":"__ you need further assistance, please contact the dean.","answers":["Should","Would","If so"],"correct":0}
+  {"question":"___ he apologized, she forgave him.","answers":["However","Otherwise","Since"],"correct":2}
 ]
