@@ -5,7 +5,10 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Entity;
+import io.github.some_example_name.lwjgl3.entities.iEntityManager;
+import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 
 public abstract class Scene {
@@ -46,9 +49,10 @@ public abstract class Scene {
         entityList.clear();
     }
     
-    public void addEntity(Entity entity) {
+    public void addEntity(Entity entity, iEntityManager entityManager, iMovementManager movementManager, iCollisionManager collisionManager) {
         if (entity != null && !entityList.contains(entity)) {
             entityList.add(entity);
+            entityManager.addEntity(entity, movementManager, collisionManager);
         }
     }
     
