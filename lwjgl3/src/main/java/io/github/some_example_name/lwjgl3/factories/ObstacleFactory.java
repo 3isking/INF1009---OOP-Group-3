@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
-import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.Sprite;
 

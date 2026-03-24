@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -97,7 +98,7 @@ public class SettingsScene extends Scene {
 
         if (inputManager.inputPressed("action")) {
             Vector2 screenMousePos = inputManager.getMousePosition();
-            com.badlogic.gdx.math.Vector3 worldMousePos = new com.badlogic.gdx.math.Vector3(screenMousePos.x, screenMousePos.y, 0);
+            Vector3 worldMousePos = new Vector3(screenMousePos.x, screenMousePos.y, 0);
             inputManager.getCamera().getCamera().unproject(worldMousePos);
 
             float mx = worldMousePos.x;
@@ -169,6 +170,6 @@ public class SettingsScene extends Scene {
     public void renderUI(SpriteBatch batch) {
     }
 
-    public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
+    public void setProjectionMatrix(Matrix4 matrix) {
     }
 }

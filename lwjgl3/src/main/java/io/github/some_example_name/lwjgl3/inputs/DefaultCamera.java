@@ -2,7 +2,6 @@ package io.github.some_example_name.lwjgl3.inputs;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector3;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 
 public class DefaultCamera implements Camera{
