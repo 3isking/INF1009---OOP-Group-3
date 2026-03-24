@@ -6,18 +6,15 @@ import java.util.List;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
-import io.github.some_example_name.lwjgl3.entities.iEntityManager;
-import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
+import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 
 public class CollisionManager implements iCollisionManager {
-    private iSceneManager sceneManager;
     private CollisionDetector collisionDetector;
     private CollisionResolver collisionResolver;
     private List<iCollidable> collidableEntities;
 
-    public void setCollisionManager(iEntityManager entityManager, iSceneManager sceneManager, iOutputManager outputManager) {
-        this.sceneManager = sceneManager;
+    public void setCollisionManager(iSceneManager sceneManager, iOutputManager outputManager) {
         this.collisionDetector = new CollisionDetector();
         this.collisionResolver = new CollisionResolver(sceneManager, outputManager, this);
         this.collidableEntities = new ArrayList<>();

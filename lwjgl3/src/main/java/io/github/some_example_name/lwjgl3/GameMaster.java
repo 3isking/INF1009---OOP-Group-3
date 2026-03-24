@@ -65,12 +65,12 @@ public class GameMaster extends ApplicationAdapter {
         inputManager = new InputManager(camera);
         Gdx.input.setInputProcessor(inputManager);
         outputManager = new OutputManager();
-        movementManager = new MovementManager(inputManager);
+        movementManager = new MovementManager();
         collisionManager = new CollisionManager();
-        entityManager = new EntityManager(movementManager, collisionManager);
+        entityManager = new EntityManager();
         sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager, outputManager);
         
-        collisionManager.setCollisionManager(entityManager, sceneManager, outputManager);
+        collisionManager.setCollisionManager(sceneManager, outputManager);
 
         outputManager.loadMusic("MAIN_BGM", "main_bgmusic.mp3"); 
         outputManager.loadMusic("PLAY_BGM", "play_bgmusic.mp3");
@@ -112,7 +112,7 @@ public class GameMaster extends ApplicationAdapter {
      // --- FREEZE BACKGROUND GAMEPLAY IF OVERLAY IS ACTIVE ---
         if (!sceneManager.isOverlayActive()) {
             // 1. MOVE FIRST
-            movementManager.moveEntities(entityManager.getAllEntities());
+            movementManager.moveEntities(entityManager.getAllEntities(), inputManager);
             // 2. CAMERA IMMEDIATELY AFTER MOVEMENT (before collision)
             inputManager.updateCamera(entityManager.getEntity("player_1"));
             // 3. COLLISION

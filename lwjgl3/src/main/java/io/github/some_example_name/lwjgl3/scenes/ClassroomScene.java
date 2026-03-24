@@ -183,7 +183,7 @@ public class ClassroomScene extends Scene {
         PlayableEntity player = entityManager.createEntity(PlayableEntity.class, (int)(-SCREEN_W / 2f + 100), (int)(-SCREEN_H / 2f + 200), null);
         player.setId("player_1");
         addEntity(player);
-        entityManager.addEntity(player);
+        entityManager.addEntity(player, movementManager, collisionManager);
     }
 
     @Override
@@ -225,7 +225,7 @@ public class ClassroomScene extends Scene {
 
                 Obstacle newObstacle = entityManager.createEntity( Obstacle.class, spawnX, spawnY, MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS);
                 addEntity(newObstacle);
-                entityManager.addEntity(newObstacle);
+                entityManager.addEntity(newObstacle, movementManager, collisionManager);
             }
 
 
@@ -256,9 +256,9 @@ public class ClassroomScene extends Scene {
                 addEntity(topAnswer);
                 addEntity(middleAnswer);
                 addEntity(bottomAnswer);
-                entityManager.addEntity(topAnswer);
-                entityManager.addEntity(middleAnswer);
-                entityManager.addEntity(bottomAnswer);
+                entityManager.addEntity(topAnswer, movementManager, collisionManager);
+                entityManager.addEntity(middleAnswer, movementManager, collisionManager);
+                entityManager.addEntity(bottomAnswer, movementManager, collisionManager);
 
                 currentQuestion = (currentQuestion + 1) % questions.size();
             }
@@ -299,7 +299,7 @@ public class ClassroomScene extends Scene {
 
                 Collectable newCollectable = entityManager.createEntity(Collectable.class, spawnX, spawnY, CollectableType.POWERUP);
                 addEntity(newCollectable);
-                entityManager.addEntity(newCollectable);
+                entityManager.addEntity(newCollectable, movementManager, collisionManager);
             }
         }
 
@@ -469,7 +469,7 @@ public class ClassroomScene extends Scene {
         lastSpawnSecond = -1;
         collectableSpawnTimer = 0f;
         currentQuestion = 0;
-        entityManager.clear();
+        entityManager.clear(movementManager, collisionManager);
         clearEntityList();
     }
 

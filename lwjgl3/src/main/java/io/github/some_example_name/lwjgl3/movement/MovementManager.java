@@ -8,17 +8,15 @@ import io.github.some_example_name.lwjgl3.entities.iMovable;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 
 public class MovementManager implements iMovementManager{
-    private final iInputManager inputManager;
     private final PlayerMovement playerMovement;
     private List<iMovable> movableEntities;
 
-    public MovementManager(iInputManager inputManager) {
-        this.inputManager = inputManager;
+    public MovementManager() {
         this.playerMovement = new PlayerMovement();
         this.movableEntities = new ArrayList<>();
     }
 
-    public void moveEntities(List<Entity> entityList) {
+    public void moveEntities(List<Entity> entityList, iInputManager inputManager) {
         for (iMovable movable : movableEntities) {
             MovementStrategy strategy = movable.getMovementStrategy();
             if (strategy != null) {

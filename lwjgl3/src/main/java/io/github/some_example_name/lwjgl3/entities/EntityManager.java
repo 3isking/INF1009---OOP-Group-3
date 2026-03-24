@@ -12,14 +12,10 @@ import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class EntityManager implements iEntityManager {
     private List<Entity> entities;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private final Map<Class<? extends Entity>, EntityFactory<? extends Entity>> factories = new HashMap<>();
 
-    public EntityManager(iMovementManager movementManager, iCollisionManager collisionManager) {
+    public EntityManager() {
         this.entities = new ArrayList<>();
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
     }
 
     public <T extends Entity> void registerFactory(Class<T> type, EntityFactory<T> factory) {
@@ -36,7 +32,7 @@ public class EntityManager implements iEntityManager {
         }
     }
 
-    public void addEntity(Entity entity) {
+    public void addEntity(Entity entity, iMovementManager movementManager, iCollisionManager collisionManager) {
         if (entity != null && !entities.contains(entity)) {
             entities.add(entity);
 
@@ -81,7 +77,7 @@ public class EntityManager implements iEntityManager {
         }
     }
 
-    public void clear() {
+    public void clear(iMovementManager movementManager, iCollisionManager collisionManager) {
         entities.clear();
         movementManager.emptyMovableEntities();
         collisionManager.emptyCollidableEntities();
