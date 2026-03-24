@@ -196,9 +196,7 @@ public class ClassroomScene extends Scene {
         int obstacleLane = -1;
 
         // Update all entities
-        for (Entity entity : entityManager.getAllEntities()) {
-            entity.update(deltaTime);
-        }
+        entityManager.updateAllEntities(deltaTime);
 
         // Find player once
         PlayableEntity player = (PlayableEntity) entityManager.getEntity("player_1");
@@ -264,14 +262,6 @@ public class ClassroomScene extends Scene {
                 entityManager.addEntity(bottomAnswer);
 
                 currentQuestion = (currentQuestion + 1) % questions.size();
-            }
-        }
-
-        // Check for hit answers this frame before they get removed
-        for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof Answer && ((Answer) entity).wasHit()) {
-                answerHit = true;
-                lastAnswerCorrect = ((Answer) entity).isCorrect();
             }
         }
 
@@ -354,6 +344,12 @@ public class ClassroomScene extends Scene {
             if (entity instanceof Obstacle || entity instanceof Collectable || entity instanceof Answer) {
                 entity.getPosition().x -= scrollAmount;
             }
+
+            // Check for any hit answers
+            if (entity instanceof Answer && ((Answer) entity).wasHit()) {
+                answerHit = true;
+                lastAnswerCorrect = ((Answer) entity).isCorrect();
+            }
         }
 
         // Update distance and score
@@ -419,16 +415,9 @@ public class ClassroomScene extends Scene {
 
         // Display score
         detailFont.draw(batch, "Score: " + score, camLeft() + 20, camBottom() + camera.viewportHeight - 50);
-        
 
         // --- Power-up prompt ---
-        PlayableEntity player = null;
-        for (Entity entity : entityManager.getAllEntities()) {
-            if (entity instanceof PlayableEntity) {
-                player = (PlayableEntity) entity;
-                break;
-            }
-        }
+        PlayableEntity player = (PlayableEntity) entityManager.getEntity("player_1");
 
         // Display Health & Power-up
         if (player != null) {
