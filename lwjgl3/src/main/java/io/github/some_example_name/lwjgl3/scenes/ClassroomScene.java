@@ -64,9 +64,11 @@ public class ClassroomScene extends Scene {
     private static final float SCALE = SCREEN_H / IMG_H;
     private static final float DRAW_W = (float) Math.ceil(IMG_W * SCALE) + 1f; // +1 to hide seam
     private static final float DRAW_H = SCREEN_H;
-    
-    private BitmapFont text1;
-    private BitmapFont text2;
+        
+    // Text
+    private BitmapFont qnFont;
+    private BitmapFont ansFont;
+    private BitmapFont detailFont;
     private List<Question> questions;
     private int currentQuestion = 0;
     private String currentQuestionText = "";
@@ -156,11 +158,12 @@ public class ClassroomScene extends Scene {
         params.color = Color.WHITE;
         params.borderWidth = 1;
         params.borderColor = Color.BLACK;
-        text1 = generator.generateFont(params);
+        qnFont = generator.generateFont(params);
+        detailFont = generator.generateFont(params);
         params.borderWidth = 0;
         params.color = Color.BLACK;
         params.size = 20;
-        text2 = generator.generateFont(params);
+        ansFont = generator.generateFont(params);
         generator.dispose();
 
         // Power-up icons
@@ -392,30 +395,30 @@ public class ClassroomScene extends Scene {
     	for (Entity entity : entityManager.getAllEntities()) {
             if (entity instanceof Answer && entity.isVisible()) {
                 Answer answer = (Answer) entity;
-                GlyphLayout layout = new GlyphLayout(text2, answer.getText());
+                GlyphLayout layout = new GlyphLayout(ansFont, answer.getText());
                 float centerX = answer.getPosition().x + answer.getSprite().getWidth() / 2f;
                 float centerY = answer.getPosition().y + answer.getSprite().getHeight() / 2f;
                 float textX = centerX - layout.width / 2f;
                 float textY = centerY + layout.height / 2f +5f;
-                text2.draw(batch, layout, textX, textY);
+                ansFont.draw(batch, layout, textX, textY);
             }
         }
 
         if (!currentQuestionText.isEmpty()) {
             if (answerHit) {
-                text1.setColor(lastAnswerCorrect ? Color.GREEN : Color.RED);
+                qnFont.setColor(lastAnswerCorrect ? Color.GREEN : Color.RED);
             } else {
-                text1.setColor(Color.WHITE);
+                qnFont.setColor(Color.WHITE);
             }
-            GlyphLayout layout = new GlyphLayout(text1, currentQuestionText);
+            GlyphLayout layout = new GlyphLayout(qnFont, currentQuestionText);
             float x = camLeft() + (camera.viewportWidth / 2f) - layout.width / 2f;
             float y = camBottom() + camera.viewportHeight - 20f;
-            text1.draw(batch, layout, x, y);
-            text1.setColor(Color.WHITE);
+            qnFont.draw(batch, layout, x, y);
+            qnFont.setColor(Color.WHITE);
         }
 
         // Display score
-        text1.draw(batch, "Score: " + score, camLeft() + 20, camBottom() + camera.viewportHeight - 50);
+        detailFont.draw(batch, "Score: " + score, camLeft() + 20, camBottom() + camera.viewportHeight - 50);
         
 
         // --- Power-up prompt ---
@@ -430,7 +433,7 @@ public class ClassroomScene extends Scene {
         // Display Health & Power-up
         if (player != null) {
             // Display health
-            text1.draw(batch, "Health: " + player.getHealth(), camLeft() + 20, camBottom() + camera.viewportHeight - 80);
+            detailFont.draw(batch, "Health: " + player.getHealth(), camLeft() + 20, camBottom() + camera.viewportHeight - 80);
 
             float iconWidth = 50;
             float iconHeight = 50;
@@ -449,12 +452,12 @@ public class ClassroomScene extends Scene {
                 // Draw timer text beside icon
                 String timeText = String.valueOf((int)Math.ceil(multiplierTimer));
 
-                GlyphLayout layout = new GlyphLayout(text1, timeText);
+                GlyphLayout layout = new GlyphLayout(detailFont, timeText);
 
                 float textX = iconX - layout.width - 10; // left of icon
                 float textY = iconY + iconHeight / 2f + layout.height / 2f;
 
-                text1.draw(batch, layout, textX, textY);
+                detailFont.draw(batch, layout, textX, textY);
             }
         }
     }
@@ -478,7 +481,8 @@ public class ClassroomScene extends Scene {
         if (backgroundTexture != null) backgroundTexture.dispose();
         if (multiplierIcon != null) multiplierIcon.dispose();
         if (multiplierActiveIcon != null) multiplierActiveIcon.dispose();
-        if (text1 != null) text1.dispose();
-        if (text2 != null) text2.dispose();
+        if (qnFont != null) qnFont.dispose();
+        if (ansFont != null) ansFont.dispose();
+        if (detailFont != null) detailFont.dispose();
     }
 }
