@@ -8,7 +8,6 @@ public interface iSceneManager {
     void addScene(Scene scene);
     Scene getCurrentScene();
     void setCurrentScene(String sceneName);
-    void setCurrentScene(Scene scene);
     
     void openOverlay(String sceneName);
     void closeOverlay();
@@ -20,7 +19,6 @@ public interface iSceneManager {
     void initializeGameOverScene();
     
     void update(float deltaTime);
-    void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix);
     void render(SpriteBatch batch);
     void renderUI(SpriteBatch batch);
     Scene getScene(String sceneName);

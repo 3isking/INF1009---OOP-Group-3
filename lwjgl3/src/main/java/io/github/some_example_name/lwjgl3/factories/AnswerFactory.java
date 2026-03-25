@@ -9,11 +9,6 @@ import io.github.some_example_name.lwjgl3.entities.Sprite;
 
 public class AnswerFactory implements EntityFactory<Answer>{
 
-    public enum AnswerLane {
-        TOP,
-        MIDDLE,
-        BOTTOM
-    }
 
     public static class AnswerData {
         public final String text;
@@ -33,9 +28,6 @@ public class AnswerFactory implements EntityFactory<Answer>{
         this.bubbleTexture = new Texture(Gdx.files.internal("speech.png"));
     }
 
-    /**
-     * Creates an AnswerObstacle in the specified lane with text and correctness
-     */
     @Override
     public Answer createEntity(Class<Answer> type, float x, float y, Object extra) {
         AnswerData data = (AnswerData) extra;

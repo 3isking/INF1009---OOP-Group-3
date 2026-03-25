@@ -5,10 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
@@ -140,6 +140,4 @@ public class GameOverScene extends Scene {
         // Reset scale 
         font.getData().setScale(1.0f);
     }
-    
-    public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) { }
 }

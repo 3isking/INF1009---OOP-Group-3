@@ -78,16 +78,6 @@ public class SceneManager implements iSceneManager {
         }
     }
     
-    public void setCurrentScene(Scene scene) {
-        if (this.currentScene != null) {
-            this.currentScene.onExit();
-        }
-        this.currentScene = scene;
-        if (this.currentScene != null) {
-            this.currentScene.onEnter();
-        }
-    }
-    
     //initialize ClassroomScene - SceneManager is responsible for scene initialization
     public void initializeClassroomScene() {
         ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager, movementManager, collisionManager);
@@ -125,12 +115,6 @@ public class SceneManager implements iSceneManager {
             overlayScene.update(deltaTime);
         } else if (currentScene != null) {
             currentScene.update(deltaTime);
-        }
-    }
-    
-    public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
-        if (currentScene != null) {
-            currentScene.setProjectionMatrix(matrix);
         }
     }
 

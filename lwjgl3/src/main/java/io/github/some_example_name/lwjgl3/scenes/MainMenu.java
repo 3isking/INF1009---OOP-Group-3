@@ -65,12 +65,6 @@ public class MainMenu extends Scene {
         
         System.out.println("[MainMenu] Resources loaded successfully!");
     }
-    
-    public void setProjectionMatrix(com.badlogic.gdx.math.Matrix4 matrix) {
-        if (shapeRenderer != null) {
-            shapeRenderer.setProjectionMatrix(matrix);
-        }
-    }
 
     @Override
     public void onEnter() {

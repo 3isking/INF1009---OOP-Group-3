@@ -5,7 +5,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -168,8 +167,5 @@ public class SettingsScene extends Scene {
 
     @Override
     public void renderUI(SpriteBatch batch) {
-    }
-
-    public void setProjectionMatrix(Matrix4 matrix) {
     }
 }
