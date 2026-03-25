@@ -3,12 +3,11 @@ package io.github.some_example_name.lwjgl3.collision;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
 import io.github.some_example_name.lwjgl3.entities.iCollidable;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
-import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
+import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 
 public class CollisionManager implements iCollisionManager {
     private iSceneManager sceneManager;
@@ -23,7 +22,7 @@ public class CollisionManager implements iCollisionManager {
         this.collidableEntities = new ArrayList<>();
     }
 
-    public void checkCollisions(List<Entity> entities) {
+    public void checkCollisions() {
         List<iCollidable> snapshot = new ArrayList<>(collidableEntities);
 
         for (iCollidable collidable : snapshot) {

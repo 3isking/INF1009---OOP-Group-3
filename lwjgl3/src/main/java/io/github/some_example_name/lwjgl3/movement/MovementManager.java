@@ -18,7 +18,7 @@ public class MovementManager implements iMovementManager{
         this.movableEntities = new ArrayList<>();
     }
 
-    public void moveEntities(List<Entity> entityList) {
+    public void moveEntities() {
         for (iMovable movable : movableEntities) {
             MovementStrategy strategy = movable.getMovementStrategy();
             if (strategy != null) {

@@ -112,11 +112,11 @@ public class GameMaster extends ApplicationAdapter {
         // --- FREEZE BACKGROUND GAMEPLAY IF OVERLAY IS ACTIVE ---
         if (!sceneManager.isOverlayActive()) {
             // 1. MOVE FIRST
-            movementManager.moveEntities(entityManager.getAllEntities());
+            movementManager.moveEntities();
             // 2. CAMERA IMMEDIATELY AFTER MOVEMENT (before collision)
             inputManager.updateCamera(entityManager.getEntity("player_1"));
             // 3. COLLISION
-            collisionManager.checkCollisions(entityManager.getAllEntities());
+            collisionManager.checkCollisions();
         }
 
         // 4. UPDATE MATRICES with FINAL positions
