@@ -185,7 +185,6 @@ public class ClassroomScene extends Scene {
         // Place player relative to the virtual design size so it feels consistent
         PlayableEntity player = entityManager.createEntity(PlayableEntity.class, (int)(-SCREEN_W / 2f + 100), (int)(-SCREEN_H / 2f + 200), null);
         player.setId("player_1");
-        addEntity(player);
         entityManager.addEntity(player);
     }
 
@@ -225,7 +224,6 @@ public class ClassroomScene extends Scene {
                 float spawnY = lanes[obstacleLane];
 
                 Obstacle newObstacle = entityManager.createEntity( Obstacle.class, spawnX, spawnY, MathUtils.randomBoolean() ? ObstacleType.ERASER : ObstacleType.BOOKS);
-                addEntity(newObstacle);
                 entityManager.addEntity(newObstacle);
             }
 
@@ -254,9 +252,6 @@ public class ClassroomScene extends Scene {
                 Answer middleAnswer = entityManager.createEntity(Answer.class, screenX, middleY, new AnswerFactory.AnswerData(q.answers[1], 1 == q.correct));
                 Answer bottomAnswer = entityManager.createEntity(Answer.class, screenX, bottomY, new AnswerFactory.AnswerData(q.answers[2], 2 == q.correct));
 
-                addEntity(topAnswer);
-                addEntity(middleAnswer);
-                addEntity(bottomAnswer);
                 entityManager.addEntity(topAnswer);
                 entityManager.addEntity(middleAnswer);
                 entityManager.addEntity(bottomAnswer);
@@ -291,7 +286,6 @@ public class ClassroomScene extends Scene {
                 float spawnY = lanes[collectableLane] + 20;
 
                 Collectable newCollectable = entityManager.createEntity(Collectable.class, spawnX, spawnY, CollectableType.POWERUP);
-                addEntity(newCollectable);
                 entityManager.addEntity(newCollectable);
             }
         }
@@ -462,7 +456,6 @@ public class ClassroomScene extends Scene {
         collectableSpawnTimer = 0f;
         currentQuestion = 0;
         entityManager.clear();
-        clearEntityList();
     }
 
     @Override

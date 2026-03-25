@@ -109,7 +109,7 @@ public class GameMaster extends ApplicationAdapter {
         float dt = Math.min(Gdx.graphics.getDeltaTime(), 0.16f);
         ScreenUtils.clear(0, 0, 0.2f, 1);
         
-     // --- FREEZE BACKGROUND GAMEPLAY IF OVERLAY IS ACTIVE ---
+        // --- FREEZE BACKGROUND GAMEPLAY IF OVERLAY IS ACTIVE ---
         if (!sceneManager.isOverlayActive()) {
             // 1. MOVE FIRST
             movementManager.moveEntities(entityManager.getAllEntities());

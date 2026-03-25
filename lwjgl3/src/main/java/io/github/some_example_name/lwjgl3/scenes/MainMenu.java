@@ -82,10 +82,7 @@ public class MainMenu extends Scene {
     @Override
     public void onExit() {
         System.out.println("[MainMenu] Exiting scene...");
-        for (int i = getEntityList().size() - 1; i >= 0; i--) {
-            entityManager.removeEntity(getEntityList().get(i).getId());
-        }
-        clearEntityList();
+        entityManager.clear();
         System.out.println("[MainMenu] Scene cleanup complete.");
     }
 
