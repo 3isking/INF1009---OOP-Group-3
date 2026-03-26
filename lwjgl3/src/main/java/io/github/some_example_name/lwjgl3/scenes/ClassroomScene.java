@@ -190,6 +190,13 @@ public class ClassroomScene extends Scene {
 
     @Override
     public void update(float deltaTime) {
+
+        if (inputManager.inputPressed("exit")) { // Assuming "exit" is mapped to Escape
+            if (sceneManager != null) {
+                sceneManager.openOverlay("SettingsScene");
+                return; // Optional: stop updating game logic while settings are open
+            }
+        }
         float scrollAmount = SCROLL_SPEED * deltaTime * 60f;
         float bgScrollAmount = BG_SCROLL_SPEED * deltaTime * 60f;
         int obstacleLane = -1;
@@ -206,7 +213,7 @@ public class ClassroomScene extends Scene {
         bg2X -= bgScrollAmount;
         if (bg1X + DRAW_W <= 0) bg1X = bg2X + DRAW_W;
         if (bg2X + DRAW_W <= 0) bg2X = bg1X + DRAW_W;
-
+        
         // Update spawn timer
         spawnTimer += deltaTime;
         int currentSecond = (int) spawnTimer;

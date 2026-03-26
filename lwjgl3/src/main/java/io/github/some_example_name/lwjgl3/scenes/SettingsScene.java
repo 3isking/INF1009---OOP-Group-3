@@ -46,15 +46,12 @@ public class SettingsScene extends Scene {
     
     private Rectangle backBtnRect = new Rectangle(-100, -180, 200, 50);
 
-    public SettingsScene(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
+    public SettingsScene(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager, iSceneManager sceneManager) {
         super("SettingsScene");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
         this.movementManager = movementManager;
         this.collisionManager = collisionManager;
-    }
-
-    public void setSceneManager(iSceneManager sceneManager) {
         this.sceneManager = sceneManager;
     }
 
@@ -94,6 +91,10 @@ public class SettingsScene extends Scene {
         if (inputManager.getWaitingForBind() != null) {
             return; 
         }
+        if (inputManager.inputPressed("exit")){
+                sceneManager.closeOverlay();
+            }
+        
 
         if (inputManager.inputPressed("action")) {
             Vector2 screenMousePos = inputManager.getMousePosition();
@@ -102,6 +103,9 @@ public class SettingsScene extends Scene {
 
             float mx = worldMousePos.x;
             float my = worldMousePos.y;
+
+            
+            
 
          // Volume Controls
             if (musicMinusRect.contains(mx, my)) {
@@ -124,10 +128,18 @@ public class SettingsScene extends Scene {
             if (upRebindRect.contains(mx, my)) inputManager.setKeyBind("up");
             if (downRebindRect.contains(mx, my)) inputManager.setKeyBind("down");
 
+            
             // Back Button
             if (backBtnRect.contains(mx, my)) {
                 if (sceneManager != null) {
-                    sceneManager.setCurrentScene("MainMenu");
+                    // Check if we are currently an overlay
+                    if (sceneManager.isOverlayActive()) {
+                        // If we came from the game (ClassroomScene), just close the overlay
+                        sceneManager.closeOverlay();
+                    } else {
+                        // If we came from the MainMenu (as a full scene), go back to MainMenu
+                        sceneManager.setCurrentScene("MainMenu");
+                    }
                 }
             }
         }
@@ -135,6 +147,11 @@ public class SettingsScene extends Scene {
 
     @Override
     public void render(SpriteBatch batch) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT);
+
+        batch.setProjectionMatrix(inputManager.getCamera().getCamera().combined);
+        
         batch.draw(backgroundTexture, -400, -300, 800, 600);
         font.draw(batch, "SETTINGS", -60, 220);
 

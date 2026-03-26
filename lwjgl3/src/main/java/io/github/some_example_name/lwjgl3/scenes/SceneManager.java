@@ -15,6 +15,8 @@ public class SceneManager implements iSceneManager {
     private Map<String, Scene> scenes;
     private Scene currentScene;
     private Scene overlayScene;
+
+
     
     // Manager references - SceneManager handles all scenes and their managers
     private iEntityManager entityManager;
@@ -96,8 +98,7 @@ public class SceneManager implements iSceneManager {
     
     // Initialize SettingsScene - SceneManager is responsible for scene initialization
     public void initializeSettingsScene() {
-        SettingsScene settingsScene = new SettingsScene(entityManager, inputManager, movementManager, collisionManager);
-        settingsScene.setSceneManager(this); 
+        SettingsScene settingsScene = new SettingsScene(entityManager, inputManager, movementManager, collisionManager, this);
         addScene(settingsScene);
         settingsScene.onLoad();
     }
@@ -122,13 +123,22 @@ public class SceneManager implements iSceneManager {
         if (currentScene != null) {
             currentScene.render(batch);
         }
+        // 2. Draw the overlay ON TOP of the game
+        if (overlayScene!= null) {
+            // You MUST ensure the batch is projecting correctly for the UI
+            overlayScene.render(batch);
+        }
     }
     
     public void renderUI(SpriteBatch batch) {
-        if (currentScene != null) currentScene.renderUI(batch);
-        if (overlayScene != null) overlayScene.renderUI(batch);
+        // Don't draw the game's HUD while an overlay (e.g. SettingsScene) is covering it
+        if (overlayScene == null && currentScene != null) {
+            currentScene.renderUI(batch);
+        }
+        if (overlayScene != null) {
+            overlayScene.renderUI(batch);
+        }
     }
-    
     public iOutputManager getOutputManager() {
         return this.outputManager;
     }

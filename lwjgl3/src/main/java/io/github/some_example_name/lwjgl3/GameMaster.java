@@ -130,7 +130,9 @@ public class GameMaster extends ApplicationAdapter {
         // 6. RENDER
         batch.begin();
         sceneManager.render(batch);
-        entityManager.render(batch);
+        if (!sceneManager.isOverlayActive()) {
+            entityManager.render(batch);
+        }
         sceneManager.renderUI(batch);
         batch.end();
 
