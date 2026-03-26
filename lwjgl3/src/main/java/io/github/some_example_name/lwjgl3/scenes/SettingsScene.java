@@ -102,8 +102,9 @@ public class SettingsScene extends Scene {
             Vector3 worldMousePos = new Vector3(screenMousePos.x, screenMousePos.y, 0);
             inputManager.getCamera().getCamera().unproject(worldMousePos);
 
-            float mx = worldMousePos.x - inputManager.getCamera().getCamera().position.x;
-            float my = worldMousePos.y - inputManager.getCamera().getCamera().position.y;
+            float mx = worldMousePos.x;
+            float my = worldMousePos.y;
+
             
             
 
@@ -150,31 +151,35 @@ public class SettingsScene extends Scene {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT);
         Vector3 camPos = inputManager.getCamera().getCamera().position;
+        batch.setProjectionMatrix(inputManager.getCamera().getCamera().combined);
+        float left = inputManager.getCamera().getCamera().position.x - inputManager.getCamera().getCamera().viewportWidth / 2f;
+        float bottom = inputManager.getCamera().getCamera().position.y - inputManager.getCamera().getCamera().viewportHeight / 2f;
         batch.draw(backgroundTexture, camPos.x - 400, camPos.y - 300, 800, 600);
-        font.draw(batch, "SETTINGS", camPos.x - 60, camPos.y + 220);
+        //batch.draw(backgroundTexture, -400, -300, 800, 600);
+        font.draw(batch, "SETTINGS", camPos.x -60, camPos.y + 220);
 
         // Music
-        font.draw(batch, "Music Vol:", camPos.x - 200, camPos.y + 150);
+        font.draw(batch, "Music Vol:", camPos.x-200, camPos.y + 150);
         font.draw(batch, "<", camPos.x + musicMinusRect.x + 10, camPos.y + musicMinusRect.y + 30);
         font.draw(batch, String.valueOf(musicVolume), camPos.x - 15, camPos.y + 150);
         font.draw(batch, ">", camPos.x + musicPlusRect.x + 10, camPos.y + musicPlusRect.y + 30);
 
         // SFX
-        font.draw(batch, "SFX Vol:", camPos.x - 200, camPos.y + 90);
+        font.draw(batch, "SFX Vol:", camPos.x -200, camPos.y + 90);
         font.draw(batch, "<", camPos.x + sfxMinusRect.x + 10, camPos.y + sfxMinusRect.y + 30);
-        font.draw(batch, String.valueOf(sfxVolume), camPos.x - 15, camPos.y + 90);
+        font.draw(batch, String.valueOf(sfxVolume), camPos.x -15, camPos.y + 90);
         font.draw(batch, ">", camPos.x + sfxPlusRect.x + 10, camPos.y + sfxPlusRect.y + 30);
 
         // --- Keybinds Rendering ---
-        font.draw(batch, "Up Key:", camPos.x - 200, camPos.y + 10);
+        font.draw(batch, "Up Key:", camPos.x -200, camPos.y + 10);
         // If waitingForBind equals "up", show "Press any key...", otherwise show the key name
         String upText = "up".equals(inputManager.getWaitingForBind()) ? "Press any key..." : Input.Keys.toString(upKey);
         font.draw(batch, "[" + upText + "]", camPos.x + upRebindRect.x, camPos.y + upRebindRect.y + 30);
 
-        font.draw(batch, "Down Key:", camPos.x - 200, camPos.y + - 50);
+        font.draw(batch, "Down Key:", camPos.x -200, camPos.y + -50);
         // Same logic for "down"
         String downText = "down".equals(inputManager.getWaitingForBind()) ? "Press any key..." : Input.Keys.toString(downKey);
-        font.draw(batch, "[" + downText + "]", camPos.x + downRebindRect.x, camPos.y + downRebindRect.y + 30);
+        font.draw(batch, "[" + downText + "]", camPos.x+ downRebindRect.x, camPos.y + downRebindRect.y + 30);
 
         // Back Button
         batch.draw(backBtnTexture, camPos.x + backBtnRect.x, camPos.y + backBtnRect.y, backBtnRect.width, backBtnRect.height);
