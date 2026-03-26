@@ -16,8 +16,6 @@ public class PlayerMovement implements MovementStrategy {
     float bottomY = -SCREEN_H / 2f + SCREEN_H * 0.15f - 30 / 2f;
     private final float[] lanes = {bottomY, middleY, topY};
     private int currentLane = 1;
-    private float laneSwapCooldown = 0.2f;
-    private float laneSwapTimer = 0f;
 
    @Override
     public void move(iMovable entity, iInputManager inputManager) {

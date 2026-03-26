@@ -31,8 +31,6 @@ public class ClassroomScene extends Scene {
 
     private iEntityManager entityManager;
     private iInputManager inputManager;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private iSceneManager sceneManager;
 
     // Grab the real OrthographicCamera so we can read its actual viewport size at runtime
@@ -97,13 +95,10 @@ public class ClassroomScene extends Scene {
     };
 
 
-    public ClassroomScene(iEntityManager entityManager, iInputManager inputManager,
-                          iMovementManager movementManager, iCollisionManager collisionManager) {
+    public ClassroomScene(iEntityManager entityManager, iInputManager inputManager) {
         super("ClassroomScene");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
         // Grab the live OrthographicCamera — its viewportWidth/Height update on resize
         this.camera = inputManager.getCamera().getCamera();
     }
