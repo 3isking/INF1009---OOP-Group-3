@@ -10,15 +10,13 @@ import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 
 public class CollisionManager implements iCollisionManager {
-    private iSceneManager sceneManager;
     private CollisionDetector collisionDetector;
     private CollisionResolver collisionResolver;
     private List<iCollidable> collidableEntities;
 
     public void setCollisionManager(iEntityManager entityManager, iSceneManager sceneManager, iOutputManager outputManager) {
-        this.sceneManager = sceneManager;
         this.collisionDetector = new CollisionDetector();
-        this.collisionResolver = new CollisionResolver(sceneManager, outputManager, this);
+        this.collisionResolver = new CollisionResolver(outputManager, this);
         this.collidableEntities = new ArrayList<>();
     }
 
