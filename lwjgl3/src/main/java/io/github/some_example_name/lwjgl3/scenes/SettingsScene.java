@@ -147,12 +147,13 @@ public class SettingsScene extends Scene {
 
     @Override
     public void render(SpriteBatch batch) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT);
-
+        inputManager.getCamera().getCamera().update();
+        batch.flush();
         batch.setProjectionMatrix(inputManager.getCamera().getCamera().combined);
         
-        batch.draw(backgroundTexture, -400, -300, 800, 600);
+        float w = inputManager.getCamera().getCamera().viewportWidth;
+        float h = inputManager.getCamera().getCamera().viewportHeight;
+        batch.draw(backgroundTexture, -w / 2f, -h / 2f, w, h);
         font.draw(batch, "SETTINGS", -60, 220);
 
         // Music

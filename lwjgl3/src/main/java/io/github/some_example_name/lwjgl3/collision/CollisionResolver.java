@@ -12,13 +12,11 @@ import io.github.some_example_name.lwjgl3.outputs.iOutputManager;
 import io.github.some_example_name.lwjgl3.scenes.iSceneManager;
 
 public final class CollisionResolver {
-    private iSceneManager sceneManager;
     private iOutputManager outputManager;
     private iCollisionManager collisionManager;
     private Boolean criticalCollisionOccurred = false;
 
-    public CollisionResolver(iSceneManager sceneManager, iOutputManager outputManager, iCollisionManager collisionManager) {
-        this.sceneManager = sceneManager;
+    public CollisionResolver( iOutputManager outputManager, iCollisionManager collisionManager) {
         this.outputManager = outputManager;
         this.collisionManager = collisionManager;
     }
