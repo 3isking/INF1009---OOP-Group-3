@@ -1,16 +1,16 @@
 package io.github.some_example_name.lwjgl3.scenes;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class MainMenu extends Scene {
     private iEntityManager entityManager;
@@ -132,11 +132,17 @@ public class MainMenu extends Scene {
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(backgroundTexture, -400, -300, 800, 600); 
-        batch.draw(logoTexture, -150, 10, 300, 200);
-        batch.draw(startBtnTexture, btnX, startBtnY, btnWidth, btnHeight);
-        batch.draw(settingsBtnTexture, btnX, settingsBtnY, btnWidth, btnHeight);
-        batch.draw(quitBtnTexture, btnX, quitBtnY, btnWidth, btnHeight);
+    	Vector3 camPos = inputManager.getCamera().getCamera().position;
+    	OrthographicCamera cam = inputManager.getCamera().getCamera();
+    	float scale = cam.viewportWidth / backgroundTexture.getWidth();
+        float drawWidth = backgroundTexture.getWidth() * scale;
+        float drawHeight = backgroundTexture.getHeight() * scale;
+
+        batch.draw(backgroundTexture, camPos.x - drawWidth/2f, camPos.y - drawHeight/2f, drawWidth, drawHeight);
+        batch.draw(logoTexture, camPos.x - 150, camPos.y + 10, 300, 200);
+        batch.draw(startBtnTexture, camPos.x + btnX, camPos.y + startBtnY, btnWidth, btnHeight);
+        batch.draw(settingsBtnTexture, camPos.x + btnX, camPos.y + settingsBtnY, btnWidth, btnHeight);
+        batch.draw(quitBtnTexture, camPos.x + btnX, camPos.y + quitBtnY, btnWidth, btnHeight);
     }
     
     @Override

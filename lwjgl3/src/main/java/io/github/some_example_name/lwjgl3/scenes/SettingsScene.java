@@ -10,10 +10,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class SettingsScene extends Scene {
     private iInputManager inputManager;
@@ -92,8 +90,8 @@ public class SettingsScene extends Scene {
             Vector3 worldMousePos = new Vector3(screenMousePos.x, screenMousePos.y, 0);
             inputManager.getCamera().getCamera().unproject(worldMousePos);
 
-            float mx = worldMousePos.x;
-            float my = worldMousePos.y;
+            float mx = worldMousePos.x - inputManager.getCamera().getCamera().position.x;
+            float my = worldMousePos.y - inputManager.getCamera().getCamera().position.y;
 
             
             
@@ -141,11 +139,13 @@ public class SettingsScene extends Scene {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT);
         Vector3 camPos = inputManager.getCamera().getCamera().position;
+        OrthographicCamera cam = inputManager.getCamera().getCamera();
         batch.setProjectionMatrix(inputManager.getCamera().getCamera().combined);
-        //float left = inputManager.getCamera().getCamera().position.x - inputManager.getCamera().getCamera().viewportWidth / 2f;
-        //float bottom = inputManager.getCamera().getCamera().position.y - inputManager.getCamera().getCamera().viewportHeight / 2f;
-        batch.draw(backgroundTexture, camPos.x - 400, camPos.y - 300, 800, 600);
-        //batch.draw(backgroundTexture, -400, -300, 800, 600);
+    	float scale = cam.viewportWidth / backgroundTexture.getWidth();
+        float drawWidth = backgroundTexture.getWidth() * scale;
+        float drawHeight = backgroundTexture.getHeight() * scale;
+
+        batch.draw(backgroundTexture, camPos.x - drawWidth/2f, camPos.y - drawHeight/2f, drawWidth, drawHeight);
         font.draw(batch, "SETTINGS", camPos.x -60, camPos.y + 220);
 
         // Music
