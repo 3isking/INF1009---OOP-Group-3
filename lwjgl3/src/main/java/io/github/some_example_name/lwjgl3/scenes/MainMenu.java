@@ -15,8 +15,6 @@ import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 public class MainMenu extends Scene {
     private iEntityManager entityManager;
     private iInputManager inputManager;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private iSceneManager sceneManager;
     
     private BitmapFont font;
@@ -36,14 +34,11 @@ public class MainMenu extends Scene {
     private float settingsBtnY = -120; 
     private float quitBtnY = -190;  
     
-    private boolean clickToStart = false;
 
-    public MainMenu(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
+    public MainMenu(iEntityManager entityManager, iInputManager inputManager) {
         super("MainMenu");
         this.entityManager = entityManager;
         this.inputManager = inputManager;
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
     }
 
     public void setSceneManager(iSceneManager sceneManager) {
@@ -69,7 +64,6 @@ public class MainMenu extends Scene {
     @Override
     public void onEnter() {
         System.out.println("[MainMenu] Entering scene...");
-        clickToStart = false;
         System.out.println("[MainMenu] Ready.");
     }
 

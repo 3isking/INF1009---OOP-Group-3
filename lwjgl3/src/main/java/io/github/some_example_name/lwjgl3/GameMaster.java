@@ -68,7 +68,7 @@ public class GameMaster extends ApplicationAdapter {
         movementManager = new MovementManager(inputManager);
         collisionManager = new CollisionManager();
         entityManager = new EntityManager(movementManager, collisionManager);
-        sceneManager = new SceneManager(entityManager, inputManager, movementManager, collisionManager, outputManager);
+        sceneManager = new SceneManager(entityManager, inputManager, outputManager);
         
         collisionManager.setCollisionManager(entityManager, sceneManager, outputManager);
 

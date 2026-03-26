@@ -21,19 +21,14 @@ public class SceneManager implements iSceneManager {
     // Manager references - SceneManager handles all scenes and their managers
     private iEntityManager entityManager;
     private iInputManager inputManager;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private iOutputManager outputManager;
     
 
-    public SceneManager(iEntityManager entityManager, iInputManager inputManager, 
-                        iMovementManager movementManager, iCollisionManager collisionManager,
+    public SceneManager(iEntityManager entityManager, iInputManager inputManager,
                         iOutputManager outputManager) {
         this.scenes = new HashMap<>();
         this.entityManager = entityManager;
         this.inputManager = inputManager;
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
         this.outputManager = outputManager;
     }
 
@@ -82,7 +77,7 @@ public class SceneManager implements iSceneManager {
     
     //initialize ClassroomScene - SceneManager is responsible for scene initialization
     public void initializeClassroomScene() {
-        ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager, movementManager, collisionManager);
+        ClassroomScene classroomScene = new ClassroomScene(entityManager, inputManager);
         classroomScene.setSceneManager(this); 
         addScene(classroomScene);
         classroomScene.onLoad();
@@ -90,7 +85,7 @@ public class SceneManager implements iSceneManager {
     
     // Initialize MainMenu - SceneManager is responsible for scene initialization
     public void initializeMainMenu() {
-        MainMenu mainMenu = new MainMenu(entityManager, inputManager, movementManager, collisionManager);
+        MainMenu mainMenu = new MainMenu(entityManager, inputManager);
         mainMenu.setSceneManager(this); 
         addScene(mainMenu);
         mainMenu.onLoad();
@@ -98,13 +93,13 @@ public class SceneManager implements iSceneManager {
     
     // Initialize SettingsScene - SceneManager is responsible for scene initialization
     public void initializeSettingsScene() {
-        SettingsScene settingsScene = new SettingsScene(entityManager, inputManager, movementManager, collisionManager, this);
+        SettingsScene settingsScene = new SettingsScene(entityManager, inputManager, this);
         addScene(settingsScene);
         settingsScene.onLoad();
     }
     
     public void initializeGameOverScene() {
-        GameOverScene gameOverScene = new GameOverScene(entityManager, inputManager, movementManager, collisionManager);
+        GameOverScene gameOverScene = new GameOverScene(inputManager);
         gameOverScene.setSceneManager(this); 
         addScene(gameOverScene);
         gameOverScene.onLoad();

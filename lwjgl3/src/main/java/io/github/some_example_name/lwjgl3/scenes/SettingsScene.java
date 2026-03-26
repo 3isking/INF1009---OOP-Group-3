@@ -16,10 +16,7 @@ import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class SettingsScene extends Scene {
-    private iEntityManager entityManager;
     private iInputManager inputManager;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private iSceneManager sceneManager;
 
     private BitmapFont font;
@@ -32,8 +29,6 @@ public class SettingsScene extends Scene {
     private int upKey = Input.Keys.W;   // Default Up key
     private int downKey = Input.Keys.S; // Default Down key
 
-    private boolean isRebindingUp = false;
-    private boolean isRebindingDown = false;
 
     // --- UI Click Bounds (X, Y, Width, Height) ---
     private Rectangle musicMinusRect = new Rectangle(-100, 120, 40, 40);
@@ -47,12 +42,9 @@ public class SettingsScene extends Scene {
     
     private Rectangle backBtnRect = new Rectangle(-100, -180, 200, 50);
 
-    public SettingsScene(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager, iSceneManager sceneManager) {
+    public SettingsScene(iEntityManager entityManager, iInputManager inputManager, iSceneManager sceneManager) {
         super("SettingsScene");
-        this.entityManager = entityManager;
         this.inputManager = inputManager;
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
         this.sceneManager = sceneManager;
     }
 
@@ -67,8 +59,6 @@ public class SettingsScene extends Scene {
 
     @Override
     public void onEnter() {
-        isRebindingUp = false;
-        isRebindingDown = false;
     }
 
     @Override
@@ -152,8 +142,8 @@ public class SettingsScene extends Scene {
         Gdx.gl.glClear(com.badlogic.gdx.graphics.GL20.GL_COLOR_BUFFER_BIT);
         Vector3 camPos = inputManager.getCamera().getCamera().position;
         batch.setProjectionMatrix(inputManager.getCamera().getCamera().combined);
-        float left = inputManager.getCamera().getCamera().position.x - inputManager.getCamera().getCamera().viewportWidth / 2f;
-        float bottom = inputManager.getCamera().getCamera().position.y - inputManager.getCamera().getCamera().viewportHeight / 2f;
+        //float left = inputManager.getCamera().getCamera().position.x - inputManager.getCamera().getCamera().viewportWidth / 2f;
+        //float bottom = inputManager.getCamera().getCamera().position.y - inputManager.getCamera().getCamera().viewportHeight / 2f;
         batch.draw(backgroundTexture, camPos.x - 400, camPos.y - 300, 800, 600);
         //batch.draw(backgroundTexture, -400, -300, 800, 600);
         font.draw(batch, "SETTINGS", camPos.x -60, camPos.y + 220);

@@ -16,10 +16,7 @@ import io.github.some_example_name.lwjgl3.inputs.iInputManager;
 import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class GameOverScene extends Scene {
-    private iEntityManager entityManager;
     private iInputManager inputManager;
-    private iMovementManager movementManager;
-    private iCollisionManager collisionManager;
     private iSceneManager sceneManager;
     
     private ShapeRenderer shapeRenderer;
@@ -27,12 +24,9 @@ public class GameOverScene extends Scene {
     private GlyphLayout layout;
     private int finalScore = 0;
 
-    public GameOverScene(iEntityManager entityManager, iInputManager inputManager, iMovementManager movementManager, iCollisionManager collisionManager) {
+    public GameOverScene(iInputManager inputManager) {
         super("GameOverScene");
-        this.entityManager = entityManager;
         this.inputManager = inputManager;
-        this.movementManager = movementManager;
-        this.collisionManager = collisionManager;
     }
 
     public void setSceneManager(iSceneManager sceneManager) {
