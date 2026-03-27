@@ -13,19 +13,16 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
 
-import io.github.some_example_name.lwjgl3.collision.iCollisionManager;
 import io.github.some_example_name.lwjgl3.entities.Answer;
 import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
-import io.github.some_example_name.lwjgl3.entities.Question;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
 import io.github.some_example_name.lwjgl3.factories.ObstacleFactory.ObstacleType;
 import io.github.some_example_name.lwjgl3.inputs.iInputManager;
-import io.github.some_example_name.lwjgl3.movement.iMovementManager;
 
 public class ClassroomScene extends Scene {
 
