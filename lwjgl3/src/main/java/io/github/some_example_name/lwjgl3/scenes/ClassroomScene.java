@@ -19,7 +19,6 @@ import io.github.some_example_name.lwjgl3.entities.Collectable;
 import io.github.some_example_name.lwjgl3.entities.Entity;
 import io.github.some_example_name.lwjgl3.entities.Obstacle;
 import io.github.some_example_name.lwjgl3.entities.PlayableEntity;
-import io.github.some_example_name.lwjgl3.entities.Question;
 import io.github.some_example_name.lwjgl3.entities.iEntityManager;
 import io.github.some_example_name.lwjgl3.factories.AnswerFactory;
 import io.github.some_example_name.lwjgl3.factories.CollectableFactory.CollectableType;
